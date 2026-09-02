@@ -50,6 +50,11 @@
         <button class="chip" data-filter="game">Games</button>
       </div>
       <div class="library-list" id="libraryList"></div>
+
+      <section class="demo-section">
+        <div class="section-heading stacked demo-heading"><h2>Shot type demos</h2><span>See the target line and gun movement together.</span></div>
+        <div class="demo-grid" id="demoGrid"></div>
+      </section>
     </main>
 
     <main id="progressView" class="view">
@@ -118,6 +123,35 @@
       </div>
     </section>
 
+    <section id="demoSheet" class="demo-sheet" aria-hidden="true">
+      <div class="demo-card">
+        <div class="demo-topbar">
+          <div><span class="tip-kicker">SHOT TYPE</span><h2 id="demoTitle">Sustained lead</h2></div>
+          <button class="icon-button" id="demoClose" aria-label="Close demo">×</button>
+        </div>
+        <div class="demo-stage" id="demoStage">
+          <svg class="demo-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path id="demoTargetPath" class="demo-target-path" d="M 8 60 C 32 48, 67 42, 94 34" />
+            <path id="demoGunPath" class="demo-gun-path" d="M 8 75 C 36 65, 64 52, 94 42" />
+          </svg>
+          <div class="demo-label hold" id="demoHoldLabel">HOLD</div>
+          <div class="demo-label pickup" id="demoPickupLabel">PICKUP</div>
+          <div class="demo-label break" id="demoBreakLabel">BREAK</div>
+          <div class="demo-clay" id="demoClay"></div>
+          <div class="demo-gun" id="demoGun"><span></span></div>
+          <div class="demo-shot" id="demoShot"></div>
+        </div>
+        <div class="demo-legend"><span><i class="legend-clay"></i>Clay</span><span><i class="legend-gun"></i>Gun</span></div>
+        <div class="demo-phase" id="demoPhase">SET</div>
+        <p id="demoDescription"></p>
+        <div class="demo-cue" id="demoCue"></div>
+        <div class="demo-actions">
+          <button class="secondary-button" id="demoReplay">Replay</button>
+          <button class="primary" id="demoNext">Next type</button>
+        </div>
+      </div>
+    </section>
+
     <nav class="tabbar" aria-label="Primary">
       <button class="tab active" data-view="homeView"><span>⌂</span>Today</button>
       <button class="tab" data-view="libraryView"><span>◇</span>Train</button>
@@ -126,5 +160,6 @@
   </div>
 
   <script src="app.js"></script>
+  <script src="shot-demos.js"></script>
 </body>
 </html>

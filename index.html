@@ -9,160 +9,21 @@
   <meta name="apple-mobile-web-app-title" content="ShotSight" />
   <title>ShotSight</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="shot-demos.css" />
+  <link rel="stylesheet" href="styles.css?v=20260902-2355" />
+  <link rel="stylesheet" href="shot-demos.css?v=20260902-2355" />
 </head>
 <body>
   <div class="app-shell">
-    <header class="topbar">
-      <div>
-        <div class="eyebrow">SHOT<span>SIGHT</span></div>
-        <h1 id="pageTitle">Train your eyes.</h1>
-      </div>
-      <button class="icon-button" id="soundToggle" aria-label="Toggle sound">◉</button>
-    </header>
-
-    <main id="homeView" class="view active">
-      <section class="hero-card">
-        <div class="hero-copy">
-          <span class="pill">TODAY · 12 MIN</span>
-          <h2>Visual warm-up</h2>
-          <p>Three short blocks to settle vision, sharpen acquisition and finish smooth.</p>
-        </div>
-        <button class="primary big" data-start="daily">Start session <span>→</span></button>
-      </section>
-
-      <section>
-        <div class="section-heading"><h3>Drills</h3><span>Purposeful practice</span></div>
-        <div class="card-grid" id="drillGrid"></div>
-      </section>
-
-      <section>
-        <div class="section-heading"><h3>Games</h3><span>Fast, repeatable, fun</span></div>
-        <div class="card-grid" id="gameGrid"></div>
-      </section>
-    </main>
-
-    <main id="libraryView" class="view">
-      <div class="section-heading stacked"><h2>Training library</h2><span>Choose a single activity and tune it before you begin.</span></div>
-      <div class="filter-row">
-        <button class="chip active" data-filter="all">All</button>
-        <button class="chip" data-filter="drill">Drills</button>
-        <button class="chip" data-filter="game">Games</button>
-      </div>
-      <div class="library-list" id="libraryList"></div>
-
-      <section class="demo-section">
-        <div class="section-heading stacked demo-heading"><h2>Shot type demos</h2><span>See the target line and gun movement together.</span></div>
-        <div class="demo-grid" id="demoGrid"></div>
-      </section>
-    </main>
-
-    <main id="progressView" class="view">
-      <div class="section-heading stacked"><h2>Your progress</h2><span>Prototype data is stored on this device.</span></div>
-      <section class="stats-grid">
-        <article><strong id="statSessions">0</strong><span>sessions</span></article>
-        <article><strong id="statMinutes">—</strong><span>minutes</span></article>
-        <article><strong id="statBest">—</strong><span>best game</span></article>
-      </section>
-      <section class="history-card">
-        <div class="section-heading"><h3>Recent activity</h3><button class="text-button" id="clearHistory">Clear</button></div>
-        <div id="historyList" class="history-list"></div>
-      </section>
-    </main>
-
-    <section id="playerView" class="player-view" aria-hidden="true">
-      <div class="player-top">
-        <button class="icon-button" id="closePlayer" aria-label="Close">×</button>
-        <div class="player-meta"><span id="playerType">DRILL</span><strong id="playerName">Shot Diagnostic</strong></div>
-        <button class="icon-button" id="pausePlayer" aria-label="Pause">Ⅱ</button>
-      </div>
-      <div id="stage" class="stage">
-        <div class="interaction-hint" id="interactionHint"></div>
-        <div class="focus-ring" id="focusRing"></div>
-        <div class="target" id="target"></div>
-        <div class="target secondary" id="target2"></div>
-        <div class="target tertiary" id="target3"></div>
-        <svg id="trace" class="trace" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
-        <div class="aim-dot" id="aimDot"></div>
-        <div class="shot-mark" id="shotMark"></div>
-        <div class="crosshair" id="crosshair">+</div>
-        <div class="countdown" id="countdown"></div>
-
-        <section id="diagnosticPanel" class="diagnostic-panel" aria-live="polite">
-          <div class="diagnostic-kicker">SHOT DIAGNOSIS</div>
-          <h2 id="diagTitle">Clean release</h2>
-          <div id="diagTree" class="diag-tree"></div>
-          <div class="diag-metrics">
-            <div><span>ERROR</span><strong id="diagError">—</strong></div>
-            <div><span>PATH</span><strong id="diagSmooth">—</strong></div>
-            <div><span>RELEASE</span><strong id="diagTime">—</strong></div>
-          </div>
-          <p id="diagCue"></p>
-          <div class="diag-actions">
-            <button class="secondary-button" id="diagnosticDone">Done</button>
-            <button class="primary" id="diagnosticAgain">Try again</button>
-          </div>
-        </section>
-      </div>
-      <div class="player-bottom">
-        <div class="metric"><span>TIME</span><strong id="timeValue">00:30</strong></div>
-        <div class="metric center"><span id="scoreLabel">CUE</span><strong id="scoreValue">READY</strong></div>
-        <button class="primary compact" id="actionButton">Begin</button>
-      </div>
-    </section>
-
-    <section id="tipSheet" class="tip-sheet" aria-hidden="true">
-      <div class="tip-card">
-        <div class="tip-icon" id="tipIcon">◎</div>
-        <span class="tip-kicker">HOW IT WORKS</span>
-        <h2 id="tipTitle">Activity</h2>
-        <p id="tipBody"></p>
-        <div class="tip-note" id="tipNote"></div>
-        <label class="tip-hide"><input type="checkbox" id="tipHide" /> <span>Don't show this tip again</span></label>
-        <button class="primary big" id="tipContinue">Got it <span>→</span></button>
-      </div>
-    </section>
-
-    <section id="demoSheet" class="demo-sheet" aria-hidden="true">
-      <div class="demo-card">
-        <div class="demo-topbar">
-          <div><span class="tip-kicker">SHOT TYPE</span><h2 id="demoTitle">Sustained lead</h2></div>
-          <button class="icon-button" id="demoClose" aria-label="Close demo">×</button>
-        </div>
-        <div class="demo-stage" id="demoStage">
-          <div class="demo-speed-hud"><span>CLAY <strong id="demoClaySpeed">55 mph</strong></span><span>GUN <strong id="demoGunSpeed">—</strong></span></div>
-          <svg class="demo-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <path id="demoTargetPath" class="demo-target-path" d="M 8 62 C 32 52, 66 42, 94 34" />
-            <path id="demoGunPath" class="demo-gun-path" d="M 8 62 C 32 52, 66 42, 94 34" />
-            <line id="demoLeadLine" class="demo-lead-line" x1="0" y1="0" x2="0" y2="0" />
-          </svg>
-          <div class="demo-label hold" id="demoHoldLabel">HOLD</div>
-          <div class="demo-label pickup" id="demoPickupLabel">PICKUP</div>
-          <div class="demo-label break" id="demoBreakLabel">BREAK</div>
-          <div class="demo-clay" id="demoClay"></div>
-          <div class="demo-gun" id="demoGun"><span></span></div>
-          <div class="demo-shot" id="demoShot"></div>
-        </div>
-        <div class="demo-legend"><span><i class="legend-clay"></i>Clay</span><span><i class="legend-gun"></i>Gun / aim point</span><span><i class="legend-gap"></i>Lead gap</span></div>
-        <div class="demo-phase" id="demoPhase">SET</div>
-        <p id="demoDescription"></p>
-        <div class="demo-cue" id="demoCue"></div>
-        <div class="demo-actions">
-          <button class="secondary-button" id="demoReplay">Replay</button>
-          <button class="primary" id="demoNext">Next type</button>
-        </div>
-      </div>
-    </section>
-
-    <nav class="tabbar" aria-label="Primary">
-      <button class="tab active" data-view="homeView"><span>⌂</span>Today</button>
-      <button class="tab" data-view="libraryView"><span>◇</span>Train</button>
-      <button class="tab" data-view="progressView"><span>↗</span>Progress</button>
-    </nav>
+    <header class="topbar"><div><div class="eyebrow">SHOT<span>SIGHT</span></div><h1 id="pageTitle">Train your eyes.</h1></div><button class="icon-button" id="soundToggle" aria-label="Toggle sound">◉</button></header>
+    <main id="homeView" class="view active"><section class="hero-card"><div class="hero-copy"><span class="pill">TODAY · 12 MIN</span><h2>Visual warm-up</h2><p>Three short blocks to settle vision, sharpen acquisition and finish smooth.</p></div><button class="primary big" data-start="daily">Start session <span>→</span></button></section><section><div class="section-heading"><h3>Drills</h3><span>Purposeful practice</span></div><div class="card-grid" id="drillGrid"></div></section><section><div class="section-heading"><h3>Games</h3><span>Fast, repeatable, fun</span></div><div class="card-grid" id="gameGrid"></div></section></main>
+    <main id="libraryView" class="view"><div class="section-heading stacked"><h2>Training library</h2><span>Choose a single activity and tune it before you begin.</span></div><div class="filter-row"><button class="chip active" data-filter="all">All</button><button class="chip" data-filter="drill">Drills</button><button class="chip" data-filter="game">Games</button></div><div class="library-list" id="libraryList"></div><section class="demo-section"><div class="section-heading stacked demo-heading"><h2>Shot type demos</h2><span>See the target line and gun movement together.</span></div><div class="demo-grid" id="demoGrid"></div></section></main>
+    <main id="progressView" class="view"><div class="section-heading stacked"><h2>Your progress</h2><span>Prototype data is stored on this device.</span></div><section class="stats-grid"><article><strong id="statSessions">0</strong><span>sessions</span></article><article><strong id="statMinutes">—</strong><span>minutes</span></article><article><strong id="statBest">—</strong><span>best game</span></article></section><section class="history-card"><div class="section-heading"><h3>Recent activity</h3><button class="text-button" id="clearHistory">Clear</button></div><div id="historyList" class="history-list"></div></section></main>
+    <section id="playerView" class="player-view" aria-hidden="true"><div class="player-top"><button class="icon-button" id="closePlayer" aria-label="Close">×</button><div class="player-meta"><span id="playerType">DRILL</span><strong id="playerName">Shot Diagnostic</strong></div><button class="icon-button" id="pausePlayer" aria-label="Pause">Ⅱ</button></div><div id="stage" class="stage"><div class="interaction-hint" id="interactionHint"></div><div class="focus-ring" id="focusRing"></div><div class="target" id="target"></div><div class="target secondary" id="target2"></div><div class="target tertiary" id="target3"></div><svg id="trace" class="trace" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg><div class="aim-dot" id="aimDot"></div><div class="shot-mark" id="shotMark"></div><div class="crosshair" id="crosshair">+</div><div class="countdown" id="countdown"></div><section id="diagnosticPanel" class="diagnostic-panel" aria-live="polite"><div class="diagnostic-kicker">SHOT DIAGNOSIS</div><h2 id="diagTitle">Clean release</h2><div id="diagTree" class="diag-tree"></div><div class="diag-metrics"><div><span>ERROR</span><strong id="diagError">—</strong></div><div><span>PATH</span><strong id="diagSmooth">—</strong></div><div><span>RELEASE</span><strong id="diagTime">—</strong></div></div><p id="diagCue"></p><div class="diag-actions"><button class="secondary-button" id="diagnosticDone">Done</button><button class="primary" id="diagnosticAgain">Try again</button></div></section></div><div class="player-bottom"><div class="metric"><span>TIME</span><strong id="timeValue">00:30</strong></div><div class="metric center"><span id="scoreLabel">CUE</span><strong id="scoreValue">READY</strong></div><button class="primary compact" id="actionButton">Begin</button></div></section>
+    <section id="tipSheet" class="tip-sheet" aria-hidden="true"><div class="tip-card"><div class="tip-icon" id="tipIcon">◎</div><span class="tip-kicker">HOW IT WORKS</span><h2 id="tipTitle">Activity</h2><p id="tipBody"></p><div class="tip-note" id="tipNote"></div><label class="tip-hide"><input type="checkbox" id="tipHide" /> <span>Don't show this tip again</span></label><button class="primary big" id="tipContinue">Got it <span>→</span></button></div></section>
+    <section id="demoSheet" class="demo-sheet" aria-hidden="true"><div class="demo-card"><div class="demo-topbar"><div><span class="tip-kicker">SHOT TYPE</span><h2 id="demoTitle">Sustained lead</h2></div><button class="icon-button" id="demoClose" aria-label="Close demo">×</button></div><div class="demo-stage" id="demoStage"><div class="demo-speed-hud"><span>CLAY <strong id="demoClaySpeed">55 mph</strong></span><span>GUN <strong id="demoGunSpeed">—</strong></span></div><svg class="demo-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path id="demoTargetPath" class="demo-target-path" d="M 8 62 C 32 52, 66 42, 94 34" /><path id="demoGunPath" class="demo-gun-path" d="M 8 62 C 32 52, 66 42, 94 34" /><line id="demoLeadLine" class="demo-lead-line" x1="0" y1="0" x2="0" y2="0" /></svg><div class="demo-label hold" id="demoHoldLabel">HOLD</div><div class="demo-label pickup" id="demoPickupLabel">PICKUP</div><div class="demo-label break" id="demoBreakLabel">BREAK</div><div class="demo-clay" id="demoClay"></div><div class="demo-gun" id="demoGun"><span></span></div><div class="demo-shot" id="demoShot"></div></div><div class="demo-legend"><span><i class="legend-clay"></i>Clay</span><span><i class="legend-gun"></i>Gun / aim point</span><span><i class="legend-gap"></i>Lead gap</span></div><div class="demo-phase" id="demoPhase">SET</div><p id="demoDescription"></p><div class="demo-cue" id="demoCue"></div><div class="demo-actions"><button class="secondary-button" id="demoReplay">Replay</button><button class="primary" id="demoNext">Next type</button></div></div></section>
+    <nav class="tabbar" aria-label="Primary"><button class="tab active" data-view="homeView"><span>⌂</span>Today</button><button class="tab" data-view="libraryView"><span>◇</span>Train</button><button class="tab" data-view="progressView"><span>↗</span>Progress</button></nav>
   </div>
-
-  <script src="app.js"></script>
-  <script src="shot-demos.js"></script>
+  <script src="app.js?v=20260902-2355"></script>
+  <script src="shot-demos.js?v=20260902-2355"></script>
 </body>
 </html>

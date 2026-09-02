@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#0b0f14" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ShotSight" />
+  <title>ShotSight</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">SHOT<span>SIGHT</span></div>
+        <h1 id="pageTitle">Train your eyes.</h1>
+      </div>
+      <button class="icon-button" id="soundToggle" aria-label="Toggle sound">◉</button>
+    </header>
+
+    <main id="homeView" class="view active">
+      <section class="hero-card">
+        <div class="hero-copy">
+          <span class="pill">TODAY · 12 MIN</span>
+          <h2>Visual warm-up</h2>
+          <p>Three short blocks to settle vision, sharpen acquisition and finish smooth.</p>
+        </div>
+        <button class="primary big" data-start="daily">Start session <span>→</span></button>
+      </section>
+
+      <section>
+        <div class="section-heading"><h3>Drills</h3><span>Purposeful practice</span></div>
+        <div class="card-grid" id="drillGrid"></div>
+      </section>
+
+      <section>
+        <div class="section-heading"><h3>Games</h3><span>Fast, repeatable, fun</span></div>
+        <div class="card-grid" id="gameGrid"></div>
+      </section>
+    </main>
+
+    <main id="libraryView" class="view">
+      <div class="section-heading stacked"><h2>Training library</h2><span>Choose a single activity and tune it before you begin.</span></div>
+      <div class="filter-row">
+        <button class="chip active" data-filter="all">All</button>
+        <button class="chip" data-filter="drill">Drills</button>
+        <button class="chip" data-filter="game">Games</button>
+      </div>
+      <div class="library-list" id="libraryList"></div>
+    </main>
+
+    <main id="progressView" class="view">
+      <div class="section-heading stacked"><h2>Your progress</h2><span>Prototype data is stored on this device.</span></div>
+      <section class="stats-grid">
+        <article><strong id="statSessions">0</strong><span>sessions</span></article>
+        <article><strong id="statMinutes">0</strong><span>minutes</span></article>
+        <article><strong id="statBest">—</strong><span>best game</span></article>
+      </section>
+      <section class="history-card">
+        <div class="section-heading"><h3>Recent activity</h3><button class="text-button" id="clearHistory">Clear</button></div>
+        <div id="historyList" class="history-list"></div>
+      </section>
+    </main>
+
+    <section id="playerView" class="player-view" aria-hidden="true">
+      <div class="player-top">
+        <button class="icon-button" id="closePlayer" aria-label="Close">×</button>
+        <div class="player-meta"><span id="playerType">DRILL</span><strong id="playerName">Three Bullet</strong></div>
+        <button class="icon-button" id="pausePlayer" aria-label="Pause">Ⅱ</button>
+      </div>
+      <div id="stage" class="stage">
+        <div class="focus-ring" id="focusRing"></div>
+        <div class="target" id="target"></div>
+        <div class="target secondary" id="target2"></div>
+        <div class="target tertiary" id="target3"></div>
+        <div class="crosshair" id="crosshair">+</div>
+        <div class="countdown" id="countdown"></div>
+      </div>
+      <div class="player-bottom">
+        <div class="metric"><span>TIME</span><strong id="timeValue">00:30</strong></div>
+        <div class="metric center"><span id="scoreLabel">CUE</span><strong id="scoreValue">READY</strong></div>
+        <button class="primary compact" id="actionButton">Begin</button>
+      </div>
+    </section>
+
+    <nav class="tabbar" aria-label="Primary">
+      <button class="tab active" data-view="homeView"><span>⌂</span>Today</button>
+      <button class="tab" data-view="libraryView"><span>◇</span>Train</button>
+      <button class="tab" data-view="progressView"><span>↗</span>Progress</button>
+    </nav>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

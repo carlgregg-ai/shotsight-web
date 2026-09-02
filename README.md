@@ -1,1 +1,1 @@
-# -shotsight-web
+# shotsight-web

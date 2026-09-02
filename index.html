@@ -131,9 +131,11 @@
           <button class="icon-button" id="demoClose" aria-label="Close demo">×</button>
         </div>
         <div class="demo-stage" id="demoStage">
+          <div class="demo-speed-hud"><span>CLAY <strong id="demoClaySpeed">55 mph</strong></span><span>GUN <strong id="demoGunSpeed">—</strong></span></div>
           <svg class="demo-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <path id="demoTargetPath" class="demo-target-path" d="M 8 60 C 32 48, 67 42, 94 34" />
-            <path id="demoGunPath" class="demo-gun-path" d="M 8 75 C 36 65, 64 52, 94 42" />
+            <path id="demoTargetPath" class="demo-target-path" d="M 8 62 C 32 52, 66 42, 94 34" />
+            <path id="demoGunPath" class="demo-gun-path" d="M 8 62 C 32 52, 66 42, 94 34" />
+            <line id="demoLeadLine" class="demo-lead-line" x1="0" y1="0" x2="0" y2="0" />
           </svg>
           <div class="demo-label hold" id="demoHoldLabel">HOLD</div>
           <div class="demo-label pickup" id="demoPickupLabel">PICKUP</div>
@@ -142,7 +144,7 @@
           <div class="demo-gun" id="demoGun"><span></span></div>
           <div class="demo-shot" id="demoShot"></div>
         </div>
-        <div class="demo-legend"><span><i class="legend-clay"></i>Clay</span><span><i class="legend-gun"></i>Gun</span></div>
+        <div class="demo-legend"><span><i class="legend-clay"></i>Clay</span><span><i class="legend-gun"></i>Gun / aim point</span><span><i class="legend-gap"></i>Lead gap</span></div>
         <div class="demo-phase" id="demoPhase">SET</div>
         <p id="demoDescription"></p>
         <div class="demo-cue" id="demoCue"></div>

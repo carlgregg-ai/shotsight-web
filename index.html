@@ -56,7 +56,7 @@
       <div class="section-heading stacked"><h2>Your progress</h2><span>Prototype data is stored on this device.</span></div>
       <section class="stats-grid">
         <article><strong id="statSessions">0</strong><span>sessions</span></article>
-        <article><strong id="statMinutes">0</strong><span>minutes</span></article>
+        <article><strong id="statMinutes">—</strong><span>minutes</span></article>
         <article><strong id="statBest">—</strong><span>best game</span></article>
       </section>
       <section class="history-card">
@@ -68,21 +68,53 @@
     <section id="playerView" class="player-view" aria-hidden="true">
       <div class="player-top">
         <button class="icon-button" id="closePlayer" aria-label="Close">×</button>
-        <div class="player-meta"><span id="playerType">DRILL</span><strong id="playerName">Three Bullet</strong></div>
+        <div class="player-meta"><span id="playerType">DRILL</span><strong id="playerName">Shot Diagnostic</strong></div>
         <button class="icon-button" id="pausePlayer" aria-label="Pause">Ⅱ</button>
       </div>
       <div id="stage" class="stage">
+        <div class="interaction-hint" id="interactionHint"></div>
         <div class="focus-ring" id="focusRing"></div>
         <div class="target" id="target"></div>
         <div class="target secondary" id="target2"></div>
         <div class="target tertiary" id="target3"></div>
+        <svg id="trace" class="trace" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div class="aim-dot" id="aimDot"></div>
+        <div class="shot-mark" id="shotMark"></div>
         <div class="crosshair" id="crosshair">+</div>
         <div class="countdown" id="countdown"></div>
+
+        <section id="diagnosticPanel" class="diagnostic-panel" aria-live="polite">
+          <div class="diagnostic-kicker">SHOT DIAGNOSIS</div>
+          <h2 id="diagTitle">Clean release</h2>
+          <div id="diagTree" class="diag-tree"></div>
+          <div class="diag-metrics">
+            <div><span>ERROR</span><strong id="diagError">—</strong></div>
+            <div><span>PATH</span><strong id="diagSmooth">—</strong></div>
+            <div><span>RELEASE</span><strong id="diagTime">—</strong></div>
+          </div>
+          <p id="diagCue"></p>
+          <div class="diag-actions">
+            <button class="secondary-button" id="diagnosticDone">Done</button>
+            <button class="primary" id="diagnosticAgain">Try again</button>
+          </div>
+        </section>
       </div>
       <div class="player-bottom">
         <div class="metric"><span>TIME</span><strong id="timeValue">00:30</strong></div>
         <div class="metric center"><span id="scoreLabel">CUE</span><strong id="scoreValue">READY</strong></div>
         <button class="primary compact" id="actionButton">Begin</button>
+      </div>
+    </section>
+
+    <section id="tipSheet" class="tip-sheet" aria-hidden="true">
+      <div class="tip-card">
+        <div class="tip-icon" id="tipIcon">◎</div>
+        <span class="tip-kicker">HOW IT WORKS</span>
+        <h2 id="tipTitle">Activity</h2>
+        <p id="tipBody"></p>
+        <div class="tip-note" id="tipNote"></div>
+        <label class="tip-hide"><input type="checkbox" id="tipHide" /> <span>Don't show this tip again</span></label>
+        <button class="primary big" id="tipContinue">Got it <span>→</span></button>
       </div>
     </section>
 

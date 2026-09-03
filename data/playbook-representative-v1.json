@@ -1,0 +1,132 @@
+{
+  "version": "1.0-stage4",
+  "date": "2026-09-03",
+  "status": "CERTIFIED_REPRESENTATIVE_SET",
+  "evidence_labels": ["DIRECT", "SYNTHESIS", "SHOTSIGHT_HYPOTHESIS", "HOLD_DEMOTE"],
+  "lessons": [
+    {
+      "id": "flat_long_crosser",
+      "name": "Flat / long crosser",
+      "selector": {"flight_family":"crossing","phase":"stable"},
+      "aliases": ["crosser","flat crosser","long crosser","distant crosser","crossing bird"],
+      "understand": "A target travelling predominantly across the shooter's view. Distance can make the picture deceptive, so the lesson separates reading the line and speed from consciously measuring a lead gap.",
+      "coaching": [
+        {"text":"Pull-away, swing-through and maintained lead are recognised CPSA methods; ShotSight presents them as options rather than one universal answer.","label":"DIRECT","sources":["CPSA_S3"]},
+        {"text":"For a long crosser, Don Currie/NSCA teaches a pull-away protocol built around a useful runway, leading-edge focus, speed match and smooth separation.","label":"DIRECT","sources":["NSCA_LONG_CROSSER"],"attribution":"Don Currie / NSCA"},
+        {"text":"Checking or measuring lead can draw attention away from the target and is a plausible contributor when the shooter repeatedly finishes behind.","label":"DIRECT","sources":["NSCA_LONG_CROSSER","NSCA_MEASURING"],"attribution":"Don Currie / NSCA"}
+      ],
+      "holds": ["Do not claim maintained lead is always best when the target is visible early.","Do not state a specific left/right body-rotation cause without evidence."],
+      "diagnose": [{"symptom":"behind","candidate_mechanisms":["late or weak speed match","loss of target focus through lead checking","gun deceleration at execution"],"question":"Can you track the same target smoothly without firing, while keeping visual attention on the target?","interpretation":"If the no-shot trace is smooth but the live trace deteriorates near the trigger, execution becomes more likely; otherwise retain reading/connection alternatives.","fix":"Repeat one method with a fixed break zone, then compare methods without scoring a 'correct lead'.","retest":"Change speed or distance while retaining the same method."}],
+      "visual_spec":{"target":"straight lateral red path","show":["pickup zone","break zone","selected method phases","target/gun speed match","shot event","post-shot continuation"],"warning":"Blue gun line is conceptual; no exact ballistic lead claim."},
+      "drills":[{"name":"Speed Match","label":"SHOTSIGHT_HYPOTHESIS"},{"name":"Three-method comparison","label":"SHOTSIGHT_HYPOTHESIS"}]
+    },
+    {
+      "id": "quartering_away",
+      "name": "Quartering away",
+      "selector": {"flight_family":"quartering","direction":"away"},
+      "aliases": ["quartering away","quartering bird","angled outgoing target","shallow going-away crosser"],
+      "understand": "A target moving both across and away. The important first task is to classify the actual angle rather than treating every quarterer as a crosser or a straight going-away bird.",
+      "coaching": [
+        {"text":"CPSA coaching explicitly cautions against rushing the quartering-away target and emphasises smooth, consistent execution.","label":"DIRECT","sources":["CPSA_S1"]},
+        {"text":"OSP teaches its own early-move quartering approach; keep it attributed rather than presenting it as universal.","label":"DIRECT","sources":["OSP_QUARTER"],"attribution":"OSP"},
+        {"text":"For fast quarterers repeatedly missed behind, Don Currie describes a specific quartering/come-to-gun solution with defined hold and visual pickup.","label":"DIRECT","sources":["NSCA_ALWAYS_BEHIND"],"attribution":"Don Currie / NSCA"}
+      ],
+      "holds": ["Do not claim a universal perceptual 'speed compression' rule drives technique."],
+      "diagnose": [{"symptom":"behind","candidate_mechanisms":["angle misclassification","late/unstable move","method not matched to this presentation"],"question":"Does the miss persist when the same speed is presented at a more crossing angle?","interpretation":"A change with angle increases the probability of classification/path error rather than a generic gun-speed fault.","fix":"Use a blocked angle comparison before randomising angles.","retest":"Novel quartering angle in both directions."}],
+      "visual_spec":{"target":"oblique receding path","show":["angle family","pickup","break zone","coach-attributed method only when selected"],"warning":"Do not convert the schematic into an exact lead value."},
+      "drills":[{"name":"Quartering angle ladder","label":"SHOTSIGHT_HYPOTHESIS"}]
+    },
+    {
+      "id": "low_fast_incomer_cutoff",
+      "name": "Low fast incomer / cutoff",
+      "selector": {"flight_family":"incoming","elevation":"low","speed":"fast","phase":"changing"},
+      "aliases": ["low fast incomer","cutoff","incoming target that drops","low plate incomer"],
+      "understand": "This lesson is for an incoming/quartering target that transitions, drops or cuts near the chosen break zone. A plain straight incomer must not inherit this method automatically.",
+      "coaching": [
+        {"text":"Don Currie's cutoff presentation matches a low incoming/quartering target that changes near the break point and supports an offset/closer hold with a slightly upward approach that preserves target visibility.","label":"DIRECT","sources":["NSCA_CUTOFF","NSCA_OCCLUSION"],"attribution":"Don Currie / NSCA"},
+        {"text":"Josh Brown/TGS/ShotKam separately supports explicit pickup, hold and kill-point planning on incomers and keeping the gun below a descending target.","label":"DIRECT","sources":["SHOTKAM_IN"],"attribution":"Josh Brown / TGS / ShotKam"}
+      ],
+      "holds": ["Do not prescribe a late intercept from below for every low fast incomer."],
+      "diagnose": [{"symptom":"over the top","candidate_mechanisms":["barrel occlusion from approaching above","following early line instead of final transition","late visual update"],"question":"If the target is replayed without the final drop/cut, does the error remain?","interpretation":"Improvement when the transition is removed points toward transition reading/approach rather than a generic incomer problem.","fix":"Rehearse the final useful line and preserve target visibility.","retest":"Randomise the direction/amount of the late cut."}],
+      "visual_spec":{"target":"compound incoming-to-transition path","show":["early flight","transition","final useful line","pickup","hold","break"],"warning":"Component toggles are a ShotSight experimental diagnostic, not established proof."},
+      "drills":[{"name":"Compound-path classifier","label":"SHOTSIGHT_HYPOTHESIS"}]
+    },
+    {
+      "id": "chandelle_apex",
+      "name": "Chandelle / looper around apex",
+      "selector": {"flight_family":"looping_chandelle","elevation":"high"},
+      "aliases": ["high looper","chandelle","looper","looping target"],
+      "understand": "A curved target whose rising, apex and descending phases are materially different tasks. The page requires the shooter to choose or identify the intended break phase.",
+      "coaching": [
+        {"text":"Don Currie/NSCA teaches committing to a break point, focusing on the leading edge, matching gun and target speed and avoiding tracing the whole arc.","label":"DIRECT","sources":["NSCA_CH"],"attribution":"Don Currie / NSCA"},
+        {"text":"For a descending break point, an upward/offset approach can preserve visibility rather than letting the muzzle occlude the target.","label":"DIRECT","sources":["NSCA_CH","NSCA_OCCLUSION"],"attribution":"Don Currie / NSCA"},
+        {"text":"ShotSight therefore treats rise, apex and descent as separate phases instead of one generic looper technique.","label":"SYNTHESIS","sources":["NSCA_CH","NSCA_OCCLUSION"]}
+      ],
+      "diagnose": [{"symptom":"misses underneath or loses the clay near the top","candidate_mechanisms":["wrong break-phase expectation","full-arc tracing","occlusion from gun approach"],"question":"Which phase are you actually trying to break: rising, apex or descending?","interpretation":"If the answer is unclear, classification/break-point planning precedes a technique prescription.","fix":"Choose one phase and rehearse the target path to that break zone only.","retest":"Move the break zone to a different phase."}],
+      "visual_spec":{"target":"curved red arc","show":["rising/apex/descending labels","selected break phase","method-specific approach","occlusion-safe relationship"],"warning":"No fixed millisecond apex threshold; any timing ladder is experimental."},
+      "drills":[{"name":"Rise–apex–drop classifier","label":"SHOTSIGHT_HYPOTHESIS"}]
+    },
+    {
+      "id": "rising_teal_under_power",
+      "name": "Rising teal — under power",
+      "selector": {"flight_family":"vertical_teal","phase":"powered","direction":"away"},
+      "aliases": ["rising teal","outgoing teal","teal under power","springing teal"],
+      "understand": "A rising/outgoing teal that must be engaged while it is still travelling under power. This is intentionally distinct from a near-apex teal.",
+      "coaching": [
+        {"text":"Don Currie/NSCA explicitly distinguishes a comfortable near-peak teal from an outgoing teal that must be shot under power.","label":"DIRECT","sources":["NSCA_TEAL"],"attribution":"Don Currie / NSCA"},
+        {"text":"For the outgoing-under-power case, Currie teaches a pass-through move with a hold point about one-third back from the break point.","label":"DIRECT","sources":["NSCA_TEAL"],"attribution":"Don Currie / NSCA"},
+        {"text":"Other respected coaching can favour an apex or rise solution in different teal contexts; ShotSight must preserve that disagreement rather than declaring one universal teal method.","label":"SYNTHESIS","sources":["ORVIS_TEAL","DU_MATARESE","NSCA_TEAL"]}
+      ],
+      "holds": ["Apex is not universally the best place to shoot a teal."],
+      "diagnose": [{"symptom":"misses above/below or timing changes wildly","candidate_mechanisms":["wrong phase classification","gun speed not adapting to target deceleration","small lateral drift not read"],"question":"Are you shooting it under power or near the peak?","interpretation":"A phase mismatch invalidates a one-size technique diagnosis.","fix":"Train one phase at a time before mixing phases.","retest":"Change only the break phase, then add drift."}],
+      "visual_spec":{"target":"steep rising path with optional lateral drift","show":["powered region","near-peak region","selected method attribution","break zone"],"warning":"Hidden-drift scoring/gearbox metrics are experimental ShotSight hypotheses."},
+      "drills":[{"name":"Teal phase classifier","label":"SHOTSIGHT_HYPOTHESIS"}]
+    },
+    {
+      "id": "crossing_rabbit",
+      "name": "Crossing rabbit",
+      "selector": {"flight_family":"ground_rabbit","target_type":"rabbit","angle":"broadside"},
+      "aliases": ["rabbit","crossing rabbit","ground rabbit","bolting rabbit"],
+      "understand": "A rabbit is not merely a low crosser. Ground proximity, rolling/bouncing behaviour and presentation angle affect perception and method; crossing, shallow-quartering and slow/close rabbits are separate variants.",
+      "coaching": [
+        {"text":"Don Currie notes that ground proximity can make a rabbit appear faster and identifies a common tendency to miss in front.","label":"DIRECT","sources":["NSCA_RABBIT"],"attribution":"Don Currie / NSCA"},
+        {"text":"For a crossing rabbit, Currie teaches a specific let-it-beat-the-muzzle then move-to-the-nose/front-foot method, while slow or quartering rabbits can use different approaches.","label":"DIRECT","sources":["NSCA_RABBIT"],"attribution":"Don Currie / NSCA"}
+      ],
+      "holds": ["Do not teach 'ignore every bounce and shoot the average line' as established fact.","Do not list pull-away/maintained/swing-through as universally valid rabbit options."],
+      "diagnose": [{"symptom":"in front or erratic","candidate_mechanisms":["apparent-speed overreaction","wrong rabbit variant/method","reacting to bounce instead of target information"],"question":"Is this a broad crossing rabbit, a shallow quarterer, or a slow/close rabbit?","interpretation":"Method advice follows the actual variant; the label 'rabbit' alone is insufficient.","fix":"Classify the presentation first, then use the source-matched method.","retest":"Different rabbit angle/speed."}],
+      "visual_spec":{"target":"ground-contact rolling path","show":["true travel direction","presentation angle","optional bounce as variability","break zone"],"warning":"Do not imply Project can reproduce live ground physics exactly."},
+      "drills":[{"name":"Rabbit angle/speed classifier","label":"SHOTSIGHT_HYPOTHESIS"}]
+    },
+    {
+      "id": "driven_incoming",
+      "name": "Driven incoming target",
+      "selector": {"flight_family":"falling_driven","direction":"overhead_toward","elevation":"high"},
+      "aliases": ["driven target","driven bird","high driven","driven pheasant clay"],
+      "understand": "A true driven target is incoming from height and may pass overhead. ShotSight keeps it separate from a target already passing overhead and travelling away.",
+      "coaching": [
+        {"text":"Don Currie/NSCA teaches a pass-through/swing-through driven-target method with visual connection before the pass-through move.","label":"DIRECT","sources":["NSCA_DRIVEN"],"attribution":"Don Currie / NSCA"},
+        {"text":"Across expert overhead/driven instruction, timed mount/connection followed by controlled separation is a defensible synthesis, but exact language and method depend on the incoming-versus-passing geometry.","label":"SYNTHESIS","sources":["DU_MATARESE","NSCA_DRIVEN"]}
+      ],
+      "holds": ["Do not state that pull-away or maintained lead is preferred on all overhead targets."],
+      "diagnose": [{"symptom":"stab/poke, late loss of target, or behind high","candidate_mechanisms":["late pickup","posture/range restriction","head/mount instability","wrong geometry classification"],"question":"Are you breaking the target while it is still incoming, or after it has passed and is going away?","interpretation":"A passing-away overhead is a different task and should route to a different play.","fix":"Use geometry-matched no-shot tracking and preserve visual connection before prescribing a live method.","retest":"Lower driven version, then true overhead/passing comparison."}],
+      "visual_spec":{"target":"2D high incoming path","show":["incoming phase","overhead transition","break zone before/after transition","selected attributed method"],"warning":"A wall projector cannot reproduce true depth; label this as conceptual 2D rehearsal."},
+      "drills":[{"name":"Driven connection rehearsal","label":"SHOTSIGHT_HYPOTHESIS"}]
+    },
+    {
+      "id": "pair_planning",
+      "name": "On-report / true-pair planning",
+      "selector": {"sequence_context":"unknown"},
+      "aliases": ["report pair","on report","true pair","simultaneous pair","second bird"],
+      "understand": "Pairs are sequence contexts, not one target geometry. Each bird is classified independently, then ShotSight adds order, break-point and transition planning.",
+      "coaching": [
+        {"text":"CPSA explicitly demonstrates using different shooting methods within pairs.","label":"DIRECT","sources":["CPSA_S3"]},
+        {"text":"CPSA also highlights first-shot timing as a way of improving the setup for the second target in simultaneous-pair examples.","label":"DIRECT","sources":["CPSA_S3"]},
+        {"text":"Don Currie/NSCA teaches planning true-pair order from break-point geometry, visibility/time window and transition route.","label":"DIRECT","sources":["NSCA_TRUE_PAIR"],"attribution":"Don Currie / NSCA"}
+      ],
+      "holds": ["Following, report, simultaneous/true and rafale are not interchangeable terms.","Exact transition-latency thresholds are not validated."],
+      "diagnose": [{"symptom":"second bird repeatedly lost or rushed","candidate_mechanisms":["poor order/break-point plan","first target finished too late for available second-bird window","attention leaves first target too early","transition path inefficient"],"question":"What pair type is it, and where are both intended break points?","interpretation":"Without pair definition and both target geometries, no reliable pair diagnosis should be issued.","fix":"Plan both birds explicitly, then vary only the transition constraint.","retest":"Reverse target order or change second-bird window where the format allows."}],
+      "visual_spec":{"target":"two independently classified paths","show":["bird A break zone","bird B break zone","transition route","pair-format label"],"warning":"Attention metrics and transition thresholds remain experimental ShotSight hypotheses."},
+      "drills":[{"name":"Pair route planner","label":"SHOTSIGHT_HYPOTHESIS"}]
+    }
+  ]
+}

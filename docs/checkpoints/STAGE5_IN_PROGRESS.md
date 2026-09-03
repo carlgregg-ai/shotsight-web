@@ -1,31 +1,36 @@
 # ShotSight Stage 5 — Playbook UX (IN PROGRESS)
 
 Date: 2026-09-03
-Status: **IN_PROGRESS**
+Status: **IN_PROGRESS — integration tranche complete; runtime QA remains**
 
-## Completed durable tranche
+## Newly completed and persisted
 
-- Added `playbook.js`, a mobile-first Playbook controller that:
-  - loads the certified Stage 4 representative lesson set;
-  - supports plain-language filtering across lesson names, aliases, coaching text, symptoms and candidate mechanisms;
-  - renders compact presentation cards;
-  - opens a progressive-disclosure lesson sheet;
-  - keeps coaching evidence labels visible (DIRECT / SYNTHESIS / SHOTSIGHT_HYPOTHESIS / HOLD_DEMOTE);
-  - shows a discriminating diagnostic question, candidate causes, corrective action and retest;
-  - exposes visual-lesson requirements and warnings;
-  - escapes rendered lesson text before injecting HTML.
-- Added `playbook.css` with phone-first cards, sticky search, full-width mobile lesson sheet, readable evidence labels and a larger centred desktop sheet.
-- `playbook.js` was syntax-checked locally with `node --check` before commit.
-- No existing production navigation or page markup has yet been replaced, so the current hosted prototype is not intentionally broken by this tranche.
+- Integrated the certified Playbook into the existing `learnView` through `v02.js` without removing the existing shot-type demonstrations.
+- Changed the Learn navigation/title presentation to `Playbook` while preserving the same app view architecture.
+- Added mobile-first Playbook landing markup, search field, lesson count, evidence-labelled cards, lesson sheet and retained visual-guides section.
+- Added cache-busted dynamic loading of `playbook.css` and `playbook.js`; Playbook initialisation is resilient whether the asset loads before or after `DOMContentLoaded`.
+- Added explicit search-intent detection. Phrases such as `behind on a crosser`, `underneath teal`, `missing above`, `stopping` and similar miss-language enter a visible Diagnose mode, rank diagnostic evidence and open the lesson with the diagnostic section first.
+- Added Learn-mode feedback for presentation-only searches.
+- Improved empty, loading and fetch-error states. A data-load failure preserves the Playbook shell and allows retry instead of destroying the search UI.
+- Added Escape-key closing, backdrop closing, body-scroll locking, modal semantics and mobile sheet overscroll containment.
+- Preserved DIRECT / SYNTHESIS / SHOTSIGHT_HYPOTHESIS / HOLD_DEMOTE evidence labels in the rendered coaching UI.
+- Did not alter or broaden any Stage 4 coaching content or evidence permissions.
 
-## Remaining before Stage 5 can pass
+## Verification completed this tranche
 
-1. Integrate Playbook markup into `index.html` without removing the useful existing shot-type demos; recommended approach is to make Learn the Playbook landing view and retain demos as a secondary visual-guides section.
-2. Add `playbook.css` and `playbook.js` to the document load order with cache-busting version strings.
-3. Ensure page title/nav wording reads `Playbook` rather than the current generic Learn fallback.
-4. Add search intent handling for phrases that include a miss, so `behind on a crosser` and `underneath teal` visibly enter Diagnose context rather than behaving as ordinary lesson filtering only.
-5. Test empty/error/loading states.
-6. Run mobile-width and desktop-width interaction QA; check close/back behaviour and sheet scrolling.
-7. Run browser console/runtime checks against the integrated page.
+- Re-read the pre-integration `index.html`, existing Stage 5 checkpoint, `v02.js`, `playbook.js` and `playbook.css` before mutation.
+- Re-read updated repository files after commits to confirm the intended source state persisted.
+- Checked initialization ordering against the existing script order: `v02.js` runs before `DOMContentLoaded`, creates the replacement `demoGrid`, then the pre-existing shot-demo DOMContentLoaded handler can initialise against that retained grid. `playbook.js` also handles post-DOMContentLoaded loading explicitly.
+- Checked failure-path logic and corrected an initial retry bug so a failed data fetch no longer destroys the Playbook shell.
 
-Stage 5 is **not complete** and Stage 6 must not begin until these items are integrated and verified.
+## Still required before Stage 5 may pass
+
+1. Browser/runtime QA against the integrated hosted page, including console errors and successful JSON fetch.
+2. Mobile-width interaction QA: search, diagnosis-intent banner, lesson open, diagnostic-first scroll, sheet close/backdrop/Escape where applicable, scrolling and retained visual demos.
+3. Desktop-width interaction QA for the same flows.
+4. Confirm the deployed GitHub Pages version corresponds to the committed source after propagation.
+5. Fix any runtime or visual regressions found, then replace this partial checkpoint with a verified Stage 5 completion checkpoint.
+
+## Recovery instruction
+
+Resume at **Stage 5 runtime/deployment QA only**. Do not redo Stages 1–4 or the completed Stage 5 integration work unless verification exposes a regression. Stage 6 must not begin until the hosted/runtime checks pass.

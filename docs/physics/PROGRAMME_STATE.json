@@ -3,15 +3,16 @@
   "date": "2026-09-04",
   "branch": "physics-engine-v1",
   "master_prompt_path": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_MASTER_PROGRAMME.md",
-  "latest_completed_stage": "P4",
-  "current_stage": "P5",
-  "current_stage_name": "Shooter Projection & Gun Kinematics v1",
+  "latest_completed_stage": "P5",
+  "current_stage": "P6",
+  "current_stage_name": "Shooting-Method State Machines & Narrative Engine v1",
   "status": "IN_PROGRESS",
   "p0_checkpoint": "docs/physics/checkpoints/P0_RECOVERY_CONTAINMENT_COMPLETE.md",
   "p1_completion_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_COMPLETE.md",
   "p2_completion_checkpoint": "docs/physics/checkpoints/P2_SPECIFICATION_COMPLETE.md",
   "p3_completion_checkpoint": "docs/physics/checkpoints/P3_TARGET_PHYSICS_ENGINE_COMPLETE.md",
   "p4_completion_checkpoint": "docs/physics/checkpoints/P4_BALLISTICS_INTERCEPT_ENGINE_COMPLETE.md",
+  "p5_completion_checkpoint": "docs/physics/checkpoints/P5_PROJECTION_GUN_KINEMATICS_COMPLETE.md",
   "p1_final_register": "docs/physics/EVIDENCE_PARAMETER_REGISTER_P1_TRANCHE4_FINAL.md",
   "p2_spec": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_SPEC_v1.md",
   "p2_normative_conventions": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_SPEC_v1_CONVENTIONS.md",
@@ -29,21 +30,21 @@
     "method transition tolerances and expert gun angular kinematics",
     "rabbit ground-contact dynamics"
   ],
-  "p4_verified_outputs": [
-    "physics/ballistics-v1.mjs analytic TEST_ONLY provider, Allen RESEARCH_VALIDATION_ONLY provider and fail-closed guards",
-    "physics/allen-tof-derived-v1.mjs generic derived closed-form time expression with explicit provenance",
-    "physics/ballistic-intercept-tof-v1.mjs provider-based straight-path TOF intercept infrastructure",
-    "Allen derived TOF validated against numerical governing-ODE quadrature and primary Eq. (24) worked values",
-    "free-pellet versus interacting-cloud boundary recorded without inventing a universal transition range",
-    "GitHub Actions run 33870858185 SUCCESS at head 91101eb52f18042745caf24c5a1e711939f532aa"
+  "p5_verified_outputs": [
+    "physics/projection-gun-v1.mjs proper right-handed camera projection and bore-angular primitives",
+    "camera rotation matrices require orthonormality and determinant +1",
+    "P2 camera handedness contradiction corrected to +X right, +Y raster-down, +Z optical-forward",
+    "eye/camera finite-origin parallax tested; coincidence not assumed",
+    "bore sample continuity and explicit scenario-bound validation implemented without inventing human speed limits",
+    "GitHub Actions run 33871377430 SUCCESS at head 889a53061fe5ca8dfd34ed812f8d96f815eab034"
   ],
-  "p4_carried_holds": [
-    "dense shot-cloud wake interaction and pellet collisions",
-    "shot string",
-    "gravity/wind-curved provider-based interception",
-    "sporting-load empirical validation",
-    "instructional ballistic provider authorisation"
+  "p5_carried_holds": [
+    "camera-to-bore calibration for actual ShotKam/video",
+    "lens distortion calibration",
+    "eye-to-camera interpretation for real footage",
+    "empirical human gun angular-speed/acceleration ranges",
+    "method-specific transition tolerances"
   ],
-  "next_action": "P5: implement world-to-camera projection, eye/camera apparent-angle geometry, LOS angular velocity and minimum bore-direction angular kinematics exactly to the P2 normative conventions; add analytic sign, FOV, finite-difference and frame-separation tests. Preserve camera-to-bore calibration as an explicit HOLD for real video rather than assuming camera centre equals bore.",
+  "next_action": "P6: inspect existing ShotSight method/coaching evidence and recovered source mappings before implementing any method state. Build source-attributed state-machine/narrative contracts that can evaluate invariant facts (e.g. separation sign/change, pass-through sign crossing, shot/pellet-arrival ordering) while leaving MATCH, CONNECTION and any threshold-dependent method event fail-closed unless a provenance-backed tolerance/definition exists.",
   "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
 }

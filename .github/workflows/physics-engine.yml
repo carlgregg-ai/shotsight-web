@@ -68,3 +68,5 @@ jobs:
           name: p8-quarterer-rendered-review
           path: artifacts/p8-quarterer-rendered-review/
           if-no-files-found: warn
+      - name: Run P8B gravity-only looper engineering proof
+        run: node tests/physics-canonical-looper-gravity-v1.mjs

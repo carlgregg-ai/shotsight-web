@@ -3,11 +3,11 @@
   "date": "2026-09-04",
   "branch": "physics-engine-v1",
   "master_prompt_path": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_MASTER_PROGRAMME.md",
-  "latest_completed_stage": "P8",
-  "current_stage": "P9",
-  "current_stage_name": "Video-Understanding Foundation",
-  "current_substage": "P9B_PHYSICS_CONSTRAINED_FITTING",
-  "status": "IN_PROGRESS",
+  "latest_completed_stage": "P10",
+  "current_stage": "P11",
+  "current_stage_name": "Expert Validation Pack / Go-No-Go",
+  "current_substage": "P11_READY_FOR_EXPERT_REVIEW",
+  "status": "BLOCKED_EXTERNAL",
   "p0_checkpoint": "docs/physics/checkpoints/P0_RECOVERY_CONTAINMENT_COMPLETE.md",
   "p1_completion_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_COMPLETE.md",
   "p2_completion_checkpoint": "docs/physics/checkpoints/P2_SPECIFICATION_COMPLETE.md",
@@ -21,8 +21,15 @@
   "p8c_completion_checkpoint": "docs/physics/checkpoints/P8C_TEAL_GRAVITY_ONLY_COMPLETE.md",
   "p8_completion_checkpoint": "docs/physics/checkpoints/P8_CANONICAL_EXPANSION_COMPLETE.md",
   "p9a_completion_checkpoint": "docs/physics/checkpoints/P9A_VIDEO_OBSERVATION_CONTRACT_COMPLETE.md",
+  "p9b_completion_checkpoint": "docs/physics/checkpoints/P9B_PHYSICS_CONSTRAINED_FITTING_COMPLETE.md",
+  "p9_completion_checkpoint": "docs/physics/checkpoints/P9_VIDEO_UNDERSTANDING_FOUNDATION_COMPLETE.md",
+  "p10_checkpoint": "docs/physics/checkpoints/P10_REAL_DATA_CALIBRATION_FRAMEWORK_READY.md",
+  "p11_checkpoint": "docs/physics/checkpoints/P11_READY_FOR_EXPERT_REVIEW_BLOCKED_EXTERNAL.md",
+  "p11_review_pack": "docs/physics/EXPERT_VALIDATION_PACK_v1.md",
+  "p10_calibration_protocol": "docs/physics/REAL_DATA_CALIBRATION_PROTOCOL_v1.md",
   "legacy_motion_status": "INVALIDATED_FOR_INSTRUCTIONAL_PHYSICS",
   "production_simulator_authorised": false,
+  "controlled_playbook_migration_authorised": false,
   "realistic_clay_status": "HOLD_PENDING_VERIFIED_OR_CALIBRATED_AERO_AND_HELD_OUT_REAL_FLIGHT_VALIDATION",
   "realistic_ballistics_status": "HOLD_P4_INFRASTRUCTURE_VERIFIED_BUT_DENSE_CLOUD_GRAVITY_WIND_AND_SPORTING_LOAD_VALIDATION_UNRESOLVED",
   "high_priority_holds": [
@@ -34,7 +41,8 @@
     "camera-to-bore calibration uncertainty",
     "method transition tolerances and expert gun angular kinematics",
     "teal rise-under-power empirical/launch model",
-    "rabbit ground-contact dynamics"
+    "rabbit ground-contact dynamics",
+    "external adversarial expert review of P11 canonical review pack"
   ],
   "p8c_final_verification": {
     "head": "b925faedfc35b9b91476bef2893a87147d3bb655",
@@ -57,6 +65,33 @@
     "result": "SUCCESS",
     "scope": "OBSERVATION_PROVENANCE_CALIBRATED_ANGULAR_RECOVERY_AND_MONOCULAR_DEPTH_AMBIGUITY_CONTRACT"
   },
+  "p9b_final_verification": {
+    "head": "07c8e496b94b5d04a19722f2cc35b1072b0b506f",
+    "github_actions_run": 33913217153,
+    "result": "SUCCESS",
+    "scope": "PHYSICS_CONSTRAINED_CONSTANT_VELOCITY_3D_BEARING_TRACK_FIT_WITH_EXPLICIT_METRIC_RANGE_ANCHOR_AND_FAILURE_MODES"
+  },
+  "p9_exit": {
+    "result": "PASS",
+    "quantitative_recovery_tests": true,
+    "documented_failure_modes": true,
+    "realistic_clay_certified": false
+  },
+  "p10_final_verification": {
+    "head": "b3e9c501041aac905ac5201d7100b412b254d287",
+    "github_actions_run": 33914063041,
+    "result": "SUCCESS",
+    "exit": "READY_FOR_REAL_DATA",
+    "real_data_used": false,
+    "realistic_clay_certified": false
+  },
+  "p11_pack_verification": {
+    "head": "131648a9795146ecf46ff0e9909509effb562693",
+    "github_actions_run": 33914161190,
+    "result": "SUCCESS",
+    "exit": "READY_FOR_EXPERT_REVIEW",
+    "expert_review_pass": false
+  },
   "p9_output_classes": ["OBSERVED", "CALIBRATED_DERIVED", "INFERRED", "UNOBSERVABLE_AMBIGUOUS"],
   "p9_rules": [
     "synthetic simulator data may test recovery accuracy but must retain generator provenance",
@@ -71,6 +106,7 @@
     "no_metric_anchor": "UNOBSERVABLE_AMBIGUOUS",
     "outputs": "INFERRED_WITH_MODEL_ID_ASSUMPTIONS_AND_RESIDUALS"
   },
-  "next_action": "Implement P9B constant-velocity 3-D bearing-track fitter using calibrated camera rays plus one explicitly provenance-backed metric range anchor to resolve monocular scale. Quantify angular residuals on exact synthetic P8A tracks, demonstrate scale ambiguity without the anchor, and demonstrate elevated residuals/model mismatch on curved gravity-only P8B/P8C tracks. Do not promote the fitted model to realistic clay truth.",
+  "blocked_external_requirement": "Obtain adversarial expert shooter/coach review of the four canonical cases using docs/physics/EXPERT_VALIDATION_PACK_v1.md and return frame/timestamp-specific BLOCKER/MAJOR/MINOR/QUESTION findings. Do not begin P12 until P11 feedback is durably logged, any BLOCKER/MAJOR issues are repaired or safely held, affected numerical/rendered gates are rerun, and an expert-reviewed P11 outcome is checkpointed. Realistic-clay empirical certification additionally requires provenance-complete measured capture data meeting docs/physics/REAL_DATA_CALIBRATION_PROTOCOL_v1.md with fit/held-out validation separation.",
+  "next_action": "BLOCKED_EXTERNAL at P11. Resume only when external expert review evidence is available. Then classify and resolve review findings, rerun affected gates, and checkpoint the expert-reviewed P11 outcome before considering P12.",
   "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
 }

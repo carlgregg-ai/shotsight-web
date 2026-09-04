@@ -11,20 +11,21 @@
   "p1_completion_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_COMPLETE.md",
   "p2_completion_checkpoint": "docs/physics/checkpoints/P2_SPECIFICATION_COMPLETE.md",
   "p3_completion_checkpoint": "docs/physics/checkpoints/P3_TARGET_PHYSICS_ENGINE_COMPLETE.md",
-  "p4_checkpoint": "docs/physics/checkpoints/P4_BALLISTICS_ANALYTIC_CORE_CHECKPOINT.md",
+  "p4_checkpoint": "docs/physics/checkpoints/P4_ALLEN_FREE_SPHERE_RESEARCH_PROVIDER_CHECKPOINT.md",
   "p1_final_register": "docs/physics/EVIDENCE_PARAMETER_REGISTER_P1_TRANCHE4_FINAL.md",
   "p2_spec": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_SPEC_v1.md",
   "p2_normative_conventions": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_SPEC_v1_CONVENTIONS.md",
   "legacy_motion_status": "INVALIDATED_FOR_INSTRUCTIONAL_PHYSICS",
   "production_simulator_authorised": false,
   "realistic_clay_status": "HOLD_PENDING_VERIFIED_OR_CALIBRATED_AERO_AND_HELD_OUT_REAL_FLIGHT_VALIDATION",
-  "realistic_ballistics_status": "HOLD_PENDING_COMPLETE_PRIMARY_FREE_SPHERE_MODEL_AND_VALIDATION",
+  "realistic_ballistics_status": "HOLD_FREE_SPHERE_RESEARCH_PROVIDER_VERIFIED_BUT_DENSE_CLOUD_AND_INSTRUCTIONAL_VALIDATION_UNRESOLVED",
   "high_priority_holds": [
     "Andert numerical aerodynamic coefficient values/model-fit details or calibrated equivalent",
     "target release spin",
     "trap setting to launch state mapping",
-    "complete primary Allen scale definitions and piecewise velocity/flight-time formulas before FREE_SPHERE_ALLEN implementation",
+    "generic Allen closed-form flight-time expression still requires primary recovery or explicitly labelled derivation plus worked-example cross-check",
     "dense shot-cloud correction and shot string",
+    "sporting-load empirical validation",
     "camera-to-bore calibration uncertainty",
     "method transition tolerances and expert gun angular kinematics",
     "rabbit ground-contact dynamics"
@@ -36,12 +37,19 @@
     "GitHub Actions run 33861166576 SUCCESS at head 75b7db732049497d46a53c2097a1255258aa3a9b"
   ],
   "p4_progress": [
-    "physics/ballistics-v1.mjs with ANALYTIC_CONSTANT_SPEED_TEST_ONLY provider and instructional fail-closed guard",
+    "physics/ballistics-v1.mjs retains ANALYTIC_CONSTANT_SPEED_TEST_ONLY provider and instructional fail-closed guard",
     "analytic constant-velocity point-target intercept solver with physical/apparent lead geometry and residuals",
-    "tests/physics-ballistics-v1.mjs covering stationary, transverse, receding, approaching, impossible-intercept, mirror and angular cases",
-    "physics CI run 33861378610 executed both P3 and P4 test steps successfully at head 2ae077718939fa085818ef350335162069723ecb",
-    "primary Allen indexed full-text evidence recovered for notation, scaling and governing free-sphere drag ODE; complete piecewise implementation formulas remain extraction HOLD"
+    "FREE_SPHERE_ALLEN_2018 implemented as RESEARCH_VALIDATION_ONLY, never instructional",
+    "Allen scaled variables and governing Mach-distance ODE recovered from primary paper",
+    "piecewise velocity solution implemented with source/derived provenance boundary",
+    "piecewise drag coefficients derived from primary exact solution and labelled DERIVED_VALUE rather than quoted primary constants",
+    "independent RK4 ODE cross-check added",
+    "independent Simpson TOF validation utility added",
+    "valid Mach domain 0.2 to 2.0 enforced fail-closed",
+    "dense cloud, shot string, collisions, gravity/wind curvature remain explicit limitations",
+    "adversarial test failures corrected without altering physics to make tests pass",
+    "GitHub Actions run 33866417141 SUCCESS at head 2dff735c649f293606101c9b75bf59f264afeba4; P3 and P4 test steps pass"
   ],
-  "next_action": "P4: recover the complete primary Allen piecewise drag/velocity/flight-time equation set with equation-level provenance. Unit- and scaling-review it before implementing FREE_SPHERE_ALLEN. Then cross-check Allen closed-form output against direct numerical integration of the governing free-sphere drag ODE. Keep dense-cloud/string effects explicitly separate and keep all realistic instructional ballistics fail-closed until validation passes.",
+  "next_action": "P4: recover or explicitly derive-with-provenance the generic Allen closed-form flight-time expressions; cross-check against the primary paper's worked Eq. (24) values and independent numerical quadrature. Then add sporting-shot-sized parameter sweeps inside Allen's valid domain and quantify the free-pellet versus interacting-shot-cloud boundary. Do not authorise instructional ballistics or advance to P5 until the P4 exit gate is explicitly reviewed and passed.",
   "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
 }

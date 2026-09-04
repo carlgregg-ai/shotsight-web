@@ -2,7 +2,11 @@
 const titles={homeView:'Today.',libraryView:'Train.',diagnoseView:'Diagnose.',learnView:'Playbook.',progressView:'Progress.'};
 function ensurePlaybookAssets(){
  if(!document.querySelector('link[data-playbook-css]')){const l=document.createElement('link');l.rel='stylesheet';l.href='playbook.css?v=20260904-0010';l.dataset.playbookCss='1';document.head.appendChild(l)}
- if(!document.querySelector('script[data-playbook-js]')){const s=document.createElement('script');s.src='playbook.js?v=20260904-0010';s.dataset.playbookJs='1';document.body.appendChild(s)}
+ if(!document.querySelector('script[data-playbook-js]')){const s=document.createElement('script');s.src='playbook.js?v=20260904-0010';s.dataset.playbookJs='1';s.onload=ensurePlaybookMotion;document.body.appendChild(s)}else ensurePlaybookMotion();
+}
+function ensurePlaybookMotion(){
+ if(document.querySelector('script[data-playbook-motion]')){window.ShotSightPlaybookMotion?.decorate?.();return}
+ const s=document.createElement('script');s.src='playbook-motion.js?v=20260904-0408';s.dataset.playbookMotion='1';document.body.appendChild(s);
 }
 function integratePlaybook(){
  const learn=document.querySelector('#learnView');if(!learn||learn.dataset.playbookIntegrated)return;

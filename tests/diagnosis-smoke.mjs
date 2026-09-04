@@ -16,7 +16,7 @@ async function run(label,viewport){
     await page.locator('.tab[data-view="diagnoseView"]').click();
     await page.locator('[data-diagnose]').click();
     await page.locator('#diagnosisSheet.active').waitFor({state:'visible'});
-    await page.waitForFunction(()=>document.querySelectorAll('#diagnosisBody [data-answer]').length>=9);
+    await page.waitForFunction(()=>document.querySelectorAll('#diagnosisBody [data-answer]').length>=10);
     if(!/PRESENTATION/.test(await page.locator('#diagnosisBody').innerText()))throw new Error(`${label}: presentation-first step missing`);
 
     await choose(page,'flat_long_crosser');
@@ -47,8 +47,22 @@ async function run(label,viewport){
     const alternative=await page.locator('#diagnosisBody').innerText();
     if(!/BRANCH NOT CONFIRMED/.test(alternative)||!/Evidence points away/.test(alternative))throw new Error(`${label}: failed discriminator did not reduce confidence`);
 
+    // Stage 8 batch 1: the new rising-quarterer branch must carry its explicit
+    // hypothesis status through the decision engine instead of becoming a fact.
+    await page.locator('#diagnosisAgain').click();
+    await choose(page,'rising_quartering_outgoing');
+    await choose(page,'lose');
+    const context=await page.locator('#diagnosisBody').innerText();
+    if(!/ShotSight hypothesis/i.test(context))throw new Error(`${label}: Stage 8 diagnostic hypothesis disclosure missing`);
+    await choose(page,'clear');
+    await choose(page,'supports');
+    const expanded=await page.locator('#diagnosisBody').innerText();
+    if(!/SHOTSIGHT_HYPOTHESIS/.test(expanded))throw new Error(`${label}: Stage 8 hypothesis label not retained in correction`);
+    if(!/vertical-intercept/i.test(expanded))throw new Error(`${label}: Stage 8 source-matched correction missing`);
+    if(!/Change the quartering angle or direction/.test(expanded))throw new Error(`${label}: Stage 8 transfer retest missing`);
+
     if(errors.length)throw new Error(`${label}: browser errors: ${errors.join(' | ')}`);
-    console.log(`PASS ${label}: presentation-first decision process, supported branch, unmatched uncertainty, and failed-discriminator confidence reduction verified.`);
+    console.log(`PASS ${label}: presentation-first engine, uncertainty reduction, and Stage 8 hypothesis-labelled expansion branch verified.`);
   }finally{await page.close()}
 }
 

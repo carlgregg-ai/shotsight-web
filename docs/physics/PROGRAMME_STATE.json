@@ -6,8 +6,8 @@
   "latest_completed_stage": "P7",
   "current_stage": "P8",
   "current_stage_name": "Canonical Expansion",
-  "current_substage": "P8B_CHANDELLE_LOOPER",
-  "status": "IN_PROGRESS_TOY_GRAVITY_ONLY_CURVED_FLIGHT_PROOF",
+  "current_substage": "P8C_TEAL_DRIVEN",
+  "status": "IN_PROGRESS_NEXT_CANONICAL_CASE_BOUNDARY_DEFINITION",
   "p0_checkpoint": "docs/physics/checkpoints/P0_RECOVERY_CONTAINMENT_COMPLETE.md",
   "p1_completion_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_COMPLETE.md",
   "p2_completion_checkpoint": "docs/physics/checkpoints/P2_SPECIFICATION_COMPLETE.md",
@@ -17,6 +17,7 @@
   "p6_completion_checkpoint": "docs/physics/checkpoints/P6_METHOD_NARRATIVE_ENGINE_COMPLETE.md",
   "p7_completion_checkpoint": "docs/physics/checkpoints/P7_CANONICAL_FLAT_CROSSER_COMPLETE.md",
   "p8a_completion_checkpoint": "docs/physics/checkpoints/P8A_QUARTERER_COMPLETE.md",
+  "p8b_completion_checkpoint": "docs/physics/checkpoints/P8B_LOOPER_GRAVITY_ONLY_COMPLETE.md",
   "legacy_motion_status": "INVALIDATED_FOR_INSTRUCTIONAL_PHYSICS",
   "production_simulator_authorised": false,
   "realistic_clay_status": "HOLD_PENDING_VERIFIED_OR_CALIBRATED_AERO_AND_HELD_OUT_REAL_FLIGHT_VALIDATION",
@@ -49,18 +50,20 @@
     "purpose": "physically generated curved-flight geometry and phase-state engineering proof only",
     "forbidden_claim": "must never be represented as a realistic chandelle/looper clay trajectory"
   },
-  "p8b_required_qa": [
-    "derive target XYZ/velocity from gravity-only equations rather than a drawn arc",
-    "derive rise/apex/descent phase from vertical velocity sign and analytic apex time",
-    "verify position and velocity against closed-form constant-gravity equations",
-    "verify apex time and vertical velocity zero crossing",
-    "derive changing range/LOS/angular speed and intercept from state",
-    "verify mirror behaviour",
-    "preserve TEST_ONLY ballistics and engineering-reference gun strategy",
-    "preserve coaching method HOLD unless authorised applicability/kinematics exist",
-    "shared master clock deterministic frame/scrub behaviour",
-    "debug/browser/rendered adversarial review before completion"
-  ],
-  "next_action": "Implement P8B chandelle/looper as an explicit TOY_GRAVITY_ONLY engineering proof using P2 standard gravity g=9.80665 m/s^2 and documented launch-state inputs. Generate the curved path from equations of motion, derive RISE/APEX/DESCENT from vertical velocity/analytic apex, and test closed-form position/velocity, phase transitions, mirror geometry, changing LOS, intercept, one-clock narrative and rendered debug behaviour. Do not claim realistic clay flight or select a coaching method.",
+  "p8b_final_verification": {
+    "head": "0049229b73246645753ddf50cfee6bf13526e6b7",
+    "github_actions_run": 33911908934,
+    "result": "SUCCESS",
+    "rendered_artifact_id": 9951690171,
+    "rendered_artifact_digest": "sha256:b22a7a66e5acf6fe94cd82ebe75a0ce77e337f67d07a3c65c6836ffc4fa2bbba",
+    "rendered_review": "PASS_DESKTOP_MOBILE_CONTROLS_AND_ADVERSARIAL_RENDERED_REVIEW",
+    "scope": "TOY_GRAVITY_ONLY_CURVED_FLIGHT_GEOMETRY_ONLY_NOT_REALISTIC_CLAY"
+  },
+  "p8c_boundary_requirement": {
+    "presentation": "TEAL_OR_TRUE_DRIVEN",
+    "rule": "Do not infer real-clay launch state, trajectory, coaching method, lead or break behaviour from the presentation label. Define the smallest provenance-safe engineering model boundary first; unsupported realistic behaviour remains HOLD.",
+    "required_gate": "P7_EQUIVALENT_NUMERICAL_BROWSER_RENDERED_QA"
+  },
+  "next_action": "Begin P8C teal/driven by defining a provenance-safe engineering proof boundary from the durable specification/evidence register. Use only verified constants or explicitly labelled engineering test inputs. Implement one presentation first, derive motion/intercept/projection/narrative from one clock, keep realistic clay and coaching-method assertions fail-closed, and require numerical + browser + rendered adversarial QA before completing P8C.",
   "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
 }

@@ -1,8 +1,8 @@
 // ShotSight P5 — Shooter Projection & Gun Kinematics v1
-// Implements the normative P2 conventions:
+// Normative conventions after P5 handedness correction:
 // world +X shooter-right, +Y forward, +Z up;
-// camera +X image-right, +Y camera-up, +Z optical-forward;
-// raster v increases downward.
+// camera +X raster-right, +Y raster-down, +Z optical-forward;
+// both frames right-handed.
 
 import {sub3,cross3,dot3,norm3,unit3,assertFiniteNumber,assertFiniteVec3} from './target-engine-v1.mjs';
 
@@ -51,7 +51,7 @@ export function projectCameraPointPinhole({point_C,fx_px,fy_px,cx_px,cy_px}){
   for(const [k,v] of Object.entries({fx_px,fy_px,cx_px,cy_px}))assertFiniteNumber(v,k);
   const [X,Y,Z]=point_C;
   if(!(Z>0))return Object.freeze({visible:false,reason:'BEHIND_OR_ON_CAMERA_PLANE',point_C:[...point_C]});
-  return Object.freeze({visible:true,u_px:fx_px*(X/Z)+cx_px,v_px:cy_px-fy_px*(Y/Z),depth_m:Z,point_C:[...point_C]});
+  return Object.freeze({visible:true,u_px:fx_px*(X/Z)+cx_px,v_px:fy_px*(Y/Z)+cy_px,depth_m:Z,point_C:[...point_C]});
 }
 
 export function apparentAnglesFromCameraVector(v_C){
@@ -60,7 +60,8 @@ export function apparentAnglesFromCameraVector(v_C){
   if(!(norm3(v_C)>0))throw new Error('camera vector must be non-zero');
   return Object.freeze({
     az_rad:Math.atan2(X,Z),
-    el_rad:Math.atan2(Y,Math.hypot(X,Z))
+    // Preserve shooter-intuitive positive-up elevation despite camera +Y being raster-down.
+    el_rad:Math.atan2(-Y,Math.hypot(X,Z))
   });
 }
 
@@ -112,6 +113,7 @@ export function validateBoreHistory(samples,{maxAngularSpeed_radps=null}={}){
 
 export const P5_PROJECTION_GUN_STATUS=Object.freeze({
   status:'INFRASTRUCTURE_VALIDATION_ONLY',
+  cameraHandedness:'RIGHT_HANDED_X_RIGHT_Y_DOWN_Z_FORWARD',
   cameraToBoreCalibration:'HOLD_FOR_REAL_VIDEO',
   eyeCameraCoincidence:'NOT_ASSUMED',
   boreRoll:'OUTSIDE_MINIMUM_P5_CONTRACT',

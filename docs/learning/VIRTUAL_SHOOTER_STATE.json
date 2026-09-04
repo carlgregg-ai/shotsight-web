@@ -5,14 +5,27 @@
   "status": "ACTIVE",
   "current_stage": "L0",
   "current_stage_name": "Containment and baselines",
-  "current_substage": "L0_RECOVER_AND_DEFINE_INFORMATION_BOUNDARY",
-  "latest_verified_checkpoint": null,
-  "oracle_world_status": "TO_BUILD_FROM_VALIDATED_PHYSICS_INTERFACES",
-  "shooter_observation_status": "NOT_YET_IMPLEMENTED",
-  "anti_cheat_audit_status": "NOT_YET_IMPLEMENTED",
+  "current_substage": "L0_BUILD_ORACLE_AND_NAIVE_BASELINES",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L0_INFORMATION_BOUNDARY_GREEN_1.md",
+  "latest_verified_ci": {
+    "workflow": "ShotSight virtual shooter",
+    "run_id": 33931377004,
+    "head_sha": "730453fe3b9a20a2a6d8020833d836dc113811cd",
+    "conclusion": "success"
+  },
+  "oracle_world_status": "VALIDATED_PHYSICS_IDENTIFIED_AS_HIDDEN_ORACLE_ONLY; EVALUATION_FACADE_NEXT",
+  "shooter_observation_status": "L0_V1_IMPLEMENTED_DELAYED_NOISY_ANGULAR_OBSERVATIONS",
+  "anti_cheat_audit_status": "L0_V1_GREEN_STRUCTURAL_ALLOWLIST_AND_NESTED_LEAK_PROBES",
+  "naive_baseline_status": "PERCEPTION_BELIEF_PRIMITIVE_IMPLEMENTED; SHOOTING_BASELINE_NEXT",
+  "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
   "first_experiment_target_family": "CROSSERS",
   "initial_presentation_budget": 100000,
   "primary_methods": ["SWING_THROUGH", "PULL_AWAY", "MAINTAINED_LEAD"],
   "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, ACTS, REMEMBERS AND LEARNS.",
-  "next_action": "Implement L0 information-boundary contracts and prove the perception-limited shooter cannot access privileged oracle state. Then establish oracle ceiling and naive shooter baselines before any learning run."
+  "negative_findings": [
+    "Inherited canonical flat-crosser exposes exact intercept/physical lead and must remain hidden oracle/reference truth only.",
+    "Current target engine does not certify realistic clay aerodynamics; virtual-shooter results must retain provisional world-model status.",
+    "No Brett Winstanley hold/pickup/break-point claim promoted without a recovered primary source."
+  ],
+  "next_action": "Implement strict oracle evaluation facade plus privileged oracle ceiling and naive perception-limited no-learning shooting baseline on identical hidden crossers. Add import/leak guards and establish baseline metrics before L1."
 }

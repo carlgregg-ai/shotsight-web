@@ -100,3 +100,5 @@ jobs:
           if-no-files-found: warn
       - name: Run P9A video observation/provenance recovery tests
         run: node tests/physics-video-observation-v1.mjs
+      - name: Run P9B physics-constrained bearing-track fit tests
+        run: node tests/physics-video-trajectory-fit-v1.mjs

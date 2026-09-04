@@ -1,27 +1,39 @@
 {
   "programme": "ShotSight 3D Maths-Driven Reviewer Animation Build",
-  "date": "2026-09-04",
+  "date": "2026-09-05",
   "branch": "physics-engine-v1",
   "master_path": "docs/reviewer-animation/SHOTSIGHT_3D_MATHS_DRIVEN_REVIEWER_MASTER.md",
   "style_authority": "ShotSight_Visual_Style_Animation_Bible_v0_1(2).pdf",
-  "scope": "canonical_flat_crosser_plus_three_method_expert_comparison",
+  "scope": "canonical_flat_crosser_three_method_videos_plus_cpsa_s3e3_reconstruction",
   "frame_rate_hz": 60,
   "duration_s": 2,
-  "latest_completed_gate": "G",
-  "current_gate": "USER_EXPERT_REVIEW",
-  "status": "REVIEWER_PACKAGE_READY_FOR_USER_EXPERT_REVIEW",
-  "head": "49ae2b482a685a90ed0cb1141d70a7a96658a9a3",
-  "ci_run": 33924016140,
+  "latest_completed_gate": "H_ENGINEERING_VIDEO_PIPELINE",
+  "current_gate": "FINAL_BIBLE_RENDER_AND_CPSA_VIDEO_OBSERVATION",
+  "status": "THREE_METHOD_MP4_PIPELINE_GREEN_FINAL_STYLE_AND_CPSA_RECONSTRUCTION_PENDING",
+  "head": "80c1ce11b04cb210171f381aa0ca19f59a35ac97",
+  "ci_run": 33929522627,
   "ci_result": "SUCCESS",
+  "checkpoint": "docs/reviewer-animation/GATE_H_THREE_METHOD_VIDEO_PIPELINE_GREEN_STYLE_HOLD.md",
   "model_source": "physics/canonical-flat-crosser-v1.mjs",
   "reviewer_adapter": "physics/reviewer-flat-crosser-v1.mjs",
   "method_comparison_adapter": "physics/reviewer-method-comparison-v1.mjs",
   "method_manifest_exporter": "tools/export-reviewer-method-comparison.mjs",
+  "method_video_renderer": "tools/render-reviewer-method-videos.mjs",
+  "method_review_surface": "reviewer-method-comparison.html",
+  "video_artifact_id": 9958047818,
   "realistic_clay_certified": false,
   "instructional_motion_authorised": false,
   "method_comparison_status": "SHOTSIGHT_HYPOTHESIS_PENDING_EXPERT_REVIEW",
   "method_sequence": ["SWING_THROUGH", "PULL_AWAY", "MAINTAINED_LEAD"],
   "method_source_scope": "method recognition/narrative source-backed; numerical timing and separation parameters are ShotSight hypotheses",
+  "quantitative_trace_fields": [
+    "signed_target_bore_angular_separation",
+    "target_angular_velocity",
+    "gun_angular_velocity",
+    "relative_angular_velocity",
+    "gun_angular_acceleration",
+    "method_phase"
+  ],
   "locked_comparison_properties": [
     "same canonical target XYZ and master clock",
     "same 0.8 s shot time",
@@ -30,6 +42,20 @@
     "no fake break",
     "target orientation remains HOLD"
   ],
+  "method_video_pipeline": {
+    "status": "PASS_ENGINEERING_REVIEW_BUILD",
+    "mp4s_rendered": ["swing_through.mp4", "pull_away.mp4", "maintained_lead.mp4"],
+    "final_bible_quality_accepted": false,
+    "style_hold_reason": "current Canvas renderer is a polished technical review surface but not yet the premium rounded/stylised 3D fidelity required by the Visual Style & Animation Bible"
+  },
+  "cpsa_s3e3": {
+    "youtube_id": "ejE_ljX-ylE",
+    "evidence_file": "docs/reviewer-animation/CPSA_S3E3_RECONSTRUCTION_EVIDENCE_v1.md",
+    "status": "VIDEO_FRAME_ACCESS_REQUIRED",
+    "direction_conflict": "modern CPSA summary says L-R; CPSA video-library title and original May 2019 companion article say R-L; footage must resolve",
+    "pixel_or_angular_track_observed": false,
+    "reconstruction_rendered": false
+  },
   "restart_rule": "resume_from_latest_verified_gate_not_from_start",
-  "next_action": "Collect user expert review of swing-through, pull-away and maintained-lead gun moves. Classify feedback and tune or hold hypothesis parameters before any instructional method claim."
+  "next_action": "Upgrade the renderer to final bible-quality without changing model motion; then obtain frame-accessible CPSA Episode 3 footage, resolve source-direction conflict, build observation table, fit uncertainty-aware dynamic reconstruction, render fourth video, and complete four-video QA."
 }

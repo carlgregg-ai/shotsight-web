@@ -34,6 +34,8 @@ jobs:
         run: node tests/physics-allen-tof-derived-v1.mjs
       - name: Run P4 provider-based TOF intercept validation
         run: node tests/physics-ballistic-intercept-tof-v1.mjs
+      - name: Run explicit-target-trajectory intercept validation
+        run: node tests/physics-ballistic-intercept-trajectory-v1.mjs
       - name: Run P5 projection and gun kinematics validation
         run: node tests/physics-projection-gun-v1.mjs
       - name: Run P6 method and narrative fail-closed validation

@@ -5,7 +5,7 @@ const base = process.env.SHOTSIGHT_BASE_URL || 'http://127.0.0.1:8000/';
 const browser = await chromium.launch({headless:true});
 let failed = false;
 await fs.mkdir('artifacts/playbook-visuals',{recursive:true});
-const motionLessons = new Set(['flat_long_crosser','low_fast_incomer_cutoff','chandelle_apex','rising_teal_under_power','crossing_rabbit','driven_incoming']);
+const motionLessons = new Set(['flat_long_crosser','low_fast_incomer_cutoff','chandelle_apex','rising_teal_under_power','crossing_rabbit','driven_incoming','rising_quartering_outgoing']);
 const noGenericMotion = new Set(['quartering_away','pair_planning']);
 
 async function run(label, viewport) {
@@ -23,14 +23,11 @@ async function run(label, viewport) {
     await page.waitForFunction(() => /certified lessons/.test(document.querySelector('#playbookCount')?.textContent || ''));
 
     const lessonCount = await page.locator('.playbook-card').count();
-    if (lessonCount !== 8) throw new Error(`${label}: expected 8 certified lessons, got ${lessonCount}`);
+    if (lessonCount !== 9) throw new Error(`${label}: expected 9 certified lessons after Stage 8 batch 1, got ${lessonCount}`);
 
     const demoCount = await page.locator('#demoGrid > *').count();
     if (demoCount < 1) throw new Error(`${label}: retained visual guides did not initialise`);
 
-    // Stage 6 gate: every representative lesson has a labelled schematic. Only
-    // lessons with direct source permission receive an attributed gun/method motion
-    // example; quartering and pair lessons must explicitly refuse a generic path.
     for (let i = 0; i < lessonCount; i++) {
       const cards = page.locator('.playbook-card');
       const id = await cards.nth(i).getAttribute('data-playbook-id');
@@ -57,12 +54,23 @@ async function run(label, viewport) {
         if (await page.locator(`.pb-method-motion[data-motion-id="${id}"]`).count()) throw new Error(`${label}: lesson ${id} incorrectly received generic gun path`);
       }
 
+      if(id==='rising_quartering_outgoing'){
+        const txt=await page.locator('#playbookLessonBody').innerText();
+        if(!/NSCA_RISING_OUTGOING/.test(txt))throw new Error(`${label}: Stage 8 direct source attribution missing`);
+        if(!/SHOTSIGHT_HYPOTHESIS/.test(txt))throw new Error(`${label}: Stage 8 diagnostic hypothesis label missing`);
+        if(!/Do not generalise/.test(txt))throw new Error(`${label}: Stage 8 geometry guardrail missing`);
+      }
+
       await page.locator('#playbookLessonBody > .pb-section').first().screenshot({path:`artifacts/playbook-visuals/${label}-${id}.png`});
       await page.locator('#playbookClose').click();
       await page.waitForFunction(() => !document.querySelector('#playbookSheet')?.classList.contains('active'));
     }
 
     const search = page.locator('#playbookSearch');
+    await search.fill('rising quartering outgoing');
+    await page.locator('#playbookIntent:not(.diagnose)').waitFor({state:'visible'});
+    if (await page.locator('.playbook-card[data-playbook-id="rising_quartering_outgoing"]').count() !== 1) throw new Error(`${label}: Stage 8 expansion query did not resolve to new lesson`);
+
     await search.fill('behind on a crosser');
     await page.locator('#playbookIntent.diagnose').waitFor({state:'visible'});
     if (!/Diagnose mode/.test(await page.locator('#playbookIntent').innerText())) throw new Error(`${label}: diagnose intent banner missing`);
@@ -86,7 +94,7 @@ async function run(label, viewport) {
     await page.waitForFunction(() => !document.querySelector('#playbookSheet')?.classList.contains('active'));
 
     if (errors.length) throw new Error(`${label}: browser errors: ${errors.join(' | ')}`);
-    console.log(`PASS ${label}: ${lessonCount} lessons; schematics + six source-safe method motions + two explicit no-generic-motion holds; ${demoCount} retained visual guides; Learn/Diagnose routing and sheet interactions verified.`);
+    console.log(`PASS ${label}: ${lessonCount} certified lessons; nine schematics + seven source-safe method motions + two explicit no-generic-motion holds; Stage 8 search/evidence labels and existing Learn/Diagnose routing verified.`);
   } finally {
     await page.close();
   }

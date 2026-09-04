@@ -31,7 +31,7 @@ permissions:
 jobs:
   target-physics-v1:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -86,8 +86,11 @@ jobs:
           name: reviewer-method-comparison-model-frames
           path: artifacts/reviewer-method-comparison/
           if-no-files-found: error
-      - name: Verify ffmpeg availability
-        run: ffmpeg -version | head -n 1
+      - name: Install ffmpeg for deterministic MP4 encoding
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          ffmpeg -version | head -n 1
       - name: Render bible-style three-method MP4 review videos
         run: node tools/render-reviewer-method-videos.mjs
       - name: Upload three-method review videos

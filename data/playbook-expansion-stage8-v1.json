@@ -1,0 +1,27 @@
+{
+  "version": "1.0-stage8-batch1",
+  "date": "2026-09-04",
+  "status": "CERTIFIED_EXPANSION_BATCH",
+  "evidence_labels": ["DIRECT", "SYNTHESIS", "SHOTSIGHT_HYPOTHESIS", "HOLD_DEMOTE"],
+  "lessons": [
+    {
+      "id": "rising_quartering_outgoing",
+      "name": "Rising quartering outgoing",
+      "selector": {"flight_family":"quartering","direction":"away","phase":"rising"},
+      "aliases": ["rising quartering outgoing","rising quarterer","rising away target","upward quartering bird","quartering outgoing on the rise"],
+      "understand": "A target travelling both upward and away on a quartering line. It is not the same task as a straight going-away target, a near-vertical teal, or a flat quarterer, so the source-specific method only applies when this geometry actually matches.",
+      "coaching": [
+        {"text":"For the specific rising quartering outgoing presentation reviewed in Stage 2, Don Currie/NSCA teaches a vertical intercept to the inside leading edge as a way to avoid target occlusion.","label":"DIRECT","sources":["NSCA_RISING_OUTGOING"],"attribution":"Don Currie / NSCA"}
+      ],
+      "holds": [
+        "Do not generalise the source's exact hold geometry to different target angles or handedness without adapting the presentation.",
+        "Do not treat every rising outgoing target as this quartering presentation."
+      ],
+      "diagnose": [
+        {"symptom":"target disappears behind the gun or the miss is repeatedly behind on the rising quarter","label":"SHOTSIGHT_HYPOTHESIS","candidate_mechanisms":["gun path enters the target's visual line and creates occlusion","late recognition of the combined rising-and-away geometry","late connection before the planned intercept"],"question":"On the same no-shot presentation, does target visibility and movement quality improve when you compare line-following with the source-attributed vertical-intercept approach?","interpretation":"If visibility improves with the source-matched approach, occlusion becomes a stronger coaching hypothesis; if not, retain timing, geometry-reading and connection alternatives.","fix":"For a presentation that genuinely matches the source geometry, test the attributed vertical-intercept approach without assigning a universal lead value.","retest":"Change the quartering angle or direction. If the result does not transfer, keep the method presentation-specific."}
+      ],
+      "visual_spec":{"target":"oblique path rising while moving away","show":["rising phase","away/quartering direction","inside-leading-edge intercept concept","break zone"],"warning":"Conceptual 2D rehearsal only. Exact hold position, lead and handedness geometry are not universal."},
+      "drills":[{"name":"Rising-quarter visibility A/B","label":"SHOTSIGHT_HYPOTHESIS"}]
+    }
+  ]
+}

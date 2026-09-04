@@ -79,10 +79,11 @@ assert.equal(telemetry.instructionalMotion,false);
 assert.equal(telemetry.interceptValid,true);
 assert.deepEqual(debugFrame(session,24).telemetry,telemetry);
 
-const longSession=createFlatCrosserDebugSession({scenario,duration_s:600,frameRate_hz:59.94,playbackRate:1});
-const longIndex=30000;
-near(timeForFrame(longSession,longIndex),longIndex/59.94,1e-12,'long-run frame time is direct, not accumulated');
-assert.deepEqual(sampleFrame(longSession,longIndex),sampleFrame(longSession,longIndex));
+// Stress direct frame indexing without leaving the canonical proof domain.
+const highRateSession=createFlatCrosserDebugSession({scenario,duration_s:2,frameRate_hz:60000,playbackRate:1});
+const highRateIndex=100000;
+near(timeForFrame(highRateSession,highRateIndex),highRateIndex/60000,1e-12,'high-rate frame time is direct, not accumulated');
+assert.deepEqual(sampleFrame(highRateSession,highRateIndex),sampleFrame(highRateSession,highRateIndex));
 
 const cases=[
   {name:'near-slower',targetInitial_W:[-5,20,1.5],targetVelocity_W:[8,0,0],shotTime_s:0.5},

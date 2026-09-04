@@ -1,67 +1,100 @@
-const shooterQuestions={
-  symptom:{title:'What are you seeing?',sub:'Start with the repeatable symptom — not the cause.',options:[
-    ['behind','Consistently behind','The clay escapes in front of the shot.'],
-    ['ahead','Consistently in front','You feel you are giving too much or rushing past it.'],
-    ['line','Above / below the line','Lead may look plausible, but the shot is vertically displaced.'],
-    ['inconsistent','No consistent miss','Different misses, or the picture never settles.'],
-    ['lose','I lose the clay','The barrel or effort starts to dominate your vision.'],
-    ['rush','I rush the shot','You fire before the picture feels organised.'],
-    ['stop','I stop the gun','The move looks right, then dies at the shot.']
-  ]},
-  target:{title:'What sort of target?',sub:'Context changes which mechanism is most likely.',options:[
-    ['crossing','Crossing','A clear lateral target.'],['quartering','Quartering','Moving away or towards at an angle.'],['away','Going away','Speed / line judgement dominates.'],['incoming','Incoming','The target is closing toward you.'],['looper','Looper / arcing','The barrel may take a different route to the clay.'],['mixed','It happens on several types','Treat it as a shooter pattern first.']
-  ]},
-  feel:{title:'What does the move feel like?',sub:'Pick the closest description.',options:[
-    ['smooth','Smooth but wrong','The move feels controlled, but the result is repeatably off.'],['fast','Gun feels too fast','You accelerate hard or run past the picture.'],['slow','Gun feels late / heavy','You are catching up or never quite getting there.'],['correcting','Lots of little corrections','The barrel steers and hunts near the break point.'],['checking','I become aware of the barrel','Attention leaves the target and the picture tightens.'],['unclear','I never get a clear picture','Pickup / visual connection feels late or vague.']
-  ]}
+let shooterAnswers={};let shooterStep=0;let diagnosticLessons=[];
+
+const symptomOptions=[
+  ['behind','Behind','The miss is repeatedly behind the target.'],
+  ['ahead','In front','The miss is repeatedly in front of the target.'],
+  ['vertical','Above / below','The error is mainly vertical or over/under the target.'],
+  ['inconsistent','Erratic / timing changes','The miss or timing varies without a stable pattern.'],
+  ['lose','Lose the target','The target disappears from useful visual attention.'],
+  ['rush','Rush / stab / poke','The move or trigger decision feels rushed.'],
+  ['unsure','Not sure yet','The result is not repeatable enough to classify.']
+];
+
+const diagnosticCompatibility={
+  flat_long_crosser:['behind'],
+  quartering_away:['behind'],
+  low_fast_incomer_cutoff:['vertical'],
+  chandelle_apex:['vertical','lose'],
+  rising_teal_under_power:['vertical','inconsistent'],
+  crossing_rabbit:['ahead','inconsistent'],
+  driven_incoming:['behind','lose','rush'],
+  pair_planning:['lose','rush']
 };
 
-const diagnosisRules={
-  behind:{title:'Insufficient lead / late connection',confidence:'Likely',mechanism:'The gun is arriving on the target line too late, or the lead gap is never fully established before release.',cue:'SEE IT EARLIER → JOIN CLEANLY → FINISH THROUGH',demo:'behind',drill:'pursuit',fix:'Use Smooth Pursuit to remove catch-up movements, then rehearse a deliberate pickup and one committed move.'},
-  ahead:{title:'Excess lead / over-acceleration',confidence:'Likely',mechanism:'The gun is creating separation faster than the target picture requires.',cue:'MATCH FIRST → BUILD ONLY WHAT YOU NEED',demo:'ahead',drill:'three',fix:'Use Three Bullet to soften visual effort, then rehearse a calmer match before creating lead.'},
-  line:{title:'Line error',confidence:'Strong',mechanism:'The gun path is displaced from the target flight line, so timing can be good while the shot still misses vertically.',cue:'FIND THE LINE → JOIN IT → THEN CREATE LEAD',demo:'line',drill:'saccade',fix:'Use Saccade Ladder for cleaner acquisition, then rehearse joining the actual target line before thinking about lead.'},
-  inconsistent:{title:'Unstable acquisition / correction loop',confidence:'Moderate',mechanism:'The picture is not settling early enough, so the final part of the move becomes reactive rather than committed.',cue:'PICK UP EARLIER → ONE MOVE → ONE DECISION',demo:'correction',drill:'quiet',fix:'Use Quiet Eye before movement, then Smooth Pursuit if the barrel still hunts near the break.'},
-  lose:{title:'Target-focus break',confidence:'Strong',mechanism:'Attention is shifting from the clay toward the barrel or the act of shooting, weakening visual connection.',cue:'SEE THE CLAY → LET THE GUN STAY PERIPHERAL',demo:'sustained',drill:'three',fix:'Use Three Bullet and Quiet Eye. The goal is to preserve target detail while allowing the gun to remain in peripheral awareness.'},
-  rush:{title:'Rushed acquisition',confidence:'Strong',mechanism:'The trigger decision is arriving before the visual picture and gun movement are organised.',cue:'SEE → CONNECT → MOVE → THEN FIRE',demo:'pullaway',drill:'quiet',fix:'Use Quiet Eye to delay the urge to act, then rehearse a clear pickup before initiating the shot move.'},
-  stop:{title:'Stopped gun',confidence:'Strong',mechanism:'The barrel reaches a usable relationship, then loses speed around trigger release.',cue:'FIRE INSIDE THE MOVE — NOT AT THE END OF IT',demo:'stopped',drill:'pursuit',fix:'Use Smooth Pursuit and consciously continue the movement through the shot rather than treating the trigger as a finish line.'}
-};
-
-let shooterAnswers={};let shooterStep=0;const diagnosisSteps=['symptom','target','feel'];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function buildDiagnosisUI(){
   const host=document.querySelector('#shooterDiagnosis');if(!host)return;
-  host.innerHTML=`<div class="diagnosis-intro"><span class="diag-badge">QUERY → DIAGNOSE → FIX</span><h2>What’s going wrong?</h2><p>Describe the miss and ShotSight will walk the diagnostic tree, show the most likely mechanism, then route you to a corrective demo and drill.</p><button class="primary big" id="startShooterDiagnosis">Start diagnosis <span>→</span></button></div>`;
+  host.innerHTML=`<div class="diagnosis-intro"><span class="diag-badge">PRESENTATION → RESULT → TEST → FIX → RETEST</span><h2>Work out what is actually going wrong</h2><p>ShotSight now starts with the target, keeps competing causes visible, and only gives a correction where the representative Playbook has a certified diagnostic branch.</p><button class="primary big" id="startShooterDiagnosis">Start diagnosis <span>→</span></button></div>`;
   document.querySelector('#startShooterDiagnosis')?.addEventListener('click',openShooterDiagnosis);
 }
 
-function openShooterDiagnosis(){shooterAnswers={};shooterStep=0;document.querySelector('#diagnosisSheet')?.classList.add('active');document.querySelector('#diagnosisSheet')?.setAttribute('aria-hidden','false');renderShooterQuestion()}
+async function ensureDiagnosticLessons(){
+  if(diagnosticLessons.length)return diagnosticLessons;
+  const r=await fetch('data/playbook-representative-v1.json?v=20260904-0408',{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);const data=await r.json();diagnosticLessons=Array.isArray(data.lessons)?data.lessons:[];return diagnosticLessons;
+}
+
+async function openShooterDiagnosis(){
+  shooterAnswers={};shooterStep=0;const sheet=document.querySelector('#diagnosisSheet');sheet?.classList.add('active');sheet?.setAttribute('aria-hidden','false');const body=document.querySelector('#diagnosisBody');if(body)body.innerHTML='<span class="diag-badge">DIAGNOSTIC ENGINE</span><h2>Loading certified branches…</h2>';
+  try{await ensureDiagnosticLessons();renderPresentationQuestion()}catch(err){if(body)body.innerHTML=`<span class="diag-badge">DIAGNOSTIC ENGINE</span><h2>Diagnosis unavailable</h2><p class="diagnosis-sub">ShotSight could not load the certified diagnostic data (${esc(err.message)}). No advice has been guessed.</p><div class="diagnosis-actions"><button class="primary" id="diagnosisRetry">Try again</button></div>`;document.querySelector('#diagnosisRetry')?.addEventListener('click',openShooterDiagnosis)}
+}
 function closeShooterDiagnosis(){document.querySelector('#diagnosisSheet')?.classList.remove('active');document.querySelector('#diagnosisSheet')?.setAttribute('aria-hidden','true')}
+function setProgress(text){const p=document.querySelector('#diagnosisProgress');if(p)p.textContent=text}
+function optionButton(value,title,sub){return `<button class="diagnosis-option" data-answer="${esc(value)}"><span><strong>${esc(title)}</strong><small>${esc(sub)}</small></span><b>›</b></button>`}
+function bindAnswers(fn){document.querySelectorAll('#diagnosisBody [data-answer]').forEach(btn=>btn.addEventListener('click',()=>fn(btn.dataset.answer)))}
 
-function renderShooterQuestion(){
-  const key=diagnosisSteps[shooterStep],q=shooterQuestions[key],body=document.querySelector('#diagnosisBody');if(!body)return;
-  document.querySelector('#diagnosisProgress').textContent=`${shooterStep+1} / ${diagnosisSteps.length}`;
-  body.innerHTML=`<span class="diag-badge">SHOOTER QUERY</span><h2>${q.title}</h2><p class="diagnosis-sub">${q.sub}</p><div class="diagnosis-options">${q.options.map(o=>`<button class="diagnosis-option" data-answer="${o[0]}"><span><strong>${o[1]}</strong><small>${o[2]}</small></span><b>›</b></button>`).join('')}</div>`;
-  body.querySelectorAll('[data-answer]').forEach(btn=>btn.addEventListener('click',()=>{shooterAnswers[key]=btn.dataset.answer;if(shooterStep<diagnosisSteps.length-1){shooterStep++;renderShooterQuestion()}else renderShooterResult()}));
+function renderPresentationQuestion(){
+  shooterStep=1;setProgress('1 / 4');const body=document.querySelector('#diagnosisBody');if(!body)return;
+  const options=diagnosticLessons.map(l=>optionButton(l.id,l.name,l.understand));
+  options.push(optionButton('unknown','I cannot classify it yet','Stop the engine from guessing. Use the Playbook to identify the presentation first.'));
+  body.innerHTML=`<span class="diag-badge">1 · PRESENTATION</span><h2>Which target are you missing?</h2><p class="diagnosis-sub">Diagnosis starts with geometry. Similar-sounding targets do not automatically share the same cause or fix.</p><div class="diagnosis-options">${options.join('')}</div>`;
+  bindAnswers(v=>{shooterAnswers.presentation=v;if(v==='unknown')return renderInsufficient('The target presentation is not yet classified.','Use the Playbook to identify the flight family/phase before asking ShotSight to prescribe a mechanism.');renderObservedResultQuestion()});
 }
 
-function deriveDiagnosis(){
-  const a={...diagnosisRules[shooterAnswers.symptom]};
-  if(shooterAnswers.feel==='correcting'){Object.assign(a,diagnosisRules.inconsistent,{title:'Over-correction / chasing'});a.demo='correction';a.drill='pursuit';}
-  if(shooterAnswers.feel==='checking'){Object.assign(a,diagnosisRules.lose);}
-  if(shooterAnswers.feel==='slow'&&shooterAnswers.symptom==='behind'){a.title='Late connection / under-acceleration';a.confidence='Strong';a.fix='Rehearse an earlier pickup and a positive but smooth move. Use Smooth Pursuit before returning to the shot-type demo.';}
-  if(shooterAnswers.feel==='fast'&&shooterAnswers.symptom==='ahead'){a.confidence='Strong';}
-  if(shooterAnswers.target==='looper'&&!['lose','rush','stop'].includes(shooterAnswers.symptom)){a.demo='looper';a.mechanism+=' On a looper, remember that the barrel path does not have to mirror the clay arc; it can travel underneath and converge at the chosen break point.';}
-  return a;
+function renderObservedResultQuestion(){
+  shooterStep=2;setProgress('2 / 4');const lesson=diagnosticLessons.find(l=>l.id===shooterAnswers.presentation);const body=document.querySelector('#diagnosisBody');if(!body)return;
+  body.innerHTML=`<span class="diag-badge">2 · OBSERVED RESULT</span><h2>What repeats on ${esc(lesson?.name||'this target')}?</h2><p class="diagnosis-sub">Choose what actually happens. ShotSight will not force every miss into the one certified branch for this presentation.</p><div class="diagnosis-options">${symptomOptions.map(o=>optionButton(o[0],o[1],o[2])).join('')}</div>`;
+  bindAnswers(v=>{shooterAnswers.symptom=v;const allowed=diagnosticCompatibility[shooterAnswers.presentation]||[];if(v==='unsure'||!allowed.includes(v))return renderUnmatched();renderContextQuestion()});
 }
 
-function labelFor(group,value){const q=shooterQuestions[group];return q.options.find(o=>o[0]===value)?.[1]||value}
-function renderShooterResult(){
-  const r=deriveDiagnosis(),body=document.querySelector('#diagnosisBody');document.querySelector('#diagnosisProgress').textContent='RESULT';
-  body.innerHTML=`<span class="diag-badge">LIKELY DIAGNOSIS</span><h2>${r.title}</h2><div class="diagnosis-confidence">${r.confidence} match</div><div class="diagnosis-tree-view"><div><span>SYMPTOM</span><strong>${labelFor('symptom',shooterAnswers.symptom)}</strong></div><i>↓</i><div><span>CONTEXT</span><strong>${labelFor('target',shooterAnswers.target)}</strong></div><i>↓</i><div><span>MOVEMENT CLUE</span><strong>${labelFor('feel',shooterAnswers.feel)}</strong></div><i>↓</i><div class="active"><span>MECHANISM</span><strong>${r.title}</strong></div></div><div class="diagnosis-explain"><span>WHY SHOTSIGHT THINKS THAT</span><p>${r.mechanism}</p></div><div class="diagnosis-fix"><span>FIX</span><strong>${r.cue}</strong><p>${r.fix}</p></div><div class="diagnosis-actions"><button class="secondary-button" id="diagnosisAgain">Ask again</button><button class="secondary-button" id="diagnosisDemo">See demo</button><button class="primary" id="diagnosisDrill">Start corrective drill</button></div><p class="diagnosis-note">This is a coaching hypothesis from your answers, not proof of the miss. ShotSight Sense data can later confirm or reject it from the gun trace.</p>`;
-  document.querySelector('#diagnosisAgain')?.addEventListener('click',()=>{shooterStep=0;shooterAnswers={};renderShooterQuestion()});
-  document.querySelector('#diagnosisDemo')?.addEventListener('click',()=>{closeShooterDiagnosis();const idx=(typeof shotDemos!=='undefined')?shotDemos.findIndex(d=>d.id===r.demo):-1;if(idx>=0&&typeof openDemo==='function')openDemo(idx)});
-  document.querySelector('#diagnosisDrill')?.addEventListener('click',()=>{closeShooterDiagnosis();const a=(typeof activities!=='undefined')?activities.find(x=>x.id===r.drill):null;if(a&&typeof requestOpen==='function')requestOpen(a)});
+function renderContextQuestion(){
+  shooterStep=3;setProgress('3 / 4');const lesson=diagnosticLessons.find(l=>l.id===shooterAnswers.presentation);const d=lesson?.diagnose?.[0];const body=document.querySelector('#diagnosisBody');if(!body||!d)return renderUnmatched();
+  body.innerHTML=`<span class="diag-badge">3 · WHAT YOU SAW / FELT</span><h2>Before choosing a cause, can you describe the context clearly?</h2><p class="diagnosis-sub">The current certified branch is <strong>${esc(d.symptom)}</strong>. If that does not describe your repeatable miss, the engine should remain uncertain.</p><div class="diagnosis-options">${optionButton('clear','Yes — this is the same repeatable pattern','Continue to the branch’s discriminating test.')} ${optionButton('different','No — that description is not quite my miss','Do not inherit this branch’s correction.')} ${optionButton('unclear','I am not sure','Hold the diagnosis and gather a cleaner observation.')}</div>`;
+  bindAnswers(v=>{shooterAnswers.context=v;if(v!=='clear')return renderInsufficient('The certified branch does not yet fit cleanly.','Repeat the presentation and record the miss more precisely before selecting a mechanism or correction.');renderDiscriminator()});
 }
+
+function renderDiscriminator(){
+  shooterStep=4;setProgress('4 / 4');const lesson=diagnosticLessons.find(l=>l.id===shooterAnswers.presentation);const d=lesson?.diagnose?.[0];const body=document.querySelector('#diagnosisBody');if(!body||!d)return renderUnmatched();
+  body.innerHTML=`<span class="diag-badge">4 · DISCRIMINATING TEST</span><h2>${esc(d.question)}</h2><p class="diagnosis-sub">Use this question/test to distinguish the proposed mechanism from competing explanations. Do not answer from what you think “should” happen.</p><div class="diagnosis-options">${optionButton('supports','The test supports this branch','The observed change/pattern is consistent with the branch interpretation.')} ${optionButton('against','The test points away from this branch','Keep competing mechanisms alive; do not apply this fix as if proven.')} ${optionButton('untested','I have not tested it yet','Stop here and run the test before prescribing a correction.')}</div>`;
+  bindAnswers(v=>{shooterAnswers.discriminator=v;if(v==='supports')renderSupportedResult();else if(v==='against')renderAlternativeResult();else renderInsufficient('The discriminating test has not been run.','Run the test described above, then return. ShotSight will not convert an untested answer into a diagnosis.')});
+}
+
+function renderUnmatched(){
+  const lesson=diagnosticLessons.find(l=>l.id===shooterAnswers.presentation);const d=lesson?.diagnose?.[0];const chosen=symptomOptions.find(o=>o[0]===shooterAnswers.symptom)?.[1]||'uncertain result';
+  renderInsufficient(`No certified ${chosen.toLowerCase()} branch exists yet for ${lesson?.name||'this presentation'}.`,d?`The currently certified branch for this lesson is “${d.symptom}”. ShotSight will not borrow its fix for a different miss.`:'No representative diagnostic branch is available.');
+}
+
+function renderInsufficient(title,reason){
+  setProgress('UNCERTAIN');const body=document.querySelector('#diagnosisBody');if(!body)return;
+  body.innerHTML=`<span class="diag-badge">UNCERTAINTY RETAINED</span><h2>${esc(title)}</h2><div class="diagnosis-confidence">Insufficient evidence</div><div class="diagnosis-explain"><span>WHY SHOTSIGHT STOPS HERE</span><p>${esc(reason)}</p></div><div class="diagnosis-fix"><span>NEXT BEST ACTION</span><strong>Improve the observation before prescribing the fix.</strong><p>Reclassify the presentation, repeat the target, or use the relevant Playbook lesson. A missing branch is not permission to invent one.</p></div><div class="diagnosis-actions"><button class="secondary-button" id="diagnosisAgain">Start again</button><button class="primary" id="diagnosisPlaybook">Open Playbook</button></div><p class="diagnosis-note">ShotSight is retaining uncertainty deliberately. Sense data can later add gun-motion evidence, but it should challenge as well as confirm the coaching hypothesis.</p>`;
+  document.querySelector('#diagnosisAgain')?.addEventListener('click',renderPresentationQuestion);document.querySelector('#diagnosisPlaybook')?.addEventListener('click',openSelectedPlaybook);
+}
+
+function renderSupportedResult(){
+  const lesson=diagnosticLessons.find(l=>l.id===shooterAnswers.presentation),d=lesson?.diagnose?.[0];if(!d)return renderUnmatched();setProgress('RESULT');const body=document.querySelector('#diagnosisBody');
+  body.innerHTML=`<span class="diag-badge">SUPPORTED COACHING HYPOTHESIS</span><h2>${esc(lesson.name)}</h2><div class="diagnosis-confidence">Branch supported — not proven</div><div class="diagnosis-tree-view"><div><span>PRESENTATION</span><strong>${esc(lesson.name)}</strong></div><i>↓</i><div><span>OBSERVED RESULT</span><strong>${esc(d.symptom)}</strong></div><i>↓</i><div><span>DISCRIMINATING TEST</span><strong>${esc(d.question)}</strong></div><i>↓</i><div class="active"><span>CANDIDATE MECHANISMS</span><strong>${esc((d.candidate_mechanisms||[]).join(' · '))}</strong></div></div><div class="diagnosis-explain"><span>INTERPRETATION</span><p>${esc(d.interpretation)}</p></div><div class="diagnosis-fix"><span>CORRECTION</span><strong>${esc(d.fix)}</strong><p><strong>Retest:</strong> ${esc(d.retest)}</p></div><div class="diagnosis-actions"><button class="secondary-button" id="diagnosisAgain">Ask again</button><button class="primary" id="diagnosisPlaybook">Open lesson</button></div><p class="diagnosis-note">This remains a coaching hypothesis from a certified representative branch. It is not proof of where the shot went or a medical/vision/gun-fit diagnosis.</p>`;
+  document.querySelector('#diagnosisAgain')?.addEventListener('click',renderPresentationQuestion);document.querySelector('#diagnosisPlaybook')?.addEventListener('click',openSelectedPlaybook);
+}
+
+function renderAlternativeResult(){
+  const lesson=diagnosticLessons.find(l=>l.id===shooterAnswers.presentation),d=lesson?.diagnose?.[0];setProgress('ALTERNATIVES');const body=document.querySelector('#diagnosisBody');
+  body.innerHTML=`<span class="diag-badge">BRANCH NOT CONFIRMED</span><h2>Keep the alternatives open</h2><div class="diagnosis-confidence">Evidence points away</div><div class="diagnosis-explain"><span>CERTIFIED INTERPRETATION</span><p>${esc(d?.interpretation||'The selected test does not support this branch strongly enough to prescribe its correction.')}</p></div><div class="diagnosis-fix"><span>DO NOT PRESCRIBE YET</span><strong>The candidate mechanisms remain alternatives, not a diagnosis.</strong><p>${esc((d?.candidate_mechanisms||[]).join(' · '))}</p></div><div class="diagnosis-actions"><button class="secondary-button" id="diagnosisAgain">Start again</button><button class="primary" id="diagnosisPlaybook">Review lesson</button></div><p class="diagnosis-note">A failed discriminator is useful evidence. ShotSight should reduce confidence instead of forcing the original explanation.</p>`;
+  document.querySelector('#diagnosisAgain')?.addEventListener('click',renderPresentationQuestion);document.querySelector('#diagnosisPlaybook')?.addEventListener('click',openSelectedPlaybook);
+}
+
+function openSelectedPlaybook(){const id=shooterAnswers.presentation;closeShooterDiagnosis();window.shotSightGo?.('learnView');setTimeout(()=>window.ShotSightPlaybook?.openLesson?.(id,'diagnose'),180)}
 
 document.querySelector('#diagnosisClose')?.addEventListener('click',closeShooterDiagnosis);
 buildDiagnosisUI();
+window.openShooterDiagnosis=openShooterDiagnosis;
+window.closeShooterDiagnosis=closeShooterDiagnosis;

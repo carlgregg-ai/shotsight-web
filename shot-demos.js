@@ -19,12 +19,13 @@ const shotDemos=[
     target:'M 7 67 C 30 58, 63 46, 95 33',gun:'M 10 88 C 30 78, 61 65, 95 52',hold:{x:16,y:84},pickup:{x:47,y:69},breakPt:{x:82,y:57},phases:['SEE THE LINE','APPROACH LOW','STAY LOW','LEAD LOOKS OK','SHOT OFF LINE']}
 ];
 
-const demoGrid=document.querySelector('#demoGrid');
 const demoSheet=document.querySelector('#demoSheet');
 let demoIndex=0,demoRAF=null,demoStart=0;
 
 function demoCard(d){return `<button class="demo-tile" data-demo="${d.id}"><span class="demo-tile-glyph">${d.glyph}</span><span><strong>${d.name}</strong><small>${d.desc}</small></span></button>`}
-if(demoGrid)demoGrid.innerHTML=shotDemos.map(demoCard).join('');
+function renderShotDemoGrid(){const grid=document.querySelector('#demoGrid');if(grid)grid.innerHTML=shotDemos.map(demoCard).join('')}
+window.renderShotDemoGrid=renderShotDemoGrid;
+renderShotDemoGrid();
 
 document.addEventListener('click',e=>{const b=e.target.closest('[data-demo]');if(!b)return;const idx=shotDemos.findIndex(d=>d.id===b.dataset.demo);if(idx>=0)openDemo(idx)});
 document.querySelector('#demoClose')?.addEventListener('click',closeDemo);

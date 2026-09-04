@@ -9,7 +9,8 @@
   "status": "IN_PROGRESS",
   "p0_checkpoint": "docs/physics/checkpoints/P0_RECOVERY_CONTAINMENT_COMPLETE.md",
   "p1_register": "docs/physics/EVIDENCE_PARAMETER_REGISTER_v0.1.md",
-  "latest_p1_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_TRANCHE2_CHECKPOINT.md",
+  "p1_tranche3_register": "docs/physics/EVIDENCE_PARAMETER_REGISTER_P1_TRANCHE3.md",
+  "latest_p1_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_TRANCHE3_CHECKPOINT.md",
   "legacy_motion_status": "INVALIDATED_FOR_INSTRUCTIONAL_PHYSICS",
   "production_simulator_authorised": false,
   "verified_p1_progress": [
@@ -17,20 +18,24 @@
     "Laporte special-target dimensions/masses",
     "Promatic machine capability boundary",
     "Andert/Freudenthal/Levedag clay-specific flight-dynamics and stereo-identification model structure",
-    "Allen 2018 free-spherical-pellet drag/TOF model scope and limitation",
+    "Andert reference target constants: A=0.0095 m^2, d=0.11 m, m=0.105 kg, inertia diag(1.33,1.33,2.57)e-4 kg m^2",
+    "Allen 2018 free-spherical-pellet drag/TOF model scope and non-interacting limitation",
+    "peer-reviewed secondary reproduction of Allen Mach regime boundaries and selected analytical relations",
+    "Szmelter/Leeming evidence that short-range pellet wake interaction/collision makes a dense cloud materially different from independent free spheres",
     "ShotKam FOV/frame-rate and camera-to-bore convergence/parallax boundary",
     "qualitative trap spin-generation mechanism",
-    "existing source-attributed coaching method vocabulary without numerical tolerances"
+    "existing source-attributed coaching method vocabulary without numerical tolerances",
+    "draft P1 exit matrix separating verified, parameter-to-calibrate, extraction-required and hold inputs"
   ],
   "high_priority_holds": [
-    "exact clay aerodynamic coefficient values and cross-target applicability",
+    "Andert numerical aerodynamic coefficient values/model-fit details not yet reliably extracted",
     "target release spin",
     "trap setting to launch state mapping",
-    "exact Allen drag/TOF coefficient/formula extraction",
-    "dense shot-cloud interaction correction and shot string",
+    "complete primary Allen scale definitions and velocity/flight-time formulas",
+    "dense shot-cloud correction and shot string",
     "camera-to-bore calibration uncertainty",
     "method transition tolerances and expert gun angular kinematics"
   ],
-  "next_action": "Continue P1 tranche 3: fully extract Andert numerical parameters/model-fit details and Allen drag/TOF formulas; bound free-pellet TOF with interacting-shot evidence; audit method source permissions; then build P1 exit matrix. Do not start P2 until P1 exit criteria pass.",
+  "next_action": "Continue P1 tranche 4: complete primary Allen equation/scaling extraction if technically accessible; make final targeted Andert coefficient/fit extraction; search quantitative clay release-spin/trap instrumentation; finalise P1 exit matrix. If remaining unknowns can be explicitly parameterised without invented defaults, checkpoint P1 COMPLETE and immediately begin P2 specification.",
   "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
 }

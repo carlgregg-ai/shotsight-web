@@ -3,10 +3,11 @@
   "date": "2026-09-04",
   "branch": "physics-engine-v1",
   "master_prompt_path": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_MASTER_PROGRAMME.md",
-  "latest_completed_stage": "P6",
-  "current_stage": "P7",
-  "current_stage_name": "Integrated Canonical Flat-Crosser Simulator",
-  "status": "IN_PROGRESS_RENDERER_REPAIR_CI_GREEN_RENDERED_REVIEW_PENDING",
+  "latest_completed_stage": "P7",
+  "current_stage": "P8",
+  "current_stage_name": "Canonical Expansion",
+  "current_substage": "P8A_QUARTERER",
+  "status": "IN_PROGRESS_QUARTERER_ENGINEERING_PROOF",
   "p0_checkpoint": "docs/physics/checkpoints/P0_RECOVERY_CONTAINMENT_COMPLETE.md",
   "p1_completion_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_COMPLETE.md",
   "p2_completion_checkpoint": "docs/physics/checkpoints/P2_SPECIFICATION_COMPLETE.md",
@@ -14,7 +15,7 @@
   "p4_completion_checkpoint": "docs/physics/checkpoints/P4_BALLISTICS_INTERCEPT_ENGINE_COMPLETE.md",
   "p5_completion_checkpoint": "docs/physics/checkpoints/P5_PROJECTION_GUN_KINEMATICS_COMPLETE.md",
   "p6_completion_checkpoint": "docs/physics/checkpoints/P6_METHOD_NARRATIVE_ENGINE_COMPLETE.md",
-  "p7_checkpoint": "docs/physics/checkpoints/P7_RENDERER_REPAIR_CI_GREEN_1.md",
+  "p7_completion_checkpoint": "docs/physics/checkpoints/P7_CANONICAL_FLAT_CROSSER_COMPLETE.md",
   "legacy_motion_status": "INVALIDATED_FOR_INSTRUCTIONAL_PHYSICS",
   "production_simulator_authorised": false,
   "realistic_clay_status": "HOLD_PENDING_VERIFIED_OR_CALIBRATED_AERO_AND_HELD_OUT_REAL_FLIGHT_VALIDATION",
@@ -29,42 +30,33 @@
     "method transition tolerances and expert gun angular kinematics",
     "rabbit ground-contact dynamics"
   ],
-  "p7_verified_outputs": [
-    "physics/canonical-flat-crosser-v1.mjs one-master-clock integration proof",
-    "physics/flat-crosser-debug-v1.mjs deterministic debug/scrub control surface",
-    "direct frame-index master-clock mapping and slow-motion screen-time mapping",
-    "mandatory engineering telemetry exposure",
-    "near/slower baseline far/faster and mirror parameter-sweep QA",
-    "high-frame-rate no-accumulated-phase-drift regression",
-    "camera-origin apparent lead separated from ballistic shot-origin angular lead after adversarial review",
-    "TEST_ONLY constant-speed ballistic provider remains enforced",
-    "no decorative BREAK event",
-    "p7-debug.html browser-facing engineering surface with play/pause/frame-step/speed/scrub",
-    "browser surface imports verified model/debug modules rather than owning an independent motion path",
-    "explicit browser HOLD rendering for ACQUISITION CONNECTION and SPEED_MATCH",
-    "browser telemetry and frame-QA table driven from shared simulation state",
-    "active gun strategy separated from source coaching method reference",
-    "ENGINEERING_INTERCEPT_REFERENCE marked ENGINEERING_REFERENCE and NOT_A_COACHING_METHOD",
-    "NSCA_LONG_CROSSER_PULL_AWAY retained as SOURCE_REFERENCE_ONLY with HOLD_NOT_IMPLEMENTED kinematics",
-    "active coaching method telemetry forced null while method kinematics are unimplemented",
-    "normalised pinhole debug projection with uniform auto-fit and no invented camera FOV",
-    "hard clipping removed from P7 target/bore debug rendering",
-    "mobile frame-QA table overflow containment",
-    "explicit start/pre-shot/shot/pellet-arrival/end QA frame rows",
-    "GitHub Actions run 33903908672 SUCCESS at renderer-repair head e5460c0cd19fbda2e2b3474431158b1a3bad34d2"
+  "p7_final_verification": {
+    "head": "20d0036ba68b5c28317e9efa90cecfa324189d65",
+    "github_actions_run": 33909744669,
+    "result": "SUCCESS",
+    "rendered_artifact_id": 9950878403,
+    "rendered_artifact_digest": "sha256:caacb231eb64cc83f2f4df6d136ba07cb0194cdf3b7d5158fb6df1a3a82fa3b9",
+    "rendered_review": "PASS_DESKTOP_MOBILE_CONTROLS_AND_ADVERSARIAL_SCREENSHOT_INSPECTION",
+    "pellet_arrival_frame_regression": "PASS_FIRST_FRAME_AT_OR_AFTER_ARRIVAL",
+    "method_execution_status": "HOLD_NOT_IMPLEMENTED_EVIDENCE_DOES_NOT_AUTHORISE_NUMERICAL_THRESHOLDS"
+  },
+  "p8_scope": [
+    "quartering target with changing range and line-of-sight geometry",
+    "chandelle/looper only with physically generated curved flight and explicit phase semantics; realistic certification remains held without supported/calibrated aerodynamics",
+    "teal/driven with distinct vertical/incoming/outgoing phases under the same evidence boundary",
+    "rabbit only after credible ground-interaction validation"
   ],
-  "p7_resolved_gate_findings": [
-    "Resolved: displayed bore path is explicitly ENGINEERING_INTERCEPT_REFERENCE rather than an active NSCA pull-away method.",
-    "Resolved: source coaching method identity is reference-only and cannot be exposed as active gun strategy without implemented/authorised kinematics.",
-    "Resolved: browser/debug telemetry visibly separates engineering strategy provenance from coaching-method reference provenance.",
-    "Resolved and CI-verified: arbitrary linear SVG angle scale/hard clipping replaced by normalised pinhole auto-fit debug projection.",
-    "Resolved and CI-verified: mobile QA table overflow containment and explicit pre-shot QA frame added."
+  "p8a_required_qa": [
+    "document scenario inputs and non-instructional engineering-proof status",
+    "derive changing target range and apparent angular speed from world geometry",
+    "derive pellet TOF/intercept and apparent lead from state rather than screen offsets",
+    "verify left/right mirror behaviour",
+    "verify approach/recede or range-rate sign behaviour",
+    "preserve engineering-reference gun strategy unless a source method has authorised kinematics",
+    "shared master clock and deterministic replay",
+    "parameter sweeps and analytic geometry cross-checks",
+    "debug/scrub and rendered frame-by-frame adversarial QA before substage completion"
   ],
-  "p7_remaining_gate_work": [
-    "post-repair desktop/mobile rendered adversarial frame-by-frame visual/narrative review",
-    "control interaction review for play pause frame-step slow-motion and scrub",
-    "explicit P7 completion/no-go decision"
-  ],
-  "next_action": "Perform the post-repair rendered desktop/mobile review at start, immediately pre-shot, shot, pellet-arrival and end/reference continuation. Exercise play/pause, frame-step, slow-motion and scrub. If clean, persist P7 completion and immediately begin P8; otherwise persist the next failed checkpoint. Do not advance to P8 before this gate passes.",
+  "next_action": "Implement P8A quarterer as a documented non-instructional engineering proof using the verified P3-P7 infrastructure. Start with constant-velocity world-space quartering trajectories so changing range/LOS/apparent angular speed can be tested analytically without inventing clay aerodynamics. Add mirror/range-rate/apparent-lead/shared-clock regressions. Keep source coaching method execution held unless authorised numerical kinematics exist. Do not start chandelle/looper until the quarterer passes its full scientific/rendered gate.",
   "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
 }

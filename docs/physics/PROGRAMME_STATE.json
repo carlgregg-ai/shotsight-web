@@ -6,8 +6,8 @@
   "latest_completed_stage": "P7",
   "current_stage": "P8",
   "current_stage_name": "Canonical Expansion",
-  "current_substage": "P8A_QUARTERER",
-  "status": "IN_PROGRESS_QUARTERER_ENGINEERING_PROOF",
+  "current_substage": "P8B_CHANDELLE_LOOPER",
+  "status": "IN_PROGRESS_TOY_GRAVITY_ONLY_CURVED_FLIGHT_PROOF",
   "p0_checkpoint": "docs/physics/checkpoints/P0_RECOVERY_CONTAINMENT_COMPLETE.md",
   "p1_completion_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_COMPLETE.md",
   "p2_completion_checkpoint": "docs/physics/checkpoints/P2_SPECIFICATION_COMPLETE.md",
@@ -16,6 +16,7 @@
   "p5_completion_checkpoint": "docs/physics/checkpoints/P5_PROJECTION_GUN_KINEMATICS_COMPLETE.md",
   "p6_completion_checkpoint": "docs/physics/checkpoints/P6_METHOD_NARRATIVE_ENGINE_COMPLETE.md",
   "p7_completion_checkpoint": "docs/physics/checkpoints/P7_CANONICAL_FLAT_CROSSER_COMPLETE.md",
+  "p8a_completion_checkpoint": "docs/physics/checkpoints/P8A_QUARTERER_COMPLETE.md",
   "legacy_motion_status": "INVALIDATED_FOR_INSTRUCTIONAL_PHYSICS",
   "production_simulator_authorised": false,
   "realistic_clay_status": "HOLD_PENDING_VERIFIED_OR_CALIBRATED_AERO_AND_HELD_OUT_REAL_FLIGHT_VALIDATION",
@@ -30,33 +31,36 @@
     "method transition tolerances and expert gun angular kinematics",
     "rabbit ground-contact dynamics"
   ],
-  "p7_final_verification": {
-    "head": "20d0036ba68b5c28317e9efa90cecfa324189d65",
-    "github_actions_run": 33909744669,
+  "p8a_final_verification": {
+    "head": "9f7bbece3bebd64516830a8f52fc2d0f49bcfaf6",
+    "github_actions_run": 33910678002,
     "result": "SUCCESS",
-    "rendered_artifact_id": 9950878403,
-    "rendered_artifact_digest": "sha256:caacb231eb64cc83f2f4df6d136ba07cb0194cdf3b7d5158fb6df1a3a82fa3b9",
+    "rendered_artifact_id": 9951232827,
+    "rendered_artifact_digest": "sha256:4185ec281f222c4182816a01e0fec7ef3faca3b1f02d4d31cfb4a5f5fb1520bd",
     "rendered_review": "PASS_DESKTOP_MOBILE_CONTROLS_AND_ADVERSARIAL_SCREENSHOT_INSPECTION",
-    "pellet_arrival_frame_regression": "PASS_FIRST_FRAME_AT_OR_AFTER_ARRIVAL",
-    "method_execution_status": "HOLD_NOT_IMPLEMENTED_EVIDENCE_DOES_NOT_AUTHORISE_NUMERICAL_THRESHOLDS"
+    "scope": "CONSTANT_VELOCITY_QUARTERING_GEOMETRY_ONLY_NOT_REALISTIC_CLAY"
   },
-  "p8_scope": [
-    "quartering target with changing range and line-of-sight geometry",
-    "chandelle/looper only with physically generated curved flight and explicit phase semantics; realistic certification remains held without supported/calibrated aerodynamics",
-    "teal/driven with distinct vertical/incoming/outgoing phases under the same evidence boundary",
-    "rabbit only after credible ground-interaction validation"
+  "p8b_authorised_model_boundary": {
+    "model": "TOY_GRAVITY_ONLY",
+    "gravity_mps2": 9.80665,
+    "provenance": "P2_SPEC_STANDARD_GRAVITY",
+    "realistic_clay": false,
+    "instructional_motion": false,
+    "purpose": "physically generated curved-flight geometry and phase-state engineering proof only",
+    "forbidden_claim": "must never be represented as a realistic chandelle/looper clay trajectory"
+  },
+  "p8b_required_qa": [
+    "derive target XYZ/velocity from gravity-only equations rather than a drawn arc",
+    "derive rise/apex/descent phase from vertical velocity sign and analytic apex time",
+    "verify position and velocity against closed-form constant-gravity equations",
+    "verify apex time and vertical velocity zero crossing",
+    "derive changing range/LOS/angular speed and intercept from state",
+    "verify mirror behaviour",
+    "preserve TEST_ONLY ballistics and engineering-reference gun strategy",
+    "preserve coaching method HOLD unless authorised applicability/kinematics exist",
+    "shared master clock deterministic frame/scrub behaviour",
+    "debug/browser/rendered adversarial review before completion"
   ],
-  "p8a_required_qa": [
-    "document scenario inputs and non-instructional engineering-proof status",
-    "derive changing target range and apparent angular speed from world geometry",
-    "derive pellet TOF/intercept and apparent lead from state rather than screen offsets",
-    "verify left/right mirror behaviour",
-    "verify approach/recede or range-rate sign behaviour",
-    "preserve engineering-reference gun strategy unless a source method has authorised kinematics",
-    "shared master clock and deterministic replay",
-    "parameter sweeps and analytic geometry cross-checks",
-    "debug/scrub and rendered frame-by-frame adversarial QA before substage completion"
-  ],
-  "next_action": "Implement P8A quarterer as a documented non-instructional engineering proof using the verified P3-P7 infrastructure. Start with constant-velocity world-space quartering trajectories so changing range/LOS/apparent angular speed can be tested analytically without inventing clay aerodynamics. Add mirror/range-rate/apparent-lead/shared-clock regressions. Keep source coaching method execution held unless authorised numerical kinematics exist. Do not start chandelle/looper until the quarterer passes its full scientific/rendered gate.",
+  "next_action": "Implement P8B chandelle/looper as an explicit TOY_GRAVITY_ONLY engineering proof using P2 standard gravity g=9.80665 m/s^2 and documented launch-state inputs. Generate the curved path from equations of motion, derive RISE/APEX/DESCENT from vertical velocity/analytic apex, and test closed-form position/velocity, phase transitions, mirror geometry, changing LOS, intercept, one-clock narrative and rendered debug behaviour. Do not claim realistic clay flight or select a coaching method.",
   "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
 }

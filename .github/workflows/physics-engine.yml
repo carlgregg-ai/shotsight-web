@@ -6,6 +6,7 @@ on:
     paths:
       - 'physics/**'
       - 'tests/physics-*.mjs'
+      - 'tests/p7-rendered-review.mjs'
       - 'docs/physics/**'
       - 'p7-debug.html'
       - '.github/workflows/physics-engine.yml'
@@ -41,3 +42,12 @@ jobs:
         run: node tests/physics-canonical-flat-crosser-v1.mjs
       - name: Run P7 browser debug contract validation
         run: node tests/physics-p7-browser-debug-v1.mjs
+      - name: Run P7 rendered adversarial review
+        run: node tests/p7-rendered-review.mjs
+      - name: Upload P7 rendered review artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p7-rendered-review
+          path: artifacts/p7-rendered-review/
+          if-no-files-found: warn

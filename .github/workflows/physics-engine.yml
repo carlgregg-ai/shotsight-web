@@ -7,8 +7,10 @@ on:
       - 'physics/**'
       - 'tests/physics-*.mjs'
       - 'tests/p7-rendered-review.mjs'
+      - 'tests/p8-quarterer-rendered-review.mjs'
       - 'docs/physics/**'
       - 'p7-debug.html'
+      - 'p8-quarterer-debug.html'
       - '.github/workflows/physics-engine.yml'
   workflow_dispatch:
 
@@ -53,3 +55,14 @@ jobs:
           if-no-files-found: warn
       - name: Run P8A quarterer engineering proof
         run: node tests/physics-canonical-quarterer-v1.mjs
+      - name: Run P8A quarterer browser debug contract
+        run: node tests/physics-p8-quarterer-browser-debug-v1.mjs
+      - name: Run P8A quarterer rendered adversarial review
+        run: node tests/p8-quarterer-rendered-review.mjs
+      - name: Upload P8A quarterer rendered review artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p8-quarterer-rendered-review
+          path: artifacts/p8-quarterer-rendered-review/
+          if-no-files-found: warn

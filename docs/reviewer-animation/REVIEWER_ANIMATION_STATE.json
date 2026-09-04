@@ -7,21 +7,29 @@
   "scope": "canonical_flat_crosser_plus_three_method_expert_comparison",
   "frame_rate_hz": 60,
   "duration_s": 2,
-  "latest_completed_gate": "D_LOCAL_RENDER_COMPLETE_PENDING_REPO_CI_FOR_METHOD_COMPARISON",
-  "current_gate": "E/F",
-  "status": "METHOD_COMPARISON_RENDERED_FOR_EXPERT_REVIEW_PENDING_CI_AND_USER_REVIEW",
+  "latest_completed_gate": "G",
+  "current_gate": "USER_EXPERT_REVIEW",
+  "status": "REVIEWER_PACKAGE_READY_FOR_USER_EXPERT_REVIEW",
+  "head": "49ae2b482a685a90ed0cb1141d70a7a96658a9a3",
+  "ci_run": 33924016140,
+  "ci_result": "SUCCESS",
   "model_source": "physics/canonical-flat-crosser-v1.mjs",
   "reviewer_adapter": "physics/reviewer-flat-crosser-v1.mjs",
   "method_comparison_adapter": "physics/reviewer-method-comparison-v1.mjs",
+  "method_manifest_exporter": "tools/export-reviewer-method-comparison.mjs",
   "realistic_clay_certified": false,
   "instructional_motion_authorised": false,
   "method_comparison_status": "SHOTSIGHT_HYPOTHESIS_PENDING_EXPERT_REVIEW",
-  "method_sequence": [
-    "SWING_THROUGH",
-    "PULL_AWAY",
-    "MAINTAINED_LEAD"
-  ],
+  "method_sequence": ["SWING_THROUGH", "PULL_AWAY", "MAINTAINED_LEAD"],
   "method_source_scope": "method recognition/narrative source-backed; numerical timing and separation parameters are ShotSight hypotheses",
+  "locked_comparison_properties": [
+    "same canonical target XYZ and master clock",
+    "same 0.8 s shot time",
+    "same ballistic shot solution",
+    "all three method hypotheses converge to the same canonical bore at shot time",
+    "no fake break",
+    "target orientation remains HOLD"
+  ],
   "restart_rule": "resume_from_latest_verified_gate_not_from_start",
-  "next_action": "Run CI for method-comparison contract/export; then collect user expert review of the three repeated-clay gun moves and calibrate/hold numerical kinematics before any instructional claim."
+  "next_action": "Collect user expert review of swing-through, pull-away and maintained-lead gun moves. Classify feedback and tune or hold hypothesis parameters before any instructional method claim."
 }

@@ -1,4 +1,4 @@
-name: Playbook browser smoke QA
+name: ShotSight browser QA
 
 on:
   push:
@@ -35,6 +35,8 @@ jobs:
         run: node tests/playbook-smoke.mjs
       - name: Run mobile and desktop diagnostic-engine QA
         run: node tests/diagnosis-smoke.mjs
+      - name: Run realistic mobile and desktop product journeys
+        run: node tests/product-journeys.mjs
       - name: Upload Playbook visual QA screenshots
         if: always()
         uses: actions/upload-artifact@v4

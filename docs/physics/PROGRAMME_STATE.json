@@ -3,29 +3,18 @@
   "date": "2026-09-04",
   "branch": "physics-engine-v1",
   "master_prompt_path": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_MASTER_PROGRAMME.md",
-  "latest_completed_stage": "P1",
-  "current_stage": "P2",
-  "current_stage_name": "Formal Physics & Kinematics Specification v1",
+  "latest_completed_stage": "P2",
+  "current_stage": "P3",
+  "current_stage_name": "Target Physics Engine v1",
   "status": "IN_PROGRESS",
   "p0_checkpoint": "docs/physics/checkpoints/P0_RECOVERY_CONTAINMENT_COMPLETE.md",
   "p1_completion_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_COMPLETE.md",
+  "p2_completion_checkpoint": "docs/physics/checkpoints/P2_SPECIFICATION_COMPLETE.md",
   "p1_final_register": "docs/physics/EVIDENCE_PARAMETER_REGISTER_P1_TRANCHE4_FINAL.md",
   "p2_spec": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_SPEC_v1.md",
+  "p2_normative_conventions": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_SPEC_v1_CONVENTIONS.md",
   "legacy_motion_status": "INVALIDATED_FOR_INSTRUCTIONAL_PHYSICS",
   "production_simulator_authorised": false,
-  "verified_p1_progress": [
-    "ISSF standard target envelope and competition trajectory sanity constraints",
-    "Laporte special-target dimensions/masses",
-    "Promatic machine capability boundary",
-    "Andert/Freudenthal/Levedag clay-specific flight-dynamics and stereo-identification model structure",
-    "Andert reference target constants: A=0.0095 m^2, d=0.11 m, m=0.105 kg, inertia diag(1.33,1.33,2.57)e-4 kg m^2",
-    "Allen 2018 variable-drag free-spherical-pellet architecture and non-interacting limitation",
-    "peer-reviewed secondary corroboration of Allen Mach regime boundaries",
-    "Szmelter/Leeming evidence that close pellet wake interaction/collision makes dense early shot cloud materially different from independent free spheres",
-    "ShotKam FOV/frame-rate and camera-to-bore convergence/parallax boundary",
-    "source-attributed qualitative shooting-method vocabulary without invented numerical tolerances",
-    "all unresolved numerical inputs classified as parameter-to-calibrate, extraction-required or hold"
-  ],
   "high_priority_holds": [
     "Andert numerical aerodynamic coefficient values/model-fit details",
     "target release spin",
@@ -36,24 +25,19 @@
     "method transition tolerances and expert gun angular kinematics",
     "rabbit ground-contact dynamics"
   ],
-  "p2_verified_progress": [
-    "SI internal unit convention",
-    "single master simulation clock contract",
-    "right-handed shooter-centric world-frame draft",
-    "target body, camera and gun frame contracts",
-    "parameter provenance/uncertainty schema",
-    "target state and launch-state schema",
-    "target dynamics and aerodynamic-provider interface",
-    "RK4 reference integration strategy with convergence gate",
-    "shooter-view LOS/projection architecture",
-    "gun-state and ballistic-provider interfaces",
-    "intercept result contract",
-    "physical versus apparent lead distinction",
-    "method-provider and narrative-event contracts",
-    "rendering boundary prohibiting independent physical animation",
-    "analytic/numerical/shared-clock test architecture",
-    "explicit v1 holds/exclusions"
+  "p3_progress": [
+    "created physics/target-engine-v1.mjs with finite-state guards, vector/quaternion primitives and body-rate quaternion derivative",
+    "implemented deterministic fixed-step RK4 translational target integrator",
+    "implemented explicit TOY zero/gravity acceleration providers and constant-acceleration analytic reference",
+    "implemented fail-closed Andert aerodynamic-parameter validation and REALISTIC_CLAY hold",
+    "created tests/physics-target-v1.mjs for handedness, quaternion convention, stationary/constant-velocity/gravity analytic cases, deterministic replay, final-step handling, input safety, fail-closed realistic clay and nonlinear RK4 convergence",
+    "created dedicated GitHub Actions physics-engine CI workflow"
   ],
-  "next_action": "Continue P2 with adversarial/dimensional review. Resolve frame-handedness, camera optical-axis convention, quaternion mapping convention, LOS angular-rate sign/basis, intercept residual semantics for curved pellet trajectories, and fail-closed behaviour for missing realistic-provider parameters. Correct the spec, checkpoint P2 COMPLETE only after review passes, then immediately begin P3 target-physics engine with analytic toy tests before any realistic clay case.",
+  "latest_ci": {
+    "run_id": 33856884446,
+    "head_sha": "a6044a3f739ba72589c41f96772dd24b04da8141",
+    "status_at_checkpoint": "in_progress"
+  },
+  "next_action": "Inspect physics-engine CI run 33856884446. If it fails, read job/log failure, repair and rerun. If it passes, persist P3 test evidence, then extend P3 only as allowed: add rotational integration/provider contract tests and source-parameter ingestion scaffolding without inventing clay coefficients. P3 cannot be marked realistic-clay complete until its exit criteria are genuinely satisfied; preserve REALISTIC_CLAY hold where evidence is absent.",
   "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
 }

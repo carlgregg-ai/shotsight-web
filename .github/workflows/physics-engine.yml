@@ -11,6 +11,7 @@ on:
       - 'docs/physics/**'
       - 'p7-debug.html'
       - 'p8-quarterer-debug.html'
+      - 'p8-looper-debug.html'
       - '.github/workflows/physics-engine.yml'
   workflow_dispatch:
 
@@ -70,3 +71,5 @@ jobs:
           if-no-files-found: warn
       - name: Run P8B gravity-only looper engineering proof
         run: node tests/physics-canonical-looper-gravity-v1.mjs
+      - name: Run P8B looper browser debug contract
+        run: node tests/physics-p8-looper-browser-debug-v1.mjs

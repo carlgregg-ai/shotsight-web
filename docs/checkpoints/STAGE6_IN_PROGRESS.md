@@ -1,60 +1,62 @@
-# ShotSight Stage 6 — Animation / Visual System (IN PROGRESS)
+# ShotSight Stage 6 — Animation / Visual System (COMPLETE)
 
 Date: 2026-09-04
-Status: **IN_PROGRESS — reusable lesson schematics implemented; browser QA pending; richer method/gun-path animation not yet certified**
+Status: **COMPLETE**
 
-## Recovery
+## Recovery baseline
 
-Stage 5 is COMPLETE. Its final production source commit `abf0e0af73f5473e55767d0b316f0da0f057a084` passed both Playbook browser smoke QA (run `33824253720`) and GitHub Pages deployment (run `33824253296`) for the same source commit. Stage 6 began only after those gates passed.
+Stage 5 was already COMPLETE before Stage 6 began. No Stage 1–5 work was repeated.
 
-## Durable Stage 6 work completed in this tranche
+## Completed visual system
 
-- Added a reusable `visualProfiles` registry in `playbook.js` for all eight certified representative lessons.
-- Each representative lesson now renders a target-geometry schematic directly inside the Playbook lesson rather than only listing a textual visual specification.
-- Schematics are explicitly labelled **SCHEMATIC · NOT TO SCALE** to prevent conceptual 2D geometry from being mistaken for ballistic lead or true depth.
-- Each visual has an accessible SVG role/label, visible phase/zone labels, and a plain-language caption explaining the limitation or key geometry distinction.
-- Covered representative geometry: flat crosser, quartering-away, compound incomer/cutoff, chandelle phases, rising teal under power, crossing rabbit variability, driven incoming/overhead transition, and two-bird pair planning.
-- No exact lead values, ballistic geometry, or unsupported gun-path prescriptions were added.
-- Existing Stage 4 visual warnings remain rendered below the new schematic; the new diagrams do not relax DIRECT / SYNTHESIS / SHOTSIGHT_HYPOTHESIS / HOLD_DEMOTE evidence permissions.
-- `playbook.css` now provides responsive mobile/desktop visual styling.
+- Eight representative lessons retain their explicit target-geometry schematics with `SCHEMATIC · NOT TO SCALE` disclosure.
+- Six lessons now have source-safe, attributed conceptual target/gun motion examples where Stage 4 contains DIRECT coaching permission:
+  - Flat / long crosser — Don Currie / NSCA pull-away example (`NSCA_LONG_CROSSER`).
+  - Low fast incomer / cutoff — cited visibility-preserving cutoff approach (`NSCA_CUTOFF`, `NSCA_OCCLUSION`).
+  - Chandelle / looper — descending-break approach only (`NSCA_CH`, `NSCA_OCCLUSION`).
+  - Rising teal under power — cited pass-through example (`NSCA_TEAL`).
+  - Crossing rabbit — cited crossing-rabbit sequence (`NSCA_RABBIT`).
+  - Driven incoming — cited connection + pass-through example (`NSCA_DRIVEN`).
+- Quartering-away deliberately receives **no generic gun-path animation** because multiple attributed methods remain valid and no method selector exists yet.
+- Pair planning deliberately receives **no generic gun-path animation** because each bird retains independent geometry/method and the pair layer is sequence planning.
+- Every motion panel labels itself `ATTRIBUTED METHOD · CONCEPTUAL` and states that displayed timing/separation is illustrative rather than a ballistic lead prescription.
+- Motion styling respects `prefers-reduced-motion`.
 
-## QA added
+## Technical QA
 
-The Playwright smoke gate now opens all eight representative lessons on both 390×844 mobile and 1280×800 desktop viewports and requires, for each lesson:
+Final Stage 6 source/test commit: `f260a2f1698461b671fd9cdc276cac3499941628`.
 
-1. the correct `data-visual-id` schematic host;
-2. at least one target path;
-3. an explicit SCHEMATIC/not-to-scale disclosure;
-4. a non-empty novice explanatory caption.
+For that exact commit:
 
-The existing Stage 5 runtime/search/modal checks remain in the same suite.
+- Playbook browser smoke QA run `33832283874`: **SUCCESS**.
+- GitHub Pages deployment run `33832283366`: **SUCCESS**.
+- Browser gate covered 390×844 mobile and 1280×800 desktop.
+- All eight representative schematics rendered.
+- All six source-safe method motions rendered with target path, gun path, attribution and conceptual guardrail.
+- Quartering-away and pair-planning retained explicit no-generic-motion holds and were verified not to receive a generic motion panel.
+- Existing Playbook Learn/Diagnose routing, modal behaviour and retained visual-shot guides remained passing.
+- No browser-console/page errors were reported by the smoke suite.
 
-## Technical QA status
+## Rendered visual review
 
-Static design audit completed:
+The fresh workflow screenshot artifact was inspected rather than relying only on DOM assertions. Mobile renders showed readable target paths, phase labels, method cards and conceptual-motion panels. The earlier schematic label-collision pass was retained. The method examples are visually differentiated from target-geometry schematics and the non-permitted quartering/pair cases visibly explain why no generic gun path is shown.
 
-- Lesson IDs map one-to-one to the eight Stage 4 representative lessons.
-- Target-only schematics are deliberately used where an exact method/gun path is not yet source-safe.
-- Pair planning uses two independent target paths rather than pretending the pair itself is one target family.
-- Driven visual explicitly discloses that a wall display cannot reproduce true depth.
-- Rabbit visual explicitly disclaims exact ground physics.
-- Chandelle labels rise/apex/descent separately.
-- Teal distinguishes under-power from near-peak context.
-- Cutoff/incomer visual calls out the transition rather than teaching the same path for all incomers.
+This is still a **novice-oriented conceptual rehearsal layer**, not ballistic simulation. Wall projection cannot reproduce true depth, rabbit ground physics remain schematic, and source-specific techniques are not inherited across presentation variants.
 
-## Novice-comprehension QA status
+## Evidence guardrails retained
 
-Structural novice-comprehension safeguards are implemented (visible target path, labels, caption, not-to-scale disclosure), and automated browser checks have been added. A visual screenshot/manual comprehension review is still required before Stage 6 may be called COMPLETE.
+- DIRECT / SYNTHESIS / SHOTSIGHT_HYPOTHESIS / HOLD_DEMOTE distinctions remain intact.
+- No exact lead values were introduced.
+- No target-only research/mechanism evidence was converted into target-specific gun-path advice.
+- No coach-specific method was silently converted into universal advice.
+- Quartering/pair uncertainty is preserved rather than filled with invented motion.
 
-## Still required before Stage 6 may pass
+## Stage gate
 
-1. Confirm the fresh Playbook browser smoke QA succeeds with all eight visual assertions on both viewport sizes.
-2. Confirm the matching GitHub Pages deployment succeeds.
-3. Inspect rendered mobile and desktop screenshots/visuals rather than relying only on DOM assertions; correct clipped/ambiguous labels if found.
-4. Decide lesson-by-lesson which representative visuals have sufficient source permission for gun-path/method animation. Do not add a generic blue gun line to every target.
-5. For source-safe examples, implement reusable target/gun motion with clearly attributed method selection and perform technical + novice-comprehension QA.
-6. Preserve target-only schematics for lessons where a gun path would overclaim.
+**Stage 6 status: COMPLETE.**
 
-## Recovery instruction
+Next permitted stage: **Stage 7 — Diagnostic engine.** Replace the flat/ranked diagnosis experience with a sequenced discriminating process that retains uncertainty and follows:
 
-Resume at **Stage 6 visual QA and source-safe motion layer**. Do not redo Stages 1–5. First inspect the latest `Playbook browser smoke QA` and Pages deployment generated from commit `d86e411b29b56d388a8c981788ffeb71e9107861` or the latest descendant. If browser QA fails, repair before adding richer animation. Stage 7 must not begin until Stage 6 is technically and visually certified.
+`presentation → observed result → what was seen/felt → discriminating question → candidate mechanism(s) → correction → retest`
+
+Do not redo Stages 1–6.

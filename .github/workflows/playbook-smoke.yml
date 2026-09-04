@@ -33,3 +33,10 @@ jobs:
           exit 1
       - name: Run mobile and desktop Playbook smoke QA
         run: node tests/playbook-smoke.mjs
+      - name: Upload Stage 6 visual QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playbook-visuals
+          path: artifacts/playbook-visuals/*.png
+          if-no-files-found: warn

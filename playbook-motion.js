@@ -29,6 +29,11 @@ const profiles={
     method:'Driven pass-through example', attribution:'Don Currie / NSCA', source:'NSCA_DRIVEN',
     target:'M 50 8 C 49 34 50 61 53 92', gun:'M 42 35 C 46 50 51 68 57 89',
     note:'This illustrates visual connection followed by the cited pass-through/swing-through move for a true incoming driven target. A passing-away overhead remains a different presentation.'
+  },
+  rising_quartering_outgoing:{
+    method:'Rising-quarter vertical-intercept example', attribution:'Don Currie / NSCA', source:'NSCA_RISING_OUTGOING',
+    target:'M 10 82 C 34 68 58 46 91 18', gun:'M 44 86 C 48 66 57 45 76 27',
+    note:'This illustrates the source-attributed vertical-intercept approach toward the inside leading edge for the matching rising-quartering-outgoing presentation. Exact hold geometry, timing and separation are conceptual and must adapt to angle and handedness.'
   }
 };
 const noGeneric={

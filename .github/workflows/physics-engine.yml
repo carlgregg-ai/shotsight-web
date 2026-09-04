@@ -9,10 +9,12 @@ on:
       - 'tests/p7-rendered-review.mjs'
       - 'tests/p8-quarterer-rendered-review.mjs'
       - 'tests/p8-looper-rendered-review.mjs'
+      - 'tests/p8-teal-rendered-review.mjs'
       - 'docs/physics/**'
       - 'p7-debug.html'
       - 'p8-quarterer-debug.html'
       - 'p8-looper-debug.html'
+      - 'p8-teal-debug.html'
       - '.github/workflows/physics-engine.yml'
   workflow_dispatch:
 
@@ -85,3 +87,14 @@ jobs:
           if-no-files-found: warn
       - name: Run P8C teal gravity-only engineering proof
         run: node tests/physics-canonical-teal-gravity-v1.mjs
+      - name: Run P8C teal browser debug contract
+        run: node tests/physics-p8-teal-browser-debug-v1.mjs
+      - name: Run P8C teal rendered adversarial review
+        run: node tests/p8-teal-rendered-review.mjs
+      - name: Upload P8C teal rendered review artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p8-teal-rendered-review
+          path: artifacts/p8-teal-rendered-review/
+          if-no-files-found: warn

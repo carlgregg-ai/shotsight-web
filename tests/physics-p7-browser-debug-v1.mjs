@@ -5,14 +5,15 @@ import {createFlatCrosserDebugSession,debugFrame,scrubNormalized} from '../physi
 
 const html=await readFile(new URL('../p7-debug.html',import.meta.url),'utf8');
 for(const id of ['playPause','stepBack','stepForward','speed','scrub','telemetry','qaRows','qaTableWrap','certLock','projectionLock','holds','strategyLock','methodReference'])assert.match(html,new RegExp(`id=["']${id}["']`),`missing browser control ${id}`);
-for(const required of ['ENGINEERING PROOF · NOT REALISTIC CLAY CERTIFICATION · NOT INSTRUCTIONAL','NORMALISED PINHOLE DEBUG PROJECTION · AUTO-FIT · NOT CAMERA CALIBRATION','ENGINEERING_INTERCEPT_REFERENCE · ENGINEERING_REFERENCE · NOT_A_COACHING_METHOD','NSCA_LONG_CROSSER_PULL_AWAY · SOURCE_REFERENCE_ONLY · kinematics HOLD_NOT_IMPLEMENTED','ACQUISITION · CONNECTION · SPEED_MATCH = HOLD','active coaching method','createFlatCrosserDebugSession','debugFrame','scrubNormalized','pinholeNormalised','recomputeProjectionScale','overflow-x:auto','preShotFrame'])assert.ok(html.includes(required),`missing P7 browser invariant: ${required}`);
+for(const required of ['ENGINEERING PROOF · NOT REALISTIC CLAY CERTIFICATION · NOT INSTRUCTIONAL','NORMALISED PINHOLE DEBUG PROJECTION · AUTO-FIT · NOT CAMERA CALIBRATION','ENGINEERING_INTERCEPT_REFERENCE · ENGINEERING_REFERENCE · NOT_A_COACHING_METHOD','NSCA_LONG_CROSSER_PULL_AWAY · SOURCE_REFERENCE_ONLY · kinematics HOLD_NOT_IMPLEMENTED','ACQUISITION · CONNECTION · SPEED_MATCH = HOLD','active coaching method','createFlatCrosserDebugSession','debugFrame','scrubNormalized','pinholeNormalised','recomputeProjectionScale','overflow-x:auto','preShotFrame','arrivalFrame=Math.ceil'])assert.ok(html.includes(required),`missing P7 browser invariant: ${required}`);
 assert.ok(!html.includes('REALISTIC CLAY CERTIFIED'),'debug surface must not claim realistic clay certification');
 assert.ok(!html.includes('Math.max(-.95'),'renderer must not hard-clip projected geometry');
 assert.ok(!html.includes('const scale=1.2'),'renderer must not use the previous arbitrary linear angle scale');
 
 const scenario=createCanonicalFlatCrosserScenario();
 const session=createFlatCrosserDebugSession({scenario,duration_s:2,frameRate_hz:60,playbackRate:1});
-const f0=debugFrame(session,0),fShot=debugFrame(session,Math.round(scenario.shotTime_s*session.frameRate_hz));
+const shotFrame=Math.round(scenario.shotTime_s*session.frameRate_hz);
+const f0=debugFrame(session,0),fShot=debugFrame(session,shotFrame);
 assert.equal(f0.state.masterClock.allSubsystemsReadSameTime,true);
 assert.equal(fShot.telemetry.realisticClay,false);
 assert.equal(fShot.telemetry.instructionalMotion,false);
@@ -25,7 +26,17 @@ assert.equal(fShot.telemetry.methodReferenceRole,'SOURCE_REFERENCE_ONLY');
 assert.equal(fShot.telemetry.methodKinematicsStatus,'HOLD_NOT_IMPLEMENTED');
 assert.equal(fShot.telemetry.methodId,null);
 assert.equal(fShot.telemetry.thresholdEventsStatus,'HOLD_UNLESS_AUTHORISED_PREDICATE');
+
+const pelletArrival_s=scenario.shotTime_s+fShot.telemetry.pelletTOF_s;
+const arrivalFrame=Math.ceil(pelletArrival_s*session.frameRate_hz);
+const fBeforeArrival=debugFrame(session,Math.max(0,arrivalFrame-1));
+const fArrival=debugFrame(session,arrivalFrame);
+assert.ok(fBeforeArrival.t_s<pelletArrival_s,'pre-arrival QA frame must remain before pellet arrival');
+assert.ok(fArrival.t_s>=pelletArrival_s,'pellet-arrival QA frame must be at/after pellet arrival');
+assert.ok(!fBeforeArrival.telemetry.activeNarrativeEvents.includes('PELLET_ARRIVAL'),'PELLET_ARRIVAL must not appear before ballistic arrival');
+assert.ok(fArrival.telemetry.activeNarrativeEvents.includes('PELLET_ARRIVAL'),'pellet-arrival QA frame must expose PELLET_ARRIVAL');
+
 const scrub=scrubNormalized(session,0.5);
 assert.equal(scrub.t_s,1);
 assert.equal(scrub.state.t_s,1);
-console.log(JSON.stringify({suite:'ShotSight P7 browser debug contract v1',status:'PASS',tests:{controlsPresent:true,certificationLock:true,normalisedPinholeProjection:true,noHardClip:true,mobileTableOverflowContained:true,preShotQaSample:true,engineeringStrategyLabel:true,methodReferenceOnly:true,holdRendering:true,sharedClock:true,testOnlyProvider:true,scrubDirect:true}},null,2));
+console.log(JSON.stringify({suite:'ShotSight P7 browser debug contract v1',status:'PASS',tests:{controlsPresent:true,certificationLock:true,normalisedPinholeProjection:true,noHardClip:true,mobileTableOverflowContained:true,preShotQaSample:true,pelletArrivalQaSample:true,engineeringStrategyLabel:true,methodReferenceOnly:true,holdRendering:true,sharedClock:true,testOnlyProvider:true,scrubDirect:true}},null,2));

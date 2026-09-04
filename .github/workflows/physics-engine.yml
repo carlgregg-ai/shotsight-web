@@ -102,3 +102,5 @@ jobs:
         run: node tests/physics-video-observation-v1.mjs
       - name: Run P9B physics-constrained bearing-track fit tests
         run: node tests/physics-video-trajectory-fit-v1.mjs
+      - name: Run P10 real-data calibration contract tests
+        run: node tests/physics-real-data-calibration-v1.mjs

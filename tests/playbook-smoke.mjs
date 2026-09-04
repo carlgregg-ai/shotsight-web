@@ -24,6 +24,23 @@ async function run(label, viewport) {
     const demoCount = await page.locator('#demoGrid > *').count();
     if (demoCount < 1) throw new Error(`${label}: retained visual guides did not initialise`);
 
+    // Stage 6 visual gate: every representative lesson must render an explicitly
+    // labelled schematic with a target path and explanatory caption. This is a
+    // structural/novice-legibility gate, not certification of ballistic geometry.
+    for (let i = 0; i < lessonCount; i++) {
+      const cards = page.locator('.playbook-card');
+      const id = await cards.nth(i).getAttribute('data-playbook-id');
+      await cards.nth(i).click();
+      await page.locator('#playbookSheet.active').waitFor({state:'visible'});
+      const visual = page.locator(`.pb-visual[data-visual-id="${id}"]`);
+      if (await visual.count() !== 1) throw new Error(`${label}: lesson ${id} missing certified schematic host`);
+      if (await visual.locator('svg .pb-target-path').count() < 1) throw new Error(`${label}: lesson ${id} missing target path`);
+      if (!/SCHEMATIC/.test(await visual.locator('.pb-visual-head').innerText())) throw new Error(`${label}: lesson ${id} missing schematic/not-to-scale disclosure`);
+      if (!(await visual.locator('figcaption').innerText()).trim()) throw new Error(`${label}: lesson ${id} missing novice explanatory caption`);
+      await page.locator('#playbookClose').click();
+      await page.waitForFunction(() => !document.querySelector('#playbookSheet')?.classList.contains('active'));
+    }
+
     const search = page.locator('#playbookSearch');
     await search.fill('behind on a crosser');
     await page.locator('#playbookIntent.diagnose').waitFor({state:'visible'});
@@ -48,7 +65,7 @@ async function run(label, viewport) {
     await page.waitForFunction(() => !document.querySelector('#playbookSheet')?.classList.contains('active'));
 
     if (errors.length) throw new Error(`${label}: browser errors: ${errors.join(' | ')}`);
-    console.log(`PASS ${label}: ${lessonCount} lessons; ${demoCount} retained visual guides; Learn/Diagnose routing and sheet interactions verified.`);
+    console.log(`PASS ${label}: ${lessonCount} lessons; all representative lesson schematics; ${demoCount} retained visual guides; Learn/Diagnose routing and sheet interactions verified.`);
   } finally {
     await page.close();
   }

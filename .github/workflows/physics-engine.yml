@@ -24,3 +24,5 @@ jobs:
           node-version: '22'
       - name: Run P3 target physics analytic tests
         run: node tests/physics-target-v1.mjs
+      - name: Run P4 ballistic/intercept analytic tests
+        run: node tests/physics-ballistics-v1.mjs

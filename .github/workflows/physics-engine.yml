@@ -32,3 +32,5 @@ jobs:
         run: node tests/physics-ballistic-intercept-tof-v1.mjs
       - name: Run P5 projection and gun kinematics validation
         run: node tests/physics-projection-gun-v1.mjs
+      - name: Run P6 method and narrative fail-closed validation
+        run: node tests/physics-method-narrative-v1.mjs

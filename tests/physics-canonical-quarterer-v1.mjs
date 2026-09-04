@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {norm3,sub3,dot3,scale3} from '../physics/target-engine-v1.mjs';
 import {createCanonicalQuartererScenario,simulateCanonicalQuarterer,mirrorQuartererAcrossWorldYZ} from '../physics/canonical-quarterer-v1.mjs';
+import {createQuartererDebugSession,quartererFrame,scrubQuartererNormalized,screenElapsedToQuartererSimulationTime} from '../physics/quarterer-debug-v1.mjs';
 
 const near=(a,b,tol,msg)=>assert.ok(Math.abs(a-b)<=tol,`${msg}: expected ${b}, got ${a}, tol ${tol}`);
 const nearVec=(a,b,tol,msg)=>{assert.equal(a.length,b.length,msg);for(let i=0;i<a.length;i++)near(a[i],b[i],tol,`${msg}[${i}]`);};
@@ -95,6 +96,26 @@ assert.ok(!beforeArrival.activeNarrativeEvents.some(e=>e.type==='PELLET_ARRIVAL'
 assert.ok(atArrival.activeNarrativeEvents.some(e=>e.type==='PELLET_ARRIVAL'));
 assert.ok(!atArrival.narrative.some(e=>e.type==='BREAK'),'no decorative BREAK without authorised hit predicate');
 
+// P8A debug frame/scrub surface reads the same master simulation time directly.
+const debug=createQuartererDebugSession({scenario,duration_s:2,frameRate_hz:60,playbackRate:1});
+assert.equal(debug.frameCount,121);
+for(const i of [0,1,17,48,54,120]){
+  const f=quartererFrame(debug,i);
+  near(f.t_s,i/60,1e-12,'frame/master-clock mapping');
+  near(f.state.t_s,f.t_s,1e-12,'state/debug time equality');
+  near(f.telemetry.t_s,f.t_s,1e-12,'telemetry/debug time equality');
+  assert.equal(f.state.masterClock.allSubsystemsReadSameTime,true);
+}
+for(const u of [0,0.123,0.4,0.5,0.9,1]){
+  const f=scrubQuartererNormalized(debug,u);
+  near(f.t_s,2*u,1e-12,'normalised scrub direct mapping');
+  assert.deepEqual(f.state,simulateCanonicalQuarterer(scenario,2*u),'scrub state must equal direct simulation at same t');
+}
+for(const rate of [0.25,0.5,1,2]){
+  const session=createQuartererDebugSession({scenario,duration_s:2,frameRate_hz:60,playbackRate:rate});
+  near(screenElapsedToQuartererSimulationTime(session,0.5),Math.min(2,0.5*rate),1e-12,'screen-time playback mapping');
+}
+
 console.log(JSON.stringify({
   suite:'ShotSight P8A canonical quarterer engineering proof v1',
   status:'PASS',
@@ -113,6 +134,9 @@ console.log(JSON.stringify({
     sharedClockNarrativeOrdering:true,
     noDecorativeBreak:true,
     methodFailClosed:true,
-    finiteState:true
+    finiteState:true,
+    directMasterClockFrameStep:true,
+    deterministicScrub:true,
+    playbackRateMapping:true
   }
 },null,2));

@@ -83,3 +83,5 @@ jobs:
           name: p8-looper-rendered-review
           path: artifacts/p8-looper-rendered-review/
           if-no-files-found: warn
+      - name: Run P8C teal gravity-only engineering proof
+        run: node tests/physics-canonical-teal-gravity-v1.mjs

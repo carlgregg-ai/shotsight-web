@@ -6,7 +6,7 @@
   "latest_completed_stage": "P8",
   "current_stage": "P9",
   "current_stage_name": "Video-Understanding Foundation",
-  "current_substage": "P9A_OBSERVATION_AND_PROVENANCE_CONTRACT",
+  "current_substage": "P9B_PHYSICS_CONSTRAINED_FITTING",
   "status": "IN_PROGRESS",
   "p0_checkpoint": "docs/physics/checkpoints/P0_RECOVERY_CONTAINMENT_COMPLETE.md",
   "p1_completion_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_COMPLETE.md",
@@ -20,6 +20,7 @@
   "p8b_completion_checkpoint": "docs/physics/checkpoints/P8B_LOOPER_GRAVITY_ONLY_COMPLETE.md",
   "p8c_completion_checkpoint": "docs/physics/checkpoints/P8C_TEAL_GRAVITY_ONLY_COMPLETE.md",
   "p8_completion_checkpoint": "docs/physics/checkpoints/P8_CANONICAL_EXPANSION_COMPLETE.md",
+  "p9a_completion_checkpoint": "docs/physics/checkpoints/P9A_VIDEO_OBSERVATION_CONTRACT_COMPLETE.md",
   "legacy_motion_status": "INVALIDATED_FOR_INSTRUCTIONAL_PHYSICS",
   "production_simulator_authorised": false,
   "realistic_clay_status": "HOLD_PENDING_VERIFIED_OR_CALIBRATED_AERO_AND_HELD_OUT_REAL_FLIGHT_VALIDATION",
@@ -50,6 +51,12 @@
     "rabbit": "HOLD_RABBIT_GROUND_CONTACT_DYNAMICS_NOT_VALIDATED",
     "realistic_clay_certified": false
   },
+  "p9a_final_verification": {
+    "head": "c238520437bf316791695da52ec6c9aec64ad695",
+    "github_actions_run": 33912840315,
+    "result": "SUCCESS",
+    "scope": "OBSERVATION_PROVENANCE_CALIBRATED_ANGULAR_RECOVERY_AND_MONOCULAR_DEPTH_AMBIGUITY_CONTRACT"
+  },
   "p9_output_classes": ["OBSERVED", "CALIBRATED_DERIVED", "INFERRED", "UNOBSERVABLE_AMBIGUOUS"],
   "p9_rules": [
     "synthetic simulator data may test recovery accuracy but must retain generator provenance",
@@ -58,6 +65,12 @@
     "model-dependent trajectory/method statements must be marked INFERRED and carry assumptions/confidence",
     "failure and ambiguity states are valid outputs"
   ],
-  "next_action": "Implement P9A observation/provenance data contracts and synthetic recovery tests. Start with deterministic target image-coordinate tracks generated from the validated projection layer; prove observed pixel/normalised coordinates can be separated from calibrated angular recovery and that absolute depth is reported UNOBSERVABLE_AMBIGUOUS without calibration. Then add physics-constrained fitting and quantified failure modes before advancing P9.",
+  "p9b_boundary": {
+    "goal": "physics-constrained candidate fitting with quantified residuals and failure modes",
+    "first_model": "CONSTANT_VELOCITY_3D_WITH_EXPLICIT_METRIC_RANGE_ANCHOR",
+    "no_metric_anchor": "UNOBSERVABLE_AMBIGUOUS",
+    "outputs": "INFERRED_WITH_MODEL_ID_ASSUMPTIONS_AND_RESIDUALS"
+  },
+  "next_action": "Implement P9B constant-velocity 3-D bearing-track fitter using calibrated camera rays plus one explicitly provenance-backed metric range anchor to resolve monocular scale. Quantify angular residuals on exact synthetic P8A tracks, demonstrate scale ambiguity without the anchor, and demonstrate elevated residuals/model mismatch on curved gravity-only P8B/P8C tracks. Do not promote the fitted model to realistic clay truth.",
   "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
 }

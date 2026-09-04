@@ -1,63 +1,35 @@
-# ShotSight Stage 5 — Playbook UX (IN PROGRESS)
+# ShotSight Stage 5 — Playbook UX (COMPLETE)
 
 Date: 2026-09-04
-Status: **IN_PROGRESS — runtime QA found and fixed a real integration regression; verification rerun pending**
+Status: **COMPLETE**
 
-## Durable work already completed
+## Completion evidence
 
-- Integrated the certified Playbook into the existing `learnView` through `v02.js` without removing the existing shot-type demonstrations.
-- Changed the Learn navigation/title presentation to `Playbook` while preserving the same app view architecture.
-- Added mobile-first Playbook landing markup, search field, lesson count, evidence-labelled cards, lesson sheet and retained visual-guides section.
-- Added cache-busted dynamic loading of `playbook.css` and `playbook.js`; Playbook initialisation is resilient whether the asset loads before or after `DOMContentLoaded`.
-- Added explicit search-intent detection. Phrases such as `behind on a crosser`, `underneath teal`, `missing above`, `stopping` and similar miss-language enter a visible Diagnose mode, rank diagnostic evidence and open the lesson with the diagnostic section first.
-- Added Learn-mode feedback for presentation-only searches.
-- Improved empty, loading and fetch-error states. A data-load failure preserves the Playbook shell and allows retry instead of destroying the search UI.
-- Added Escape-key closing, backdrop closing, body-scroll locking, modal semantics and mobile sheet overscroll containment.
-- Preserved DIRECT / SYNTHESIS / SHOTSIGHT_HYPOTHESIS / HOLD_DEMOTE evidence labels in the rendered coaching UI.
-- Did not alter or broaden any Stage 4 coaching content or evidence permissions.
+The final Stage 5 production source commit is `abf0e0af73f5473e55767d0b316f0da0f057a084` (`Restore legacy activity grid hosts for runtime compatibility`).
 
-## Runtime QA infrastructure added
+For that exact commit:
 
-A repeatable GitHub Actions browser smoke test now runs the application in Playwright Chromium at both 390×844 mobile and 1280×800 desktop widths. It verifies:
+- GitHub Actions workflow **Playbook browser smoke QA** run `33824253720` completed successfully.
+- The smoke test covered Chromium at 390×844 mobile and 1280×800 desktop widths.
+- The gate verifies static application load without browser console/page errors, loading of the eight certified Playbook lessons, retained visual shot-guide initialisation, Diagnose routing for `behind on a crosser`, diagnosis-first lesson opening, Escape close behaviour, Learn routing for `high looper`, and close-button behaviour.
+- GitHub Pages **pages build and deployment** run `33824253296` completed successfully for the same source commit.
 
-- static app load without browser console/page errors;
-- eight certified representative Playbook lessons load from JSON;
-- retained visual shot guides initialise;
-- `behind on a crosser` enters Diagnose mode and yields a certified result;
-- Diagnose-origin lesson opening places the diagnostic section first;
-- Escape closes the lesson sheet;
-- `high looper` enters Learn mode and yields a lesson;
-- close-button behaviour works.
+The earlier runtime faults were not waived: the lost visual-guide regression was repaired by making the shot-demo renderer re-runnable after Playbook DOM replacement, and the subsequent bootstrap failure was repaired by restoring legacy `#drillGrid` / `#gameGrid` compatibility hosts while retaining the newer Training/Playbook UX.
 
-Files: `.github/workflows/playbook-smoke.yml` and `tests/playbook-smoke.mjs`.
+## Durable Stage 5 result
 
-## Regression found by first browser run
+- Playbook is integrated into the existing application rather than being a disconnected prototype.
+- Search supports plain-language presentation queries and miss-intent routing into Diagnose.
+- Lesson sheets use progressive disclosure and mobile-first modal behaviour.
+- DIRECT / SYNTHESIS / SHOTSIGHT_HYPOTHESIS / HOLD_DEMOTE evidence labels are preserved in the rendered coaching UI.
+- Existing animated shot-type demonstrations remain available as visual guides.
+- Loading, empty and fetch-error states are handled without destroying the Playbook shell.
+- The hosted GitHub Pages build and browser smoke test both pass against the final source commit.
 
-The first automated browser run failed on both mobile and desktop because the retained visual-guide grid was empty after Playbook integration.
+## Stage gate
 
-Root cause: `shot-demos.js` populated the original `#demoGrid` at script evaluation time. Later, `v02.js` replaced the entire Learn DOM with the Playbook markup, creating a new empty `#demoGrid`. The earlier manual source-order review had incorrectly assumed the old demo initialisation would run against the replacement node.
+**Stage 5 status: COMPLETE.**
 
-This is exactly the kind of integration fault Stage 5 runtime QA was intended to catch.
+Next permitted stage: **Stage 6 — Animation / Visual System.**
 
-## Fix persisted
-
-- `shot-demos.js` now exposes `window.renderShotDemoGrid()` and uses it for initial rendering.
-- `v02.js` explicitly calls `window.renderShotDemoGrid()` immediately after replacing the Learn DOM.
-- No coaching content or evidence permissions were changed.
-
-Latest fix commit: `0d761dce61e90c449698ded80ea9f32fb44d363b`.
-
-## Deployment evidence
-
-Before the new QA workflow was added, GitHub Pages build/deploy for commit `b5a08d4cc834cfacd004c3bfc1febc29fec26631` completed successfully. GitHub Pages builds are also being triggered for the newer QA/fix commits. A successful Pages deploy must be confirmed for the final Stage 5 fix commit before completion.
-
-## Still required before Stage 5 may pass
-
-1. Confirm the Playbook browser smoke QA rerun for commit `0d761dce61e90c449698ded80ea9f32fb44d363b` completes successfully at both viewport sizes.
-2. If it fails, inspect the exact browser failure, repair it, persist the fix and rerun; do not waive the gate.
-3. Confirm GitHub Pages deployment succeeds for the same final source commit (or a later checkpoint-only commit whose production tree is unchanged).
-4. Only after both gates pass, replace this file with `STAGE5_COMPLETION_REPORT.md` and permit Stage 6.
-
-## Recovery instruction
-
-Resume at **Stage 5 CI/runtime verification only**. Do not redo Stages 1–4 or completed Stage 5 implementation. Inspect the latest Playbook browser smoke workflow and Pages deployment first. Stage 6 must not begin unless the browser QA and matching deployment gate both pass.
+Stage 6 must create/refine a reusable instructional visual system for the representative lessons and subject important visuals to both technical QA and novice-comprehension QA. Do not broaden coaching claims beyond the Stage 2/4 evidence permissions.

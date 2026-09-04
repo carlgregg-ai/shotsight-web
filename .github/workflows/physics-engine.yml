@@ -51,3 +51,5 @@ jobs:
           name: p7-rendered-review
           path: artifacts/p7-rendered-review/
           if-no-files-found: warn
+      - name: Run P8A quarterer engineering proof
+        run: node tests/physics-canonical-quarterer-v1.mjs

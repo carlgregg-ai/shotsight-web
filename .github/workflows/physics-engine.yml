@@ -64,6 +64,14 @@ jobs:
           if-no-files-found: warn
       - name: Run 3D maths-driven flat-crosser reviewer contract
         run: node tests/physics-reviewer-flat-crosser-v1.mjs
+      - name: Export model-driven flat-crosser reviewer frame manifest
+        run: node tools/export-reviewer-flat-crosser.mjs
+      - name: Upload flat-crosser reviewer manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: reviewer-flat-crosser-model-frames
+          path: artifacts/reviewer-flat-crosser/
+          if-no-files-found: error
       - name: Run P8A quarterer engineering proof
         run: node tests/physics-canonical-quarterer-v1.mjs
       - name: Run P8A quarterer browser debug contract

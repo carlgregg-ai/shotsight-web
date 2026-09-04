@@ -1,0 +1,31 @@
+{
+  "programme": "ShotSight Physics, Kinematics, Ballistics & Video-Understanding",
+  "date": "2026-09-04",
+  "branch": "physics-engine-v1",
+  "master_prompt_path": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_MASTER_PROGRAMME.md",
+  "latest_completed_stage": "P0",
+  "current_stage": "P1",
+  "current_stage_name": "Evidence / Parameter Register",
+  "status": "IN_PROGRESS",
+  "p0_checkpoint": "docs/physics/checkpoints/P0_RECOVERY_CONTAINMENT_COMPLETE.md",
+  "p1_register": "docs/physics/EVIDENCE_PARAMETER_REGISTER_v0.1.md",
+  "legacy_motion_status": "INVALIDATED_FOR_INSTRUCTIONAL_PHYSICS",
+  "production_simulator_authorised": false,
+  "protected_existing_assets": [
+    "Playbook content/evidence architecture",
+    "target taxonomy/search",
+    "diagnostic engine",
+    "mobile/desktop UX",
+    "deployment/hosted parity infrastructure"
+  ],
+  "high_priority_holds": [
+    "clay aerodynamic coefficients",
+    "target release spin",
+    "trap setting to launch state mapping",
+    "pellet drag/time-of-flight parameterisation",
+    "camera-to-bore calibration uncertainty",
+    "method transition tolerances"
+  ],
+  "next_action": "Continue P1 deep research and source extraction; do not start production physics simulator until P1 and P2 gates pass.",
+  "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
+}

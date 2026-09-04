@@ -24,32 +24,41 @@ async function pollOk(url,{attempts=80,delay=125}={}){
   }
   throw new Error(`Timed out waiting for ${url}: ${last}`);
 }
-async function pollJson(url,{attempts=80,delay=125}={}){
+async function pollJson(url,{attempts=120,delay=125,onTimeout=null}={}){
   let last;
   for(let i=0;i<attempts;i++){
     try{const r=await fetch(url);if(r.ok)return await r.json();last=`HTTP ${r.status}`;}catch(e){last=String(e);}
     await sleep(delay);
   }
-  throw new Error(`Timed out waiting for ${url}: ${last}`);
+  const extra=typeof onTimeout==='function'?onTimeout():'';
+  throw new Error(`Timed out waiting for ${url}: ${last}${extra?`\n${extra}`:''}`);
 }
 
 const server=spawn('python3',['-m','http.server','8765','--bind','127.0.0.1'],{cwd:ROOT,stdio:['ignore','pipe','pipe']});
-const chrome=spawn(executable(),[
+const chromeExe=executable();
+const chromeVersion=spawnSync(chromeExe,['--version'],{encoding:'utf8'});
+console.log(`P7 rendered review browser: ${chromeExe} ${chromeVersion.stdout.trim()||chromeVersion.stderr.trim()}`);
+const chrome=spawn(chromeExe,[
   '--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--disable-background-networking',
-  '--remote-debugging-port=9222','--remote-allow-origins=*',`--user-data-dir=/tmp/shotsight-p7-chrome-${process.pid}`,'about:blank'
+  '--no-first-run','--no-default-browser-check','--remote-debugging-address=127.0.0.1','--remote-debugging-port=9222',
+  '--remote-allow-origins=*',`--user-data-dir=/tmp/shotsight-p7-chrome-${process.pid}`,'about:blank'
 ],{stdio:['ignore','pipe','pipe']});
+let chromeStdout='',chromeStderr='';
+chrome.stdout.on('data',d=>{chromeStdout+=d.toString();if(chromeStdout.length>20000)chromeStdout=chromeStdout.slice(-20000);});
+chrome.stderr.on('data',d=>{chromeStderr+=d.toString();if(chromeStderr.length>20000)chromeStderr=chromeStderr.slice(-20000);});
 
 let ws;
 let seq=0;
 const pending=new Map();
+function chromeDiagnostics(){return `Chrome exitCode=${chrome.exitCode} signalCode=${chrome.signalCode}\nstdout:\n${chromeStdout||'(empty)'}\nstderr:\n${chromeStderr||'(empty)'}`;}
 function cleanup(){try{ws?.close();}catch{} try{chrome.kill('SIGKILL');}catch{} try{server.kill('SIGKILL');}catch{}}
 process.on('exit',cleanup);
 
 try{
   await pollOk('http://127.0.0.1:8765/p7-debug.html');
-  const pages=await pollJson('http://127.0.0.1:9222/json/list');
+  const pages=await pollJson('http://127.0.0.1:9222/json/list',{onTimeout:chromeDiagnostics});
   const page=pages.find(p=>p.type==='page');
-  if(!page?.webSocketDebuggerUrl)throw new Error('No debuggable Chrome page');
+  if(!page?.webSocketDebuggerUrl)throw new Error(`No debuggable Chrome page\n${chromeDiagnostics()}`);
   ws=new WebSocket(page.webSocketDebuggerUrl);
   await new Promise((resolve,reject)=>{ws.addEventListener('open',resolve,{once:true});ws.addEventListener('error',reject,{once:true});});
   ws.addEventListener('message',ev=>{const msg=JSON.parse(ev.data);if(msg.id&&pending.has(msg.id)){const {resolve,reject}=pending.get(msg.id);pending.delete(msg.id);msg.error?reject(new Error(JSON.stringify(msg.error))):resolve(msg.result);}});
@@ -95,7 +104,7 @@ try{
   assert.ok(mobile.projectionWidth<=mobile.viewport&&mobile.projectionRight<=mobile.viewport+1,'projection must fit mobile viewport');
   await screenshot('mobile-start');
 
-  const report={suite:'ShotSight P7 rendered adversarial review',status:'PASS',desktop,control,mobile,notes:['Exact p7-debug.html rendered in headless Chrome on CI runner','Screenshots are engineering QA artefacts, not realistic clay certification','No BREAK is expected because no authorised hit predicate exists']};
+  const report={suite:'ShotSight P7 rendered adversarial review',status:'PASS',desktop,control,mobile,browser:{executable:chromeExe,version:chromeVersion.stdout.trim()||chromeVersion.stderr.trim()},notes:['Exact p7-debug.html rendered in headless Chrome on CI runner','Screenshots are engineering QA artefacts, not realistic clay certification','No BREAK is expected because no authorised hit predicate exists']};
   await writeFile(`${OUT}report.json`,JSON.stringify(report,null,2));
   console.log(JSON.stringify({suite:report.suite,status:report.status,tests:{desktopLayout:true,mobileContainment:true,qaEvents:true,frameStep:true,scrub:true,playbackRates:true,certificationLocks:true}},null,2));
 }finally{cleanup();}

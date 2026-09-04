@@ -1,0 +1,35 @@
+name: Playbook browser smoke QA
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start static server
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/shotsight-http.log 2>&1 &
+          echo $! > /tmp/shotsight-http.pid
+          for i in {1..20}; do
+            curl -fsS http://127.0.0.1:8000/ >/dev/null && exit 0
+            sleep 0.5
+          done
+          cat /tmp/shotsight-http.log
+          exit 1
+      - name: Run mobile and desktop Playbook smoke QA
+        run: node tests/playbook-smoke.mjs

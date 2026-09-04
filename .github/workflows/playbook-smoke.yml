@@ -37,6 +37,14 @@ jobs:
         run: node tests/diagnosis-smoke.mjs
       - name: Run realistic mobile and desktop product journeys
         run: node tests/product-journeys.mjs
+      - name: Audit deployed production parity, routes, PWA metadata and console
+        env:
+          SHOTSIGHT_BASE_URL: https://carlgregg-ai.github.io/shotsight-web/
+        run: node tests/hosted-release.mjs
+      - name: Run realistic journeys against deployed GitHub Pages
+        env:
+          SHOTSIGHT_BASE_URL: https://carlgregg-ai.github.io/shotsight-web/
+        run: node tests/product-journeys.mjs
       - name: Upload Playbook visual QA screenshots
         if: always()
         uses: actions/upload-artifact@v4

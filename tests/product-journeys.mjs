@@ -26,8 +26,8 @@ async function run(label,viewport){
   await page.locator('#diagnosisAgain').click();await choose(page,'fast_flat_quartering_away');await choose(page,'ahead');const stopped=await page.locator('#diagnosisBody').innerText();if(!/UNCERTAINTY RETAINED/.test(stopped)||!/will not borrow its fix/i.test(stopped))throw new Error(`${label}: unsupported branch did not stop safely`);await page.locator('#diagnosisClose').click();
   // Progress remains reachable after the above journeys.
   await page.locator('.tab[data-view="progressView"]').click();await page.locator('#progressView.active').waitFor();for(const id of ['statSessions','statMinutes','statBest','historyList'])if(await page.locator(`#${id}`).count()!==1)throw new Error(`${label}: progress element ${id} missing`);
-  // Mobile tap-target sanity for persistent navigation.
-  if(viewport.width<600){const boxes=await page.locator('.tabbar .tab').evaluateAll(els=>els.map(e=>{const r=e.getBoundingClientRect();return {w:r.width,h:r.height,left:r.left,right:r.right}}));if(boxes.length!==5||boxes.some(b=>b.w<44||b.h<44||b.left<0||b.right>innerWidth+1))throw new Error(`${label}: persistent nav tap targets do not fit mobile viewport`)}
+  // Mobile tap-target sanity for persistent navigation. Use the Playwright viewport value here: this assertion runs in Node, not in the page context.
+  if(viewport.width<600){const boxes=await page.locator('.tabbar .tab').evaluateAll(els=>els.map(e=>{const r=e.getBoundingClientRect();return {w:r.width,h:r.height,left:r.left,right:r.right}}));if(boxes.length!==5||boxes.some(b=>b.w<44||b.h<44||b.left<0||b.right>viewport.width+1))throw new Error(`${label}: persistent nav tap targets do not fit mobile viewport`)}
   if(errors.length)throw new Error(`${label}: browser errors: ${errors.join(' | ')}`);console.log(`PASS ${label}: realistic Today/Train/Playbook/Diagnose/Progress journeys, evidence holds, safe uncertainty, navigation fit and console gate verified.`);
  }finally{await page.close()}
 }

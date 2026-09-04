@@ -1,0 +1,8 @@
+import fs from 'node:fs';import path from 'node:path';import {createMethodComparisonScenario,methodComparisonFrame,METHOD_REVIEW_FRAME_RATE_HZ,METHOD_REVIEW_DURATION_S,METHOD_REVIEW_CONFIG} from '../physics/reviewer-method-comparison-v1.mjs';
+const scenario=createMethodComparisonScenario();const out=path.resolve('artifacts/reviewer-method-comparison');fs.mkdirSync(out,{recursive:true});
+for(const id of Object.keys(METHOD_REVIEW_CONFIG)){
+  const frames=[];const count=Math.round(METHOD_REVIEW_DURATION_S*METHOD_REVIEW_FRAME_RATE_HZ);
+  for(let i=0;i<=count;i++){const t=i/METHOD_REVIEW_FRAME_RATE_HZ,f=methodComparisonFrame(scenario,id,t);frames.push({frameIndex:i,t_s:t,target:f.target,gun:f.gun,method:f.method,labels:f.labels,events:f.events,ballistic:{pelletArrival_s:f.baseState.ballistic.pelletArrival_s,pelletTOF_s:f.baseState.ballistic.shotIntercept.pelletTOF_s}});}
+  const m=METHOD_REVIEW_CONFIG[id];fs.writeFileSync(path.join(out,`${id.toLowerCase()}.json`),JSON.stringify({schema:'SHOTSIGHT_REVIEWER_METHOD_COMPARISON_V1',status:'PROVISIONAL_METHOD_KINEMATIC_HYPOTHESIS_FOR_EXPERT_REVIEW',frameRate_hz:METHOD_REVIEW_FRAME_RATE_HZ,duration_s:METHOD_REVIEW_DURATION_S,scenario:{id:scenario.id,status:scenario.status,shotTime_s:scenario.shotTime_s,provider:scenario.provider,limitations:scenario.limitations},method:{id:m.id,name:m.name,sourceRegistryId:m.sourceRegistryId,evidenceClass:'SHOTSIGHT_HYPOTHESIS',kinematicsStatus:'SHOTSIGHT_HYPOTHESIS_PENDING_EXPERT_REVIEW',parameters:m.parameters,interpretation:m.interpretation},frames},null,2));
+}
+console.log('wrote method-comparison manifests',out);

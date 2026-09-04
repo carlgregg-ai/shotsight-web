@@ -72,6 +72,16 @@ jobs:
           name: reviewer-flat-crosser-model-frames
           path: artifacts/reviewer-flat-crosser/
           if-no-files-found: error
+      - name: Run three-method reviewer hypothesis contract
+        run: node tests/physics-reviewer-method-comparison-v1.mjs
+      - name: Export three-method reviewer manifests
+        run: node tools/export-reviewer-method-comparison.mjs
+      - name: Upload three-method reviewer manifests
+        uses: actions/upload-artifact@v4
+        with:
+          name: reviewer-method-comparison-model-frames
+          path: artifacts/reviewer-method-comparison/
+          if-no-files-found: error
       - name: Run P8A quarterer engineering proof
         run: node tests/physics-canonical-quarterer-v1.mjs
       - name: Run P8A quarterer browser debug contract

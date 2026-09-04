@@ -1,0 +1,18 @@
+{
+  "programme": "ShotSight Virtual Shooter — Learn to Shoot",
+  "branch": "virtual-shooter-v1",
+  "master_programme": "docs/learning/SHOTSIGHT_VIRTUAL_SHOOTER_MASTER_PROGRAMME.md",
+  "status": "ACTIVE",
+  "current_stage": "L0",
+  "current_stage_name": "Containment and baselines",
+  "current_substage": "L0_RECOVER_AND_DEFINE_INFORMATION_BOUNDARY",
+  "latest_verified_checkpoint": null,
+  "oracle_world_status": "TO_BUILD_FROM_VALIDATED_PHYSICS_INTERFACES",
+  "shooter_observation_status": "NOT_YET_IMPLEMENTED",
+  "anti_cheat_audit_status": "NOT_YET_IMPLEMENTED",
+  "first_experiment_target_family": "CROSSERS",
+  "initial_presentation_budget": 100000,
+  "primary_methods": ["SWING_THROUGH", "PULL_AWAY", "MAINTAINED_LEAD"],
+  "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, ACTS, REMEMBERS AND LEARNS.",
+  "next_action": "Implement L0 information-boundary contracts and prove the perception-limited shooter cannot access privileged oracle state. Then establish oracle ceiling and naive shooter baselines before any learning run."
+}

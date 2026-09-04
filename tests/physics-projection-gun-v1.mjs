@@ -9,31 +9,31 @@ import {
 const near=(a,b,tol,msg)=>assert.ok(Math.abs(a-b)<=tol,`${msg}: expected ${b}, got ${a}, tol ${tol}`);
 const nearVec=(a,b,tol,msg)=>a.forEach((v,i)=>near(v,b[i],tol,`${msg}[${i}]`));
 
-// World->camera convention: world X right -> camera X right; world Z up -> camera Y up;
-// world Y forward -> camera Z optical-forward.
-const R_CW=[[1,0,0],[0,0,1],[0,1,0]];
+// Corrected right-handed world->camera convention:
+// world X right -> camera X right; world Z up -> camera -Y (raster up);
+// world Y forward -> camera +Z optical-forward.
+const R_CW=[[1,0,0],[0,0,-1],[0,1,0]];
 assert.equal(assertProperRotationMatrix(R_CW),true);
-nearVec(worldPointToCamera({point_W:[2,10,3],cameraOrigin_W:[0,0,1],R_CW}),[2,2,10],1e-14,'world-camera mapping');
-assert.throws(()=>worldPointToCamera({point_W:[0,10,0],cameraOrigin_W:[0,0,0],R_CW:[[2,0,0],[0,0,1],[0,1,0]]}),/unit length|proper rotation/);
-assert.throws(()=>assertProperRotationMatrix([[-1,0,0],[0,0,1],[0,1,0]]),/determinant.*\+1/);
+nearVec(worldPointToCamera({point_W:[2,10,3],cameraOrigin_W:[0,0,1],R_CW}),[2,-2,10],1e-14,'world-camera mapping');
+assert.throws(()=>worldPointToCamera({point_W:[0,10,0],cameraOrigin_W:[0,0,0],R_CW:[[2,0,0],[0,0,-1],[0,1,0]]}),/unit length|proper rotation/);
+assert.throws(()=>assertProperRotationMatrix([[-1,0,0],[0,0,-1],[0,1,0]]),/determinant.*\+1/);
 
 const intr=intrinsicsFromHorizontalFov({width_px:1000,height_px:500,hfov_rad:Math.PI/2});
 near(intr.fx_px,500,1e-12,'90deg horizontal FOV fx');
 near(intr.fy_px,500,1e-12,'square-pixel fy');
 const centre=projectCameraPointPinhole({point_C:[0,0,10],...intr});
 assert.equal(centre.visible,true);near(centre.u_px,500,1e-12,'centre u');near(centre.v_px,250,1e-12,'centre v');
-const upRight=projectCameraPointPinhole({point_C:[1,2,10],...intr});
-near(upRight.u_px,550,1e-12,'right increases raster u');near(upRight.v_px,150,1e-12,'camera up decreases raster v');
+const upRight=projectCameraPointPinhole({point_C:[1,-2,10],...intr});
+near(upRight.u_px,550,1e-12,'right increases raster u');near(upRight.v_px,150,1e-12,'camera negative-Y/up decreases raster v');
 assert.equal(projectCameraPointPinhole({point_C:[0,0,-1],...intr}).visible,false);
 
 const ang=apparentAnglesFromCameraVector([1,0,1]);
 near(ang.az_rad,Math.PI/4,1e-15,'apparent azimuth');near(ang.el_rad,0,1e-15,'apparent elevation');
-const elev=apparentAnglesFromCameraVector([0,1,1]);
+const elev=apparentAnglesFromCameraVector([0,-1,1]);
 near(elev.el_rad,Math.PI/4,1e-15,'apparent elevation positive-up');
 
 // Eye/camera origins must remain separate: a finite 0.1m right-offset camera viewing a
-// point 10m forward produces a non-zero parallax angle. This test prevents accidental
-// re-collapse of eye/camera/bore origins in later video code.
+// point 10m forward produces a non-zero parallax angle.
 const targetW=[0,10,0];
 const eyeC=worldPointToCamera({point_W:targetW,cameraOrigin_W:[0,0,0],R_CW});
 const offsetC=worldPointToCamera({point_W:targetW,cameraOrigin_W:[0.1,0,0],R_CW});
@@ -65,6 +65,7 @@ near(hist[0].angularSpeed_radps,0.5,1e-13,'bore history accepted under explicit 
 assert.throws(()=>validateBoreHistory([{t_s:0,bore_W:[0,1,0]},{t_s:0.1,bore_W:b1}],{maxAngularSpeed_radps:0.4}),/exceeds supplied scenario validation bound/);
 assert.throws(()=>validateBoreHistory([{t_s:0.1,bore_W:[0,1,0]},{t_s:0.1,bore_W:b1}]),/strictly increasing/);
 
+assert.equal(P5_PROJECTION_GUN_STATUS.cameraHandedness,'RIGHT_HANDED_X_RIGHT_Y_DOWN_Z_FORWARD');
 assert.equal(P5_PROJECTION_GUN_STATUS.cameraToBoreCalibration,'HOLD_FOR_REAL_VIDEO');
 assert.equal(P5_PROJECTION_GUN_STATUS.eyeCameraCoincidence,'NOT_ASSUMED');
 assert.match(P5_PROJECTION_GUN_STATUS.humanGunSpeedBound,/NOT_INVENTED/);

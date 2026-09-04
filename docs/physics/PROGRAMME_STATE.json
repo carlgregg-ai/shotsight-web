@@ -9,23 +9,28 @@
   "status": "IN_PROGRESS",
   "p0_checkpoint": "docs/physics/checkpoints/P0_RECOVERY_CONTAINMENT_COMPLETE.md",
   "p1_register": "docs/physics/EVIDENCE_PARAMETER_REGISTER_v0.1.md",
+  "latest_p1_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_TRANCHE2_CHECKPOINT.md",
   "legacy_motion_status": "INVALIDATED_FOR_INSTRUCTIONAL_PHYSICS",
   "production_simulator_authorised": false,
-  "protected_existing_assets": [
-    "Playbook content/evidence architecture",
-    "target taxonomy/search",
-    "diagnostic engine",
-    "mobile/desktop UX",
-    "deployment/hosted parity infrastructure"
+  "verified_p1_progress": [
+    "ISSF standard target envelope and competition trajectory sanity constraints",
+    "Laporte special-target dimensions/masses",
+    "Promatic machine capability boundary",
+    "Andert/Freudenthal/Levedag clay-specific flight-dynamics and stereo-identification model structure",
+    "Allen 2018 free-spherical-pellet drag/TOF model scope and limitation",
+    "ShotKam FOV/frame-rate and camera-to-bore convergence/parallax boundary",
+    "qualitative trap spin-generation mechanism",
+    "existing source-attributed coaching method vocabulary without numerical tolerances"
   ],
   "high_priority_holds": [
-    "clay aerodynamic coefficients",
+    "exact clay aerodynamic coefficient values and cross-target applicability",
     "target release spin",
     "trap setting to launch state mapping",
-    "pellet drag/time-of-flight parameterisation",
+    "exact Allen drag/TOF coefficient/formula extraction",
+    "dense shot-cloud interaction correction and shot string",
     "camera-to-bore calibration uncertainty",
-    "method transition tolerances"
+    "method transition tolerances and expert gun angular kinematics"
   ],
-  "next_action": "Continue P1 deep research and source extraction; do not start production physics simulator until P1 and P2 gates pass.",
+  "next_action": "Continue P1 tranche 3: fully extract Andert numerical parameters/model-fit details and Allen drag/TOF formulas; bound free-pellet TOF with interacting-shot evidence; audit method source permissions; then build P1 exit matrix. Do not start P2 until P1 exit criteria pass.",
   "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
 }

@@ -1,8 +1,10 @@
 import { chromium } from 'playwright';
+import fs from 'node:fs/promises';
 
 const base = process.env.SHOTSIGHT_BASE_URL || 'http://127.0.0.1:8000/';
 const browser = await chromium.launch({headless:true});
 let failed = false;
+await fs.mkdir('artifacts/playbook-visuals',{recursive:true});
 
 async function run(label, viewport) {
   const page = await browser.newPage({ viewport });
@@ -37,6 +39,7 @@ async function run(label, viewport) {
       if (await visual.locator('svg .pb-target-path').count() < 1) throw new Error(`${label}: lesson ${id} missing target path`);
       if (!/SCHEMATIC/.test(await visual.locator('.pb-visual-head').innerText())) throw new Error(`${label}: lesson ${id} missing schematic/not-to-scale disclosure`);
       if (!(await visual.locator('figcaption').innerText()).trim()) throw new Error(`${label}: lesson ${id} missing novice explanatory caption`);
+      await visual.screenshot({path:`artifacts/playbook-visuals/${label}-${id}.png`});
       await page.locator('#playbookClose').click();
       await page.waitForFunction(() => !document.querySelector('#playbookSheet')?.classList.contains('active'));
     }

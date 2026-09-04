@@ -18,20 +18,23 @@ const diagnosticCompatibility={
   rising_teal_under_power:['vertical','inconsistent'],
   crossing_rabbit:['ahead','inconsistent'],
   driven_incoming:['behind','lose','rush'],
-  pair_planning:['lose','rush']
+  pair_planning:['lose','rush'],
+  rising_quartering_outgoing:['behind','lose']
 };
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function buildDiagnosisUI(){
   const host=document.querySelector('#shooterDiagnosis');if(!host)return;
-  host.innerHTML=`<div class="diagnosis-intro"><span class="diag-badge">PRESENTATION → RESULT → TEST → FIX → RETEST</span><h2>Work out what is actually going wrong</h2><p>ShotSight now starts with the target, keeps competing causes visible, and only gives a correction where the representative Playbook has a certified diagnostic branch.</p><button class="primary big" id="startShooterDiagnosis">Start diagnosis <span>→</span></button></div>`;
+  host.innerHTML=`<div class="diagnosis-intro"><span class="diag-badge">PRESENTATION → RESULT → TEST → FIX → RETEST</span><h2>Work out what is actually going wrong</h2><p>ShotSight starts with the target, keeps competing causes visible, and only gives a correction where the certified Playbook has a diagnostic branch.</p><button class="primary big" id="startShooterDiagnosis">Start diagnosis <span>→</span></button></div>`;
   document.querySelector('#startShooterDiagnosis')?.addEventListener('click',openShooterDiagnosis);
 }
 
 async function ensureDiagnosticLessons(){
   if(diagnosticLessons.length)return diagnosticLessons;
-  const r=await fetch('data/playbook-representative-v1.json?v=20260904-0408',{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);const data=await r.json();diagnosticLessons=Array.isArray(data.lessons)?data.lessons:[];return diagnosticLessons;
+  const urls=['data/playbook-representative-v1.json?v=20260904-0408','data/playbook-expansion-stage8-v1.json?v=20260904-0418'];
+  const data=await Promise.all(urls.map(async url=>{const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error(`${url}: HTTP ${r.status}`);return r.json()}));
+  diagnosticLessons=data.flatMap(d=>Array.isArray(d.lessons)?d.lessons:[]);const ids=new Set();for(const l of diagnosticLessons){if(ids.has(l.id))throw new Error(`Duplicate diagnostic lesson id: ${l.id}`);ids.add(l.id)}return diagnosticLessons;
 }
 
 async function openShooterDiagnosis(){
@@ -59,7 +62,7 @@ function renderObservedResultQuestion(){
 
 function renderContextQuestion(){
   shooterStep=3;setProgress('3 / 4');const lesson=diagnosticLessons.find(l=>l.id===shooterAnswers.presentation);const d=lesson?.diagnose?.[0];const body=document.querySelector('#diagnosisBody');if(!body||!d)return renderUnmatched();
-  body.innerHTML=`<span class="diag-badge">3 · WHAT YOU SAW / FELT</span><h2>Before choosing a cause, can you describe the context clearly?</h2><p class="diagnosis-sub">The current certified branch is <strong>${esc(d.symptom)}</strong>. If that does not describe your repeatable miss, the engine should remain uncertain.</p><div class="diagnosis-options">${optionButton('clear','Yes — this is the same repeatable pattern','Continue to the branch’s discriminating test.')} ${optionButton('different','No — that description is not quite my miss','Do not inherit this branch’s correction.')} ${optionButton('unclear','I am not sure','Hold the diagnosis and gather a cleaner observation.')}</div>`;
+  body.innerHTML=`<span class="diag-badge">3 · WHAT YOU SAW / FELT</span><h2>Before choosing a cause, can you describe the context clearly?</h2><p class="diagnosis-sub">The current certified branch is <strong>${esc(d.symptom)}</strong>. ${d.label==='SHOTSIGHT_HYPOTHESIS'?'Its mechanism/test layer is explicitly a ShotSight hypothesis. ':''}If that does not describe your repeatable miss, the engine should remain uncertain.</p><div class="diagnosis-options">${optionButton('clear','Yes — this is the same repeatable pattern','Continue to the branch’s discriminating test.')} ${optionButton('different','No — that description is not quite my miss','Do not inherit this branch’s correction.')} ${optionButton('unclear','I am not sure','Hold the diagnosis and gather a cleaner observation.')}</div>`;
   bindAnswers(v=>{shooterAnswers.context=v;if(v!=='clear')return renderInsufficient('The certified branch does not yet fit cleanly.','Repeat the presentation and record the miss more precisely before selecting a mechanism or correction.');renderDiscriminator()});
 }
 
@@ -71,7 +74,7 @@ function renderDiscriminator(){
 
 function renderUnmatched(){
   const lesson=diagnosticLessons.find(l=>l.id===shooterAnswers.presentation);const d=lesson?.diagnose?.[0];const chosen=symptomOptions.find(o=>o[0]===shooterAnswers.symptom)?.[1]||'uncertain result';
-  renderInsufficient(`No certified ${chosen.toLowerCase()} branch exists yet for ${lesson?.name||'this presentation'}.`,d?`The currently certified branch for this lesson is “${d.symptom}”. ShotSight will not borrow its fix for a different miss.`:'No representative diagnostic branch is available.');
+  renderInsufficient(`No certified ${chosen.toLowerCase()} branch exists yet for ${lesson?.name||'this presentation'}.`,d?`The currently certified branch for this lesson is “${d.symptom}”. ShotSight will not borrow its fix for a different miss.`:'No certified diagnostic branch is available.');
 }
 
 function renderInsufficient(title,reason){
@@ -82,7 +85,7 @@ function renderInsufficient(title,reason){
 
 function renderSupportedResult(){
   const lesson=diagnosticLessons.find(l=>l.id===shooterAnswers.presentation),d=lesson?.diagnose?.[0];if(!d)return renderUnmatched();setProgress('RESULT');const body=document.querySelector('#diagnosisBody');
-  body.innerHTML=`<span class="diag-badge">SUPPORTED COACHING HYPOTHESIS</span><h2>${esc(lesson.name)}</h2><div class="diagnosis-confidence">Branch supported — not proven</div><div class="diagnosis-tree-view"><div><span>PRESENTATION</span><strong>${esc(lesson.name)}</strong></div><i>↓</i><div><span>OBSERVED RESULT</span><strong>${esc(d.symptom)}</strong></div><i>↓</i><div><span>DISCRIMINATING TEST</span><strong>${esc(d.question)}</strong></div><i>↓</i><div class="active"><span>CANDIDATE MECHANISMS</span><strong>${esc((d.candidate_mechanisms||[]).join(' · '))}</strong></div></div><div class="diagnosis-explain"><span>INTERPRETATION</span><p>${esc(d.interpretation)}</p></div><div class="diagnosis-fix"><span>CORRECTION</span><strong>${esc(d.fix)}</strong><p><strong>Retest:</strong> ${esc(d.retest)}</p></div><div class="diagnosis-actions"><button class="secondary-button" id="diagnosisAgain">Ask again</button><button class="primary" id="diagnosisPlaybook">Open lesson</button></div><p class="diagnosis-note">This remains a coaching hypothesis from a certified representative branch. It is not proof of where the shot went or a medical/vision/gun-fit diagnosis.</p>`;
+  body.innerHTML=`<span class="diag-badge">SUPPORTED COACHING HYPOTHESIS</span><h2>${esc(lesson.name)}</h2><div class="diagnosis-confidence">Branch supported — not proven</div><div class="diagnosis-tree-view"><div><span>PRESENTATION</span><strong>${esc(lesson.name)}</strong></div><i>↓</i><div><span>OBSERVED RESULT</span><strong>${esc(d.symptom)}</strong></div><i>↓</i><div><span>DISCRIMINATING TEST</span><strong>${esc(d.question)}</strong></div><i>↓</i><div class="active"><span>CANDIDATE MECHANISMS</span><strong>${esc((d.candidate_mechanisms||[]).join(' · '))}</strong></div></div><div class="diagnosis-explain"><span>INTERPRETATION</span><p>${esc(d.interpretation)}</p></div><div class="diagnosis-fix"><span>CORRECTION${d.label?` · ${esc(d.label)}`:''}</span><strong>${esc(d.fix)}</strong><p><strong>Retest:</strong> ${esc(d.retest)}</p></div><div class="diagnosis-actions"><button class="secondary-button" id="diagnosisAgain">Ask again</button><button class="primary" id="diagnosisPlaybook">Open lesson</button></div><p class="diagnosis-note">This remains a coaching hypothesis from a certified branch. It is not proof of where the shot went or a medical/vision/gun-fit diagnosis.</p>`;
   document.querySelector('#diagnosisAgain')?.addEventListener('click',renderPresentationQuestion);document.querySelector('#diagnosisPlaybook')?.addEventListener('click',openSelectedPlaybook);
 }
 

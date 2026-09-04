@@ -34,3 +34,5 @@ jobs:
         run: node tests/physics-projection-gun-v1.mjs
       - name: Run P6 method and narrative fail-closed validation
         run: node tests/physics-method-narrative-v1.mjs
+      - name: Run P6 source-attributed method registry validation
+        run: node tests/physics-method-registry-v1.mjs

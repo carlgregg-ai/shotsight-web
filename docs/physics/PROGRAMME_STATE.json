@@ -6,7 +6,7 @@
   "latest_completed_stage": "P6",
   "current_stage": "P7",
   "current_stage_name": "Integrated Canonical Flat-Crosser Simulator",
-  "status": "IN_PROGRESS_POST_REPAIR_RENDERED_REVIEW",
+  "status": "IN_PROGRESS_RENDERER_REPAIR_PENDING_VERIFICATION",
   "p0_checkpoint": "docs/physics/checkpoints/P0_RECOVERY_CONTAINMENT_COMPLETE.md",
   "p1_completion_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_COMPLETE.md",
   "p2_completion_checkpoint": "docs/physics/checkpoints/P2_SPECIFICATION_COMPLETE.md",
@@ -14,7 +14,7 @@
   "p4_completion_checkpoint": "docs/physics/checkpoints/P4_BALLISTICS_INTERCEPT_ENGINE_COMPLETE.md",
   "p5_completion_checkpoint": "docs/physics/checkpoints/P5_PROJECTION_GUN_KINEMATICS_COMPLETE.md",
   "p6_completion_checkpoint": "docs/physics/checkpoints/P6_METHOD_NARRATIVE_ENGINE_COMPLETE.md",
-  "p7_checkpoint": "docs/physics/checkpoints/P7_METHOD_MISLABEL_REPAIRED_CI_GREEN_1.md",
+  "p7_checkpoint": "docs/physics/checkpoints/P7_RENDERED_REVIEW_FINDINGS_AND_RENDERER_REPAIR_1.md",
   "legacy_motion_status": "INVALIDATED_FOR_INSTRUCTIONAL_PHYSICS",
   "production_simulator_authorised": false,
   "realistic_clay_status": "HOLD_PENDING_VERIFIED_OR_CALIBRATED_AERO_AND_HELD_OUT_REAL_FLIGHT_VALIDATION",
@@ -49,18 +49,22 @@
     "NSCA_LONG_CROSSER_PULL_AWAY retained as SOURCE_REFERENCE_ONLY with HOLD_NOT_IMPLEMENTED kinematics",
     "active coaching method telemetry forced null while method kinematics are unimplemented",
     "regression guard prevents coaching-method mislabelling",
-    "GitHub Actions run 33898370365 SUCCESS at head 4320c3a26260cec2f520242134a9038fa90ff670"
+    "GitHub Actions run 33898370365 SUCCESS at head 4320c3a26260cec2f520242134a9038fa90ff670",
+    "GitHub Actions run 33898464474 SUCCESS at pre-render-review head 72979c3fde2697d54ea423998831aad722fa7a71"
   ],
   "p7_resolved_gate_findings": [
-    "Resolved: displayed bore path is now explicitly ENGINEERING_INTERCEPT_REFERENCE rather than an active NSCA pull-away method.",
+    "Resolved: displayed bore path is explicitly ENGINEERING_INTERCEPT_REFERENCE rather than an active NSCA pull-away method.",
     "Resolved: source coaching method identity is reference-only and cannot be exposed as active gun strategy without implemented/authorised kinematics.",
-    "Resolved: browser/debug telemetry visibly separates engineering strategy provenance from coaching-method reference provenance."
+    "Resolved: browser/debug telemetry visibly separates engineering strategy provenance from coaching-method reference provenance.",
+    "Repair pending CI verification: arbitrary linear SVG angle scale/hard clipping replaced by normalised pinhole auto-fit debug projection.",
+    "Repair pending CI verification: mobile QA table overflow containment and explicit pre-shot QA frame added."
   ],
   "p7_remaining_gate_work": [
-    "post-repair rendered adversarial frame-by-frame visual/narrative review",
-    "mobile layout and control interaction review",
+    "verify CI for renderer/mobile repair",
+    "post-repair desktop/mobile rendered adversarial frame-by-frame visual/narrative review",
+    "control interaction review for play pause frame-step slow-motion and scrub",
     "explicit P7 completion/no-go decision"
   ],
-  "next_action": "Perform the post-repair rendered adversarial P7 review at start, pre-shot, shot, pellet-arrival and end/follow-through. Verify target/bore geometry, strategy/reference labels, HOLD labels, event timing, scrub/frame-step behaviour and mobile layout. If clean, persist P7 completion and immediately begin P8; otherwise persist a new failed checkpoint. Do not advance to P8 before this gate passes.",
+  "next_action": "Verify CI for P7_RENDERED_REVIEW_FINDINGS_AND_RENDERER_REPAIR_1. Then perform the post-repair desktop/mobile rendered/control review at start, immediately pre-shot, shot, pellet-arrival and end/reference continuation. If clean, persist P7 completion and immediately begin P8; otherwise persist the next failed checkpoint. Do not advance to P8 before this gate passes.",
   "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
 }

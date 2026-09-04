@@ -98,3 +98,5 @@ jobs:
           name: p8-teal-rendered-review
           path: artifacts/p8-teal-rendered-review/
           if-no-files-found: warn
+      - name: Run P9A video observation/provenance recovery tests
+        run: node tests/physics-video-observation-v1.mjs

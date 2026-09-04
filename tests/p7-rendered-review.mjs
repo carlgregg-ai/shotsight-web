@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import {spawn,spawnSync} from 'node:child_process';
 import {writeFile,mkdir} from 'node:fs/promises';
-import {existsSync} from 'node:fs';
 import process from 'node:process';
 
 const ROOT=new URL('../',import.meta.url).pathname;
@@ -17,6 +16,14 @@ function executable(){
 }
 
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+async function pollOk(url,{attempts=80,delay=125}={}){
+  let last;
+  for(let i=0;i<attempts;i++){
+    try{const r=await fetch(url);if(r.ok)return true;last=`HTTP ${r.status}`;}catch(e){last=String(e);}
+    await sleep(delay);
+  }
+  throw new Error(`Timed out waiting for ${url}: ${last}`);
+}
 async function pollJson(url,{attempts=80,delay=125}={}){
   let last;
   for(let i=0;i<attempts;i++){
@@ -39,7 +46,7 @@ function cleanup(){try{ws?.close();}catch{} try{chrome.kill('SIGKILL');}catch{} 
 process.on('exit',cleanup);
 
 try{
-  await pollJson('http://127.0.0.1:8765/p7-debug.html');
+  await pollOk('http://127.0.0.1:8765/p7-debug.html');
   const pages=await pollJson('http://127.0.0.1:9222/json/list');
   const page=pages.find(p=>p.type==='page');
   if(!page?.webSocketDebuggerUrl)throw new Error('No debuggable Chrome page');
@@ -79,12 +86,13 @@ try{
   await evaluate(`(()=>{const row=document.querySelectorAll('#qaRows tr')[3];const t=Number(row.cells[1].textContent);const scrub=document.querySelector('#scrub');scrub.value=String(t/2);scrub.dispatchEvent(new Event('input',{bubbles:true}));return document.querySelector('#eventStrip').textContent;})()`);await screenshot('desktop-arrival');
 
   await setViewport(390,844,true);await navigate();
-  const mobile=await evaluate(`(()=>{const qa=document.querySelector('#qaTableWrap');const controls=document.querySelector('.controls').getBoundingClientRect();const shell=document.querySelector('.debug-shell').getBoundingClientRect();return {docOverflow:document.documentElement.scrollWidth>document.documentElement.clientWidth,qaHasInternalOverflow:qa.scrollWidth>qa.clientWidth,qaOverflowX:getComputedStyle(qa).overflowX,controlsRight:controls.right,shellRight:shell.right,viewport:innerWidth,cert:document.querySelector('#certLock').getBoundingClientRect(),projection:document.querySelector('#projection').getBoundingClientRect()};})()`);
+  const mobile=await evaluate(`(()=>{const qa=document.querySelector('#qaTableWrap');const controls=document.querySelector('.controls').getBoundingClientRect();const shell=document.querySelector('.debug-shell').getBoundingClientRect();const cert=document.querySelector('#certLock').getBoundingClientRect();const projection=document.querySelector('#projection').getBoundingClientRect();return {docOverflow:document.documentElement.scrollWidth>document.documentElement.clientWidth,qaHasInternalOverflow:qa.scrollWidth>qa.clientWidth,qaOverflowX:getComputedStyle(qa).overflowX,controlsRight:controls.right,shellRight:shell.right,viewport:innerWidth,certWidth:cert.width,certRight:cert.right,projectionWidth:projection.width,projectionRight:projection.right};})()`);
   assert.equal(mobile.docOverflow,false,'mobile document must not horizontally overflow');
   assert.equal(mobile.qaOverflowX,'auto','mobile QA table must own horizontal overflow');
   assert.equal(mobile.qaHasInternalOverflow,true,'wide QA table should scroll inside its wrapper on mobile');
   assert.ok(mobile.controlsRight<=mobile.viewport+1&&mobile.shellRight<=mobile.viewport+1,'mobile controls/shell must remain inside viewport');
-  assert.ok(mobile.cert.width<=mobile.viewport,'certification lock must fit mobile viewport');
+  assert.ok(mobile.certWidth<=mobile.viewport&&mobile.certRight<=mobile.viewport+1,'certification lock must fit mobile viewport');
+  assert.ok(mobile.projectionWidth<=mobile.viewport&&mobile.projectionRight<=mobile.viewport+1,'projection must fit mobile viewport');
   await screenshot('mobile-start');
 
   const report={suite:'ShotSight P7 rendered adversarial review',status:'PASS',desktop,control,mobile,notes:['Exact p7-debug.html rendered in headless Chrome on CI runner','Screenshots are engineering QA artefacts, not realistic clay certification','No BREAK is expected because no authorised hit predicate exists']};

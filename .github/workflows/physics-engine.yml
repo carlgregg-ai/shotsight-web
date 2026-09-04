@@ -12,12 +12,16 @@ on:
       - 'tests/p8-teal-rendered-review.mjs'
       - 'docs/physics/**'
       - 'docs/reviewer-animation/**'
+      - 'tools/export-reviewer-method-comparison.mjs'
+      - 'tools/render-reviewer-method-videos.mjs'
       - 'p7-debug.html'
       - 'p8-quarterer-debug.html'
       - 'p8-looper-debug.html'
       - 'p8-teal-debug.html'
       - 'reviewer-flat-crosser.html'
       - 'reviewer-flat-crosser.js'
+      - 'reviewer-method-comparison.html'
+      - 'reviewer-method-comparison.js'
       - '.github/workflows/physics-engine.yml'
   workflow_dispatch:
 
@@ -27,7 +31,7 @@ permissions:
 jobs:
   target-physics-v1:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -39,7 +43,7 @@ jobs:
         run: node tests/physics-ballistics-v1.mjs
       - name: Run P4 Allen closed-form TOF validation
         run: node tests/physics-allen-tof-derived-v1.mjs
-      - name: Run P4 provider-based TOF intercept validation
+      - name: Run provider-based TOF intercept validation
         run: node tests/physics-ballistic-intercept-tof-v1.mjs
       - name: Run explicit-target-trajectory intercept validation
         run: node tests/physics-ballistic-intercept-trajectory-v1.mjs
@@ -74,13 +78,23 @@ jobs:
           if-no-files-found: error
       - name: Run three-method reviewer hypothesis contract
         run: node tests/physics-reviewer-method-comparison-v1.mjs
-      - name: Export three-method reviewer manifests
+      - name: Export three-method reviewer manifests and quantitative traces
         run: node tools/export-reviewer-method-comparison.mjs
       - name: Upload three-method reviewer manifests
         uses: actions/upload-artifact@v4
         with:
           name: reviewer-method-comparison-model-frames
           path: artifacts/reviewer-method-comparison/
+          if-no-files-found: error
+      - name: Verify ffmpeg availability
+        run: ffmpeg -version | head -n 1
+      - name: Render bible-style three-method MP4 review videos
+        run: node tools/render-reviewer-method-videos.mjs
+      - name: Upload three-method review videos
+        uses: actions/upload-artifact@v4
+        with:
+          name: reviewer-method-comparison-videos
+          path: artifacts/reviewer-method-videos/
           if-no-files-found: error
       - name: Run P8A quarterer engineering proof
         run: node tests/physics-canonical-quarterer-v1.mjs

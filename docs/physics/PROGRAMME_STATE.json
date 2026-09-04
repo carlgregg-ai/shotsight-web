@@ -3,41 +3,36 @@
   "date": "2026-09-04",
   "branch": "physics-engine-v1",
   "master_prompt_path": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_MASTER_PROGRAMME.md",
-  "latest_completed_stage": "P2",
-  "current_stage": "P3",
-  "current_stage_name": "Target Physics Engine v1",
+  "latest_completed_stage": "P3",
+  "current_stage": "P4",
+  "current_stage_name": "Shotgun Ballistics & Intercept Engine v1",
   "status": "IN_PROGRESS",
   "p0_checkpoint": "docs/physics/checkpoints/P0_RECOVERY_CONTAINMENT_COMPLETE.md",
   "p1_completion_checkpoint": "docs/physics/checkpoints/P1_EVIDENCE_COMPLETE.md",
   "p2_completion_checkpoint": "docs/physics/checkpoints/P2_SPECIFICATION_COMPLETE.md",
+  "p3_completion_checkpoint": "docs/physics/checkpoints/P3_TARGET_PHYSICS_ENGINE_COMPLETE.md",
   "p1_final_register": "docs/physics/EVIDENCE_PARAMETER_REGISTER_P1_TRANCHE4_FINAL.md",
   "p2_spec": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_SPEC_v1.md",
   "p2_normative_conventions": "docs/physics/SHOTSIGHT_PHYSICS_KINEMATICS_SPEC_v1_CONVENTIONS.md",
   "legacy_motion_status": "INVALIDATED_FOR_INSTRUCTIONAL_PHYSICS",
   "production_simulator_authorised": false,
+  "realistic_clay_status": "HOLD_PENDING_VERIFIED_OR_CALIBRATED_AERO_AND_HELD_OUT_REAL_FLIGHT_VALIDATION",
   "high_priority_holds": [
-    "Andert numerical aerodynamic coefficient values/model-fit details",
+    "Andert numerical aerodynamic coefficient values/model-fit details or calibrated equivalent",
     "target release spin",
     "trap setting to launch state mapping",
-    "complete primary Allen scale definitions and velocity/flight-time formulas before P4 implementation",
+    "complete primary Allen scale definitions and velocity/flight-time formulas before FREE_SPHERE_ALLEN implementation",
     "dense shot-cloud correction and shot string",
     "camera-to-bore calibration uncertainty",
     "method transition tolerances and expert gun angular kinematics",
     "rabbit ground-contact dynamics"
   ],
-  "p3_progress": [
-    "created physics/target-engine-v1.mjs with finite-state guards, vector/quaternion primitives and body-rate quaternion derivative",
-    "implemented deterministic fixed-step RK4 translational target integrator",
-    "implemented explicit TOY zero/gravity acceleration providers and constant-acceleration analytic reference",
-    "implemented fail-closed Andert aerodynamic-parameter validation and REALISTIC_CLAY hold",
-    "created tests/physics-target-v1.mjs for handedness, quaternion convention, stationary/constant-velocity/gravity analytic cases, deterministic replay, final-step handling, input safety, fail-closed realistic clay and nonlinear RK4 convergence",
-    "created dedicated GitHub Actions physics-engine CI workflow"
+  "p3_verified_outputs": [
+    "physics/target-engine-v1.mjs deterministic translational and rotational RK4 core",
+    "physics/target-definitions-v1.mjs provenance-backed source parameter records",
+    "tests/physics-target-v1.mjs analytic, convergence, provenance and fail-closed tests",
+    "GitHub Actions run 33861166576 SUCCESS at head 75b7db732049497d46a53c2097a1255258aa3a9b"
   ],
-  "latest_ci": {
-    "run_id": 33856884446,
-    "head_sha": "a6044a3f739ba72589c41f96772dd24b04da8141",
-    "status_at_checkpoint": "in_progress"
-  },
-  "next_action": "Inspect physics-engine CI run 33856884446. If it fails, read job/log failure, repair and rerun. If it passes, persist P3 test evidence, then extend P3 only as allowed: add rotational integration/provider contract tests and source-parameter ingestion scaffolding without inventing clay coefficients. P3 cannot be marked realistic-clay complete until its exit criteria are genuinely satisfied; preserve REALISTIC_CLAY hold where evidence is absent.",
+  "next_action": "P4: recover/verify the complete primary Allen free-sphere equation and scaling set, or another equally defensible primary variable-drag sphere basis. Do not reconstruct missing equations from secondary snippets. In parallel, a TEST_ONLY constant-speed ballistic provider and analytic intercept toy cases may be implemented to verify solver geometry, but they must be impossible to present as realistic instruction.",
   "automation_task_id": "6a99def5ef8081918f50f13d03247f84"
 }

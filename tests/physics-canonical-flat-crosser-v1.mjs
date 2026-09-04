@@ -6,111 +6,29 @@ const near=(a,b,tol,msg)=>assert.ok(Math.abs(a-b)<=tol,`${msg}: expected ${b}, g
 const scenario=createCanonicalFlatCrosserScenario();
 assert.equal(scenario.status,'ENGINEERING_PROOF_NOT_REALISTIC_CLAY_CERTIFICATION');
 assert.equal(scenario.provider.status,'TEST_ONLY_NOT_INSTRUCTIONAL');
+const a=simulateCanonicalFlatCrosser(scenario,0.4),b=simulateCanonicalFlatCrosser(scenario,0.4);
+assert.deepEqual(a,b);assert.equal(a.masterClock.allSubsystemsReadSameTime,true);assert.equal(a.t_s,a.masterClock.t_s);
+assert.equal(a.certification.realisticClay,false);assert.equal(a.certification.instructionalMotion,false);assert.equal(a.certification.engineeringIntegrationProof,true);
+assert.equal(a.method.id,'NSCA_LONG_CROSSER_PULL_AWAY');assert.equal(a.method.evidenceClass,'DIRECT');assert.equal(a.method.thresholdEventsStatus,'HOLD_UNLESS_AUTHORISED_PREDICATE');
+near(a.target.position_W[0],scenario.targetInitial_W[0]+scenario.targetVelocity_W[0]*0.4,1e-12,'target x');near(a.target.position_W[1],scenario.targetInitial_W[1],1e-12,'target y');
+assert.ok(a.target.speed_mps>0);assert.ok(a.target.range_m>0);assert.ok(a.gun.angularSpeed_radps>=0);assert.ok(a.relationship.physicalLead_m>0);assert.ok(a.relationship.apparentLeadAngle_rad>0);assert.ok(Math.abs(a.relationship.signedApparentAzSeparation_rad)>0);
+assert.equal(a.relationship.apparentLeadReference,'CAMERA_ORIGIN_PROJECTED_TARGET_VS_BORE');
+assert.ok(a.relationship.apparentLeadAngle_rad>=Math.abs(a.relationship.signedApparentAzSeparation_rad),'full camera angular lead must include at least the azimuth component');
+assert.ok(Math.abs(a.relationship.apparentLeadAngle_rad-a.relationship.ballisticShotOriginLeadAngle_rad)>1e-8,'finite camera/shot-origin offset must not be silently collapsed');
+assert.equal(a.ballistic.currentIntercept.valid,true);assert.ok(Math.abs(a.ballistic.currentIntercept.rootResidual_s)<=1e-8);
+const shotState=simulateCanonicalFlatCrosser(scenario,scenario.shotTime_s),shotEvent=shotState.narrative.find(e=>e.type==='SHOT'),arrivalEvent=shotState.narrative.find(e=>e.type==='PELLET_ARRIVAL');
+assert.equal(shotEvent.t_s,scenario.shotTime_s);near(arrivalEvent.t_s,shotState.ballistic.pelletArrival_s,1e-14,'pellet arrival');assert.ok(arrivalEvent.t_s>shotEvent.t_s);assert.equal(shotState.narrative.some(e=>e.type==='BREAK'),false);
+const afterArrival=simulateCanonicalFlatCrosser(scenario,arrivalEvent.t_s+0.01);assert.ok(afterArrival.activeNarrativeEvents.some(e=>e.type==='SHOT'));assert.ok(afterArrival.activeNarrativeEvents.some(e=>e.type==='PELLET_ARRIVAL'));
+assert.throws(()=>createCanonicalFlatCrosserScenario({provider:{id:'BAD',status:'INSTRUCTIONAL',timeToRange:r=>r/400}}),/explicit TEST_ONLY provider/);assert.throws(()=>createTestOnlyConstantSpeedProvider(0),/> 0/);
 
-const a=simulateCanonicalFlatCrosser(scenario,0.4);
-const b=simulateCanonicalFlatCrosser(scenario,0.4);
-assert.deepEqual(a,b);
-assert.equal(a.masterClock.allSubsystemsReadSameTime,true);
-assert.equal(a.t_s,a.masterClock.t_s);
-assert.equal(a.certification.realisticClay,false);
-assert.equal(a.certification.instructionalMotion,false);
-assert.equal(a.certification.engineeringIntegrationProof,true);
-assert.equal(a.method.id,'NSCA_LONG_CROSSER_PULL_AWAY');
-assert.equal(a.method.evidenceClass,'DIRECT');
-assert.equal(a.method.thresholdEventsStatus,'HOLD_UNLESS_AUTHORISED_PREDICATE');
-
-near(a.target.position_W[0],scenario.targetInitial_W[0]+scenario.targetVelocity_W[0]*0.4,1e-12,'target x');
-near(a.target.position_W[1],scenario.targetInitial_W[1],1e-12,'target y');
-assert.ok(a.target.speed_mps>0);
-assert.ok(a.target.range_m>0);
-assert.ok(a.gun.angularSpeed_radps>=0);
-
-assert.ok(a.relationship.physicalLead_m>0);
-assert.ok(a.relationship.apparentLeadAngle_rad>0);
-assert.ok(Math.abs(a.relationship.signedApparentAzSeparation_rad)>0);
-assert.equal(a.ballistic.currentIntercept.valid,true);
-assert.ok(Math.abs(a.ballistic.currentIntercept.rootResidual_s)<=1e-8);
-
-const shotState=simulateCanonicalFlatCrosser(scenario,scenario.shotTime_s);
-const shotEvent=shotState.narrative.find(e=>e.type==='SHOT');
-const arrivalEvent=shotState.narrative.find(e=>e.type==='PELLET_ARRIVAL');
-assert.equal(shotEvent.t_s,scenario.shotTime_s);
-near(arrivalEvent.t_s,shotState.ballistic.pelletArrival_s,1e-14,'pellet arrival');
-assert.ok(arrivalEvent.t_s>shotEvent.t_s);
-assert.equal(shotState.narrative.some(e=>e.type==='BREAK'),false);
-
-const afterArrival=simulateCanonicalFlatCrosser(scenario,arrivalEvent.t_s+0.01);
-assert.ok(afterArrival.activeNarrativeEvents.some(e=>e.type==='SHOT'));
-assert.ok(afterArrival.activeNarrativeEvents.some(e=>e.type==='PELLET_ARRIVAL'));
-
-assert.throws(()=>createCanonicalFlatCrosserScenario({provider:{id:'BAD',status:'INSTRUCTIONAL',timeToRange:r=>r/400}}),/explicit TEST_ONLY provider/);
-assert.throws(()=>createTestOnlyConstantSpeedProvider(0),/> 0/);
-
-// P7 engineering debug/scrub surface. Controls observe the model; they never mutate physics state.
-const session=createFlatCrosserDebugSession({scenario,duration_s:2,frameRate_hz:60,playbackRate:0.25});
-assert.equal(session.status,'ENGINEERING_DEBUG_NOT_INSTRUCTIONAL');
-assert.equal(session.frameCount,121);
-near(timeForFrame(session,60),1,1e-15,'frame 60 time');
-near(timeForFrame(session,120),2,1e-15,'final frame time');
-
-const f24=sampleFrame(session,24);
-near(f24.t_s,0.4,1e-15,'frame sample time');
-assert.deepEqual(f24.state,simulateCanonicalFlatCrosser(scenario,0.4));
-assert.deepEqual(sampleFrame(session,24),sampleFrame(session,24));
-
-const sA=scrubToTime(session,1.137);
-const sB=scrubToTime(session,0.213);
-const sC=scrubToTime(session,1.137);
-assert.deepEqual(sA,sC,'returning to the same scrub time must reconstruct identical full state');
-assert.notDeepEqual(sA,sB);
-near(scrubNormalized(session,0.5).t_s,1,1e-15,'normalised scrub');
-assert.equal(scrubToTime(session,-1).t_s,0);
-assert.equal(scrubToTime(session,99).t_s,2);
-
-near(playbackTime(session,{anchorSimulationTime_s:0.4,screenElapsed_s:2}),0.9,1e-15,'quarter-speed mapping');
-const playbackState=scrubToTime(session,playbackTime(session,{anchorSimulationTime_s:0.4,screenElapsed_s:2})).state;
-assert.deepEqual(playbackState,simulateCanonicalFlatCrosser(scenario,0.9));
-
-const telemetry=telemetryFromState(f24.state);
-for(const key of ['t_s','targetPosition_W','targetRange_m','targetSpeed_mps','targetAz_rad','targetEl_rad','targetLosAngularVelocity_W','bore_W','gunAz_rad','gunEl_rad','gunAngularSpeed_radps','signedApparentAzSeparation_rad','physicalLead_m','apparentLeadAngle_rad','shotTime_s','pelletTOF_s','pelletArrival_s','interceptValid','methodId','methodEvidenceClass','thresholdEventsStatus','providerStatus','realisticClay','instructionalMotion'])assert.ok(Object.hasOwn(telemetry,key),`missing telemetry ${key}`);
-assert.equal(telemetry.providerStatus,'TEST_ONLY_NOT_INSTRUCTIONAL');
-assert.equal(telemetry.realisticClay,false);
-assert.equal(telemetry.instructionalMotion,false);
-assert.equal(telemetry.interceptValid,true);
-assert.deepEqual(debugFrame(session,24).telemetry,telemetry);
-
-// Stress direct frame indexing without leaving the canonical proof domain.
-const highRateSession=createFlatCrosserDebugSession({scenario,duration_s:2,frameRate_hz:60000,playbackRate:1});
-const highRateIndex=100000;
-near(timeForFrame(highRateSession,highRateIndex),highRateIndex/60000,1e-12,'high-rate frame time is direct, not accumulated');
-assert.deepEqual(sampleFrame(highRateSession,highRateIndex),sampleFrame(highRateSession,highRateIndex));
-
-const cases=[
-  {name:'near-slower',targetInitial_W:[-5,20,1.5],targetVelocity_W:[8,0,0],shotTime_s:0.5},
-  {name:'baseline',targetInitial_W:[-6,35,1.5],targetVelocity_W:[15,0,0],shotTime_s:0.8},
-  {name:'far-faster',targetInitial_W:[-10,50,1.5],targetVelocity_W:[22,0,0],shotTime_s:0.7},
-  {name:'mirror',targetInitial_W:[6,35,1.5],targetVelocity_W:[-15,0,0],shotTime_s:0.8}
-];
-for(const c of cases){
-  const sc=createCanonicalFlatCrosserScenario(c);
-  const st=simulateCanonicalFlatCrosser(sc,c.shotTime_s);
-  assert.equal(st.ballistic.currentIntercept.valid,true,`${c.name} intercept`);
-  assert.ok(st.ballistic.currentIntercept.pelletTOF_s>0,`${c.name} TOF`);
-  assert.ok(st.relationship.physicalLead_m>0,`${c.name} physical lead`);
-  assert.ok(Number.isFinite(st.relationship.apparentLeadAngle_rad),`${c.name} apparent lead`);
-  assert.equal(st.masterClock.allSubsystemsReadSameTime,true,`${c.name} shared clock`);
-  assert.equal(st.certification.realisticClay,false,`${c.name} realistic lock`);
-  assert.equal(st.certification.instructionalMotion,false,`${c.name} instructional lock`);
-}
-const lr=simulateCanonicalFlatCrosser(createCanonicalFlatCrosserScenario(cases[1]),0.8);
-const rl=simulateCanonicalFlatCrosser(createCanonicalFlatCrosserScenario(cases[3]),0.8);
-near(lr.target.range_m,rl.target.range_m,1e-12,'mirror target range');
-near(lr.relationship.physicalLead_m,rl.relationship.physicalLead_m,1e-10,'mirror physical lead');
-near(Math.abs(lr.target.az_rad),Math.abs(rl.target.az_rad),1e-12,'mirror target az magnitude');
-near(Math.abs(lr.gun.az_rad),Math.abs(rl.gun.az_rad),1e-12,'mirror gun az magnitude');
-
-assert.throws(()=>createFlatCrosserDebugSession({scenario,frameRate_hz:0}),/frameRate_hz must be > 0/);
-assert.throws(()=>timeForFrame(session,1.2),/integer/);
-assert.throws(()=>playbackTime(session,{screenElapsed_s:-1}),/>= 0/);
-
-console.log(JSON.stringify({suite:'ShotSight P7 flat-crosser integrated engineering proof + debug/scrub QA v1',status:'PASS',tests:{deterministicReplay:true,sharedClock:true,certificationBoundary:true,methodProvenance:true,targetTimeConsistency:true,interceptDerivedLead:true,projectionRelationship:true,shotArrivalOrdering:true,noDecorativeBreak:true,providerFailClosed:true,directMasterClockScrub:true,deterministicReturnScrub:true,frameStep:true,slowMotionMapping:true,mandatoryTelemetry:true,longRunNoAccumulatedPhaseDrift:true,parameterSweep:true,mirrorGeometry:true,certificationLocks:true}},null,2));
+const session=createFlatCrosserDebugSession({scenario,duration_s:2,frameRate_hz:60,playbackRate:0.25});assert.equal(session.status,'ENGINEERING_DEBUG_NOT_INSTRUCTIONAL');assert.equal(session.frameCount,121);near(timeForFrame(session,60),1,1e-15,'frame 60 time');near(timeForFrame(session,120),2,1e-15,'final frame time');
+const f24=sampleFrame(session,24);near(f24.t_s,0.4,1e-15,'frame sample time');assert.deepEqual(f24.state,simulateCanonicalFlatCrosser(scenario,0.4));assert.deepEqual(sampleFrame(session,24),sampleFrame(session,24));
+const sA=scrubToTime(session,1.137),sB=scrubToTime(session,0.213),sC=scrubToTime(session,1.137);assert.deepEqual(sA,sC,'returning to the same scrub time must reconstruct identical full state');assert.notDeepEqual(sA,sB);near(scrubNormalized(session,0.5).t_s,1,1e-15,'normalised scrub');assert.equal(scrubToTime(session,-1).t_s,0);assert.equal(scrubToTime(session,99).t_s,2);
+near(playbackTime(session,{anchorSimulationTime_s:0.4,screenElapsed_s:2}),0.9,1e-15,'quarter-speed mapping');assert.deepEqual(scrubToTime(session,playbackTime(session,{anchorSimulationTime_s:0.4,screenElapsed_s:2})).state,simulateCanonicalFlatCrosser(scenario,0.9));
+const telemetry=telemetryFromState(f24.state);for(const key of ['t_s','targetPosition_W','targetRange_m','targetSpeed_mps','targetAz_rad','targetEl_rad','targetLosAngularVelocity_W','bore_W','gunAz_rad','gunEl_rad','gunAngularSpeed_radps','signedApparentAzSeparation_rad','physicalLead_m','apparentLeadAngle_rad','shotTime_s','pelletTOF_s','pelletArrival_s','interceptValid','methodId','methodEvidenceClass','thresholdEventsStatus','providerStatus','realisticClay','instructionalMotion'])assert.ok(Object.hasOwn(telemetry,key),`missing telemetry ${key}`);assert.equal(telemetry.providerStatus,'TEST_ONLY_NOT_INSTRUCTIONAL');assert.equal(telemetry.realisticClay,false);assert.equal(telemetry.instructionalMotion,false);assert.equal(telemetry.interceptValid,true);assert.deepEqual(debugFrame(session,24).telemetry,telemetry);
+const highRateSession=createFlatCrosserDebugSession({scenario,duration_s:2,frameRate_hz:60000,playbackRate:1}),highRateIndex=100000;near(timeForFrame(highRateSession,highRateIndex),highRateIndex/60000,1e-12,'high-rate frame time is direct, not accumulated');assert.deepEqual(sampleFrame(highRateSession,highRateIndex),sampleFrame(highRateSession,highRateIndex));
+const cases=[{name:'near-slower',targetInitial_W:[-5,20,1.5],targetVelocity_W:[8,0,0],shotTime_s:0.5},{name:'baseline',targetInitial_W:[-6,35,1.5],targetVelocity_W:[15,0,0],shotTime_s:0.8},{name:'far-faster',targetInitial_W:[-10,50,1.5],targetVelocity_W:[22,0,0],shotTime_s:0.7},{name:'mirror',targetInitial_W:[6,35,1.5],targetVelocity_W:[-15,0,0],shotTime_s:0.8}];
+for(const c of cases){const sc=createCanonicalFlatCrosserScenario(c),st=simulateCanonicalFlatCrosser(sc,c.shotTime_s);assert.equal(st.ballistic.currentIntercept.valid,true,`${c.name} intercept`);assert.ok(st.ballistic.currentIntercept.pelletTOF_s>0,`${c.name} TOF`);assert.ok(st.relationship.physicalLead_m>0,`${c.name} physical lead`);assert.ok(Number.isFinite(st.relationship.apparentLeadAngle_rad),`${c.name} apparent lead`);assert.equal(st.masterClock.allSubsystemsReadSameTime,true,`${c.name} shared clock`);assert.equal(st.certification.realisticClay,false,`${c.name} realistic lock`);assert.equal(st.certification.instructionalMotion,false,`${c.name} instructional lock`);}
+const lr=simulateCanonicalFlatCrosser(createCanonicalFlatCrosserScenario(cases[1]),0.8),rl=simulateCanonicalFlatCrosser(createCanonicalFlatCrosserScenario(cases[3]),0.8);near(lr.target.range_m,rl.target.range_m,1e-12,'mirror target range');near(lr.relationship.physicalLead_m,rl.relationship.physicalLead_m,1e-10,'mirror physical lead');near(Math.abs(lr.target.az_rad),Math.abs(rl.target.az_rad),1e-12,'mirror target az magnitude');near(Math.abs(lr.gun.az_rad),Math.abs(rl.gun.az_rad),1e-12,'mirror gun az magnitude');
+assert.throws(()=>createFlatCrosserDebugSession({scenario,frameRate_hz:0}),/frameRate_hz must be > 0/);assert.throws(()=>timeForFrame(session,1.2),/integer/);assert.throws(()=>playbackTime(session,{screenElapsed_s:-1}),/>= 0/);
+console.log(JSON.stringify({suite:'ShotSight P7 flat-crosser integrated engineering proof + debug/scrub QA v1',status:'PASS',tests:{deterministicReplay:true,sharedClock:true,certificationBoundary:true,methodProvenance:true,targetTimeConsistency:true,interceptDerivedLead:true,cameraOriginApparentLead:true,projectionRelationship:true,shotArrivalOrdering:true,noDecorativeBreak:true,providerFailClosed:true,directMasterClockScrub:true,deterministicReturnScrub:true,frameStep:true,slowMotionMapping:true,mandatoryTelemetry:true,longRunNoAccumulatedPhaseDrift:true,parameterSweep:true,mirrorGeometry:true,certificationLocks:true}},null,2));

@@ -36,3 +36,5 @@ jobs:
         run: node tests/physics-method-narrative-v1.mjs
       - name: Run P6 source-attributed method registry validation
         run: node tests/physics-method-registry-v1.mjs
+      - name: Run P7 flat-crosser integrated engineering proof
+        run: node tests/physics-canonical-flat-crosser-v1.mjs

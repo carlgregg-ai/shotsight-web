@@ -1,5 +1,5 @@
 {
-  "version": "1.0-stage8-batch1",
+  "version": "1.1-stage8-batch2",
   "date": "2026-09-04",
   "status": "CERTIFIED_EXPANSION_BATCH",
   "evidence_labels": ["DIRECT", "SYNTHESIS", "SHOTSIGHT_HYPOTHESIS", "HOLD_DEMOTE"],
@@ -13,15 +13,24 @@
       "coaching": [
         {"text":"For the specific rising quartering outgoing presentation reviewed in Stage 2, Don Currie/NSCA teaches a vertical intercept to the inside leading edge as a way to avoid target occlusion.","label":"DIRECT","sources":["NSCA_RISING_OUTGOING"],"attribution":"Don Currie / NSCA"}
       ],
-      "holds": [
-        "Do not generalise the source's exact hold geometry to different target angles or handedness without adapting the presentation.",
-        "Do not treat every rising outgoing target as this quartering presentation."
-      ],
-      "diagnose": [
-        {"symptom":"target disappears behind the gun or the miss is repeatedly behind on the rising quarter","label":"SHOTSIGHT_HYPOTHESIS","candidate_mechanisms":["gun path enters the target's visual line and creates occlusion","late recognition of the combined rising-and-away geometry","late connection before the planned intercept"],"question":"On the same no-shot presentation, does target visibility and movement quality improve when you compare line-following with the source-attributed vertical-intercept approach?","interpretation":"If visibility improves with the source-matched approach, occlusion becomes a stronger coaching hypothesis; if not, retain timing, geometry-reading and connection alternatives.","fix":"For a presentation that genuinely matches the source geometry, test the attributed vertical-intercept approach without assigning a universal lead value.","retest":"Change the quartering angle or direction. If the result does not transfer, keep the method presentation-specific."}
-      ],
+      "holds": ["Do not generalise the source's exact hold geometry to different target angles or handedness without adapting the presentation.","Do not treat every rising outgoing target as this quartering presentation."],
+      "diagnose": [{"symptom":"target disappears behind the gun or the miss is repeatedly behind on the rising quarter","label":"SHOTSIGHT_HYPOTHESIS","candidate_mechanisms":["gun path enters the target's visual line and creates occlusion","late recognition of the combined rising-and-away geometry","late connection before the planned intercept"],"question":"On the same no-shot presentation, does target visibility and movement quality improve when you compare line-following with the source-attributed vertical-intercept approach?","interpretation":"If visibility improves with the source-matched approach, occlusion becomes a stronger coaching hypothesis; if not, retain timing, geometry-reading and connection alternatives.","fix":"For a presentation that genuinely matches the source geometry, test the attributed vertical-intercept approach without assigning a universal lead value.","retest":"Change the quartering angle or direction. If the result does not transfer, keep the method presentation-specific."}],
       "visual_spec":{"target":"oblique path rising while moving away","show":["rising phase","away/quartering direction","inside-leading-edge intercept concept","break zone"],"warning":"Conceptual 2D rehearsal only. Exact hold position, lead and handedness geometry are not universal."},
       "drills":[{"name":"Rising-quarter visibility A/B","label":"SHOTSIGHT_HYPOTHESIS"}]
+    },
+    {
+      "id": "fast_flat_quartering_away",
+      "name": "Fast flat quartering away",
+      "selector": {"flight_family":"quartering","direction":"away","phase":"stable","speed":"fast"},
+      "aliases": ["fast quartering target","fast flat quarterer","fast quartering away","always behind quarterer","fast away quarterer"],
+      "understand": "A fast quartering-away target with little vertical change around the intended break zone. Speed is a modifier of the quartering geometry, not a separate universal target family.",
+      "coaching": [
+        {"text":"In the reviewed 'Always Behind' answer, Don Currie/NSCA addresses fast quartering behind-misses with a specific quartering move plus hold/pickup planning and leading-edge visual focus.","label":"DIRECT","sources":["NSCA_ALWAYS_BEHIND"],"attribution":"Don Currie / NSCA"}
+      ],
+      "holds": ["This is one coach's source-specific quartering method, not proof that it is the only valid method.","Do not inherit its exact hold/pickup geometry to a different angle, speed or direction."],
+      "diagnose": [{"symptom":"repeatedly behind on the fast quarterer","label":"SHOTSIGHT_HYPOTHESIS","candidate_mechanisms":["late target acquisition or pickup","hold/pickup plan leaves too little controlled movement window","gun speed/connection develops too late"],"question":"With the break point held constant, does a source-matched hold/pickup plan improve early connection and reduce the repeatable behind miss without increasing correction or rush?","interpretation":"Improvement would support a timing/connection explanation, but it does not prove a single cause or make the method universally superior.","fix":"Test the Don Currie/NSCA quartering approach as an attributed option; keep visual priority on target detail/leading edge rather than consciously measuring a fixed lead.","retest":"Repeat with a changed quartering angle or opposite direction and compare whether the same approach remains controlled."}],
+      "visual_spec":{"target":"fast, shallow oblique line moving across and away","show":["pickup region","stable quartering line","break zone","source-specific connection option"],"warning":"2D conceptual rehearsal. Speed, lead and hold distances are not calibrated live-fire values."},
+      "drills":[{"name":"Fast-quarter connection A/B","label":"SHOTSIGHT_HYPOTHESIS"}]
     }
   ]
 }

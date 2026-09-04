@@ -1,0 +1,23 @@
+{
+  "programme": "ShotSight 3D Maths-Driven Reviewer Animation Build",
+  "date": "2026-09-04",
+  "branch": "physics-engine-v1",
+  "master_path": "docs/reviewer-animation/SHOTSIGHT_3D_MATHS_DRIVEN_REVIEWER_MASTER.md",
+  "style_authority": "ShotSight_Visual_Style_Animation_Bible_v0_1(2).pdf",
+  "scope": "canonical_flat_crosser_only",
+  "frame_rate_hz": 60,
+  "duration_s": 2,
+  "latest_completed_gate": "B",
+  "current_gate": "C",
+  "status": "IN_PROGRESS_MAPPING_IMPLEMENTED_AWAITING_CI_AND_RENDERED_VALIDATION",
+  "model_source": "physics/canonical-flat-crosser-v1.mjs",
+  "debug_timebase_source": "physics/flat-crosser-debug-v1.mjs",
+  "realistic_clay_certified": false,
+  "instructional_motion_authorised": false,
+  "gun_strategy": "ENGINEERING_INTERCEPT_REFERENCE",
+  "gun_strategy_status": "NOT_A_COACHING_METHOD",
+  "method_reference": "NSCA_LONG_CROSSER_PULL_AWAY",
+  "method_kinematics": "HOLD_NOT_IMPLEMENTED",
+  "restart_rule": "resume_from_latest_verified_gate_not_from_start",
+  "next_action": "Run integrated CI; then rendered start/pre-shot/shot/pellet-arrival review before full-sequence Gate D."
+}

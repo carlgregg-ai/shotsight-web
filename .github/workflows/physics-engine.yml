@@ -11,10 +11,13 @@ on:
       - 'tests/p8-looper-rendered-review.mjs'
       - 'tests/p8-teal-rendered-review.mjs'
       - 'docs/physics/**'
+      - 'docs/reviewer-animation/**'
       - 'p7-debug.html'
       - 'p8-quarterer-debug.html'
       - 'p8-looper-debug.html'
       - 'p8-teal-debug.html'
+      - 'reviewer-flat-crosser.html'
+      - 'reviewer-flat-crosser.js'
       - '.github/workflows/physics-engine.yml'
   workflow_dispatch:
 
@@ -59,6 +62,8 @@ jobs:
           name: p7-rendered-review
           path: artifacts/p7-rendered-review/
           if-no-files-found: warn
+      - name: Run 3D maths-driven flat-crosser reviewer contract
+        run: node tests/physics-reviewer-flat-crosser-v1.mjs
       - name: Run P8A quarterer engineering proof
         run: node tests/physics-canonical-quarterer-v1.mjs
       - name: Run P8A quarterer browser debug contract

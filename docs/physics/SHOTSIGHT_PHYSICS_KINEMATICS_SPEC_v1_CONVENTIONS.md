@@ -1,7 +1,7 @@
 # ShotSight Physics & Kinematics Specification v1 — Normative Conventions / Adversarial Review
 
 Date: 2026-09-04
-Status: **NORMATIVE ADDENDUM TO v1 SPEC**
+Status: **NORMATIVE ADDENDUM TO v1 SPEC — CAMERA HANDEDNESS CORRECTED DURING P5**
 
 This file resolves convention ambiguities identified by the P2 adversarial/dimensional review. Where this addendum is more specific than `SHOTSIGHT_PHYSICS_KINEMATICS_SPEC_v1.md`, this file controls v1 implementation.
 
@@ -37,27 +37,47 @@ After numerical integration the quaternion must be renormalised when drift excee
 
 No module may switch to world-expressed angular velocity without an explicitly named conversion.
 
-## 3. Camera convention — fixed
+## 3. Camera convention — P5 HANDEDNESS CORRECTION
 
-Camera frame `C` is right-handed and uses:
+### Error found
+
+The original P2 addendum declared the camera frame right-handed while simultaneously specifying:
 
 - `+X_C`: image right
 - `+Y_C`: camera up
 - `+Z_C`: optical forward
 
-A world point is transformed to camera coordinates by:
+Those three directions form a **left-handed** basis relative to the right-handed world convention. P5's proper-rotation determinant test exposed the contradiction. It is a substantive specification error and is corrected here rather than allowing an improper/reflection matrix to enter the physics/video pipeline.
 
-`p_C = R_CW (p_W - p_camera_W)`.
+### Corrected normative camera frame
+
+Camera frame `C` is right-handed and uses the conventional computer-vision orientation:
+
+- `+X_C`: image/raster right
+- `+Y_C`: image/raster down
+- `+Z_C`: optical forward
+
+A world point is transformed to camera coordinates by a **proper rotation**:
+
+`p_C = R_CW (p_W - p_camera_W)`
+
+with `R_CW R_CW^T = I` and `det(R_CW) = +1`.
 
 A point is in front of the camera only if `Z_C > 0`.
 
-Ideal pinhole projection before distortion:
+Ideal pinhole projection before distortion is now:
 
 `u = f_x (X_C/Z_C) + c_x`
 
-`v = c_y - f_y (Y_C/Z_C)`
+`v = f_y (Y_C/Z_C) + c_y`
 
-The minus sign in image `v` exists because raster image coordinates increase downward while `+Y_C` is physically upward.
+No sign inversion is needed because `+Y_C` and raster `v` both increase downward.
+
+For the canonical level camera aligned with the ShotSight world (`+X_W` right, `+Y_W` forward, `+Z_W` up), the world-to-camera rotation is:
+
+`R_CW = [[1,0,0],[0,0,-1],[0,1,0]]`
+
+which maps world right → camera right, world up → camera negative-Y (raster up), and world forward → camera +Z. Its determinant is `+1`.
 
 Field-of-view conversion may derive `f_x` from **horizontal** FOV and image width only when the FOV is explicitly known to be horizontal:
 
@@ -66,6 +86,8 @@ Field-of-view conversion may derive `f_x` from **horizontal** FOV and image widt
 Likewise vertical FOV uses image height. Diagonal FOV must not be silently used as horizontal FOV.
 
 Lens distortion is an explicit calibrated mapping layered after ideal projection.
+
+Any older code/documentation using camera `+Y_C=up` is stale after this correction and must not be treated as normative.
 
 ## 4. Shooter eye versus camera versus bore
 
@@ -91,13 +113,13 @@ This vector is perpendicular to the instantaneous LOS plane and its magnitude is
 
 It is **not** directly the signed horizontal/vertical screen angular velocity.
 
-For signed apparent motion, first transform the LOS into the camera/eye frame and use angular coordinates:
+For signed apparent motion, first transform the LOS into the corrected camera/eye frame and use angular coordinates:
 
 `az = atan2(X_C, Z_C)`
 
-`el = atan2(Y_C, sqrt(X_C^2 + Z_C^2))`.
+`el_up = atan2(-Y_C, sqrt(X_C^2 + Z_C^2))`.
 
-Signed rates `az_dot`, `el_dot` are obtained analytically or by validated differentiation using the same simulation clock. The finite-difference implementation must be checked against analytic constant-velocity cases.
+Here `el_up` remains positive for visually upward target motion even though camera `+Y_C` is raster-down. Signed rates `az_dot`, `el_up_dot` are obtained analytically or by validated differentiation using the same simulation clock. The finite-difference implementation must be checked against analytic constant-velocity cases.
 
 ## 6. Gun angular state
 
@@ -206,19 +228,26 @@ Reviewed dimensions:
 
 No dimensional contradiction was identified in the authorised architecture.
 
-## 13. Specific risk found and controlled
+## 13. Specific risks found and controlled
 
-The original P2 draft described an intercept residual as if a generic vector root might always be solved. That wording could encourage an invalid straight-line/three-equations-one-scalar implementation for a curved pellet trajectory. This addendum replaces it with closest-approach/finite-geometry semantics and reserves root solving for mathematically appropriate special cases.
+### P2 intercept wording
 
-This is a substantive error-prevention correction, not a cosmetic clarification.
+The original P2 draft described an intercept residual as if a generic vector root might always be solved. That wording could encourage an invalid straight-line/three-equations-one-scalar implementation for a curved pellet trajectory. This addendum replaced it with closest-approach/finite-geometry semantics and reserves root solving for mathematically appropriate special cases.
 
-## 14. P2 exit assessment
+### P5 camera handedness
 
-After the convention fixes above:
+P5's determinant validation demonstrated that the previously declared `+X right, +Y up, +Z forward` camera basis was left-handed. The convention has now been corrected to `+X right, +Y down, +Z forward`, with proper-rotation validation required at runtime. This prevents reflection matrices from silently entering projection, video reconstruction and future camera-to-bore calibration.
 
-- frame handedness: resolved;
+These are substantive error-prevention corrections, not cosmetic clarifications.
+
+## 14. P2/P5 convention assessment
+
+After the corrections above:
+
+- world frame handedness: resolved;
 - quaternion mapping and angular-velocity expression: resolved;
-- camera optical/raster convention: resolved;
+- camera optical/raster convention and handedness: corrected and resolved;
+- proper camera rotation determinant: required;
 - LOS angular-rate meaning/sign basis: resolved;
 - camera/eye/bore distinction: resolved;
 - curved ballistic intercept semantics: resolved;
@@ -227,6 +256,4 @@ After the convention fixes above:
 - missing realistic-provider parameters: fail-closed;
 - dimensional audit: passed at specification level.
 
-**P2 is ready for completion checkpoint.**
-
-P3 may begin with math primitives, provider/schema validation, deterministic RK4 and analytic toy cases. A realistic clay trajectory remains blocked until the required aerodynamic inputs are verified/calibrated.
+P3/P4 results remain valid because they do not depend on the corrected camera raster handedness. P5 and all future projection/video code must use this corrected convention.

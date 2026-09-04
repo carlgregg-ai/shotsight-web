@@ -7,6 +7,9 @@ import {
   validateDiagonalInertia, rotationalDerivative, rk4RotStep, simulateRotationFixed,
   validateAndertAeroParameters, realisticClayAcceleration
 } from '../physics/target-engine-v1.mjs';
+import {
+  parameter, numericValue, ANDERT_REFERENCE_TARGET, runtimeTargetDefinition, authorisedAeroParameters
+} from '../physics/target-definitions-v1.mjs';
 
 const near=(a,b,tol=1e-10,msg='')=>assert.ok(Math.abs(a-b)<=tol,`${msg} expected ${b}, got ${a}, tol ${tol}`);
 const nearVec=(a,b,tol=1e-10,msg='')=>a.forEach((v,i)=>near(v,b[i],tol,`${msg}[${i}]`));
@@ -59,7 +62,6 @@ const omegaZ=7.5;
 const rot=simulateRotationFixed({initialState:{q:[1,0,0,0],omega:[0,0,omegaZ]},tEnd:1.2,dt:0.002,inertia,momentProvider:zeroMoment()});
 nearVec(rot.state.omega,[0,0,omegaZ],2e-11,'principal-axis omega');
 const qExact=quatAxisAngle([0,0,1],omegaZ*1.2);
-// q and -q represent the same orientation; align sign before comparing.
 const sign=(rot.state.q.reduce((s,v,i)=>s+v*qExact[i],0)>=0)?1:-1;
 nearVec(rot.state.q.map(v=>v*sign),qExact,2e-9,'principal-axis q');
 near(quatNorm(rot.state.q),1,2e-14,'quaternion norm');
@@ -70,6 +72,17 @@ nearVec(rd.domega,[-3,2,-0.5],1e-12,'Euler derivative');
 const oneRotStep=rk4RotStep({q:[1,0,0,0],omega:[1,2,3]},0,0.001,[2,3,4],zeroMoment());
 assert.ok(oneRotStep.q.every(Number.isFinite)&&oneRotStep.omega.every(Number.isFinite));
 near(quatNorm(oneRotStep.q),1,2e-14);
+
+// Provenance-backed target-definition ingestion: source values are usable, HOLD aero is not.
+const andertRuntime=runtimeTargetDefinition(ANDERT_REFERENCE_TARGET);
+near(andertRuntime.mass_kg,0.105,0,'Andert reference mass');
+near(andertRuntime.referenceArea_m2,0.0095,0,'Andert reference area');
+near(andertRuntime.diameter_m,0.11,0,'Andert reference diameter');
+nearVec(andertRuntime.inertiaTensor_B_kgm2,[1.33e-4,1.33e-4,2.57e-4],0,'Andert reference inertia');
+assert.ok(andertRuntime.provenance.includes('ANDERT_2016_CLAY_FLIGHT'));
+assert.throws(()=>authorisedAeroParameters(ANDERT_REFERENCE_TARGET),/has no authorised numeric value \(HOLD\)/);
+assert.throws(()=>parameter({value:0.1,unit:'1',classification:'HOLD'}),/HOLD parameter must not carry a runtime numeric value/);
+assert.throws(()=>numericValue(parameter({value:null,unit:'rad\/s',classification:'UNKNOWN'}),'release spin'),/has no authorised numeric value/);
 
 // Input/state safety.
 assert.throws(()=>rk4Step({r:[0,0,0],v:[0,0,0]},0,0,zeroAcceleration()),/dt must be > 0/);
@@ -100,6 +113,7 @@ console.log(JSON.stringify({
   tests:{
     worldHandedness:true,quaternionConvention:true,stationary:true,constantVelocity:true,
     gravityAnalytic:true,deterministicReplay:true,finalStep:true,rotationalPrincipalAxis:true,
-    rigidBodyEulerDerivative:true,inputSafety:true,realisticClayFailClosed:true,rk4Convergence:true
+    rigidBodyEulerDerivative:true,provenanceBackedTargetDefinition:true,aeroHoldFailClosed:true,
+    inputSafety:true,realisticClayFailClosed:true,rk4Convergence:true
   }
 },null,2));

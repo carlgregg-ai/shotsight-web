@@ -26,3 +26,5 @@ jobs:
         run: node tests/physics-target-v1.mjs
       - name: Run P4 ballistic/intercept analytic tests
         run: node tests/physics-ballistics-v1.mjs
+      - name: Run P4 Allen closed-form TOF validation
+        run: node tests/physics-allen-tof-derived-v1.mjs

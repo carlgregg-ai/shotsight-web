@@ -7,6 +7,7 @@ on:
       - 'physics/**'
       - 'tests/physics-*.mjs'
       - 'docs/physics/**'
+      - 'p7-debug.html'
       - '.github/workflows/physics-engine.yml'
   workflow_dispatch:
 
@@ -38,3 +39,5 @@ jobs:
         run: node tests/physics-method-registry-v1.mjs
       - name: Run P7 flat-crosser integrated engineering proof
         run: node tests/physics-canonical-flat-crosser-v1.mjs
+      - name: Run P7 browser debug contract validation
+        run: node tests/physics-p7-browser-debug-v1.mjs

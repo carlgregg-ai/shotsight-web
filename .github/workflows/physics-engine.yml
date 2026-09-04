@@ -1,0 +1,26 @@
+name: ShotSight physics engine
+
+on:
+  push:
+    branches: [physics-engine-v1]
+    paths:
+      - 'physics/**'
+      - 'tests/physics-*.mjs'
+      - 'docs/physics/**'
+      - '.github/workflows/physics-engine.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  target-physics-v1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run P3 target physics analytic tests
+        run: node tests/physics-target-v1.mjs

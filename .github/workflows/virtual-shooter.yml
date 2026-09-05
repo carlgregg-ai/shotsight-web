@@ -28,3 +28,5 @@ jobs:
         run: node tests/virtual-shooter-baselines-v1.mjs
       - name: Run L1 perception-only stable crosser belief tests
         run: node tests/virtual-shooter-perception-v1.mjs
+      - name: Run L1 held-out uncertainty calibration tests
+        run: node tests/virtual-shooter-perception-calibration-v1.mjs

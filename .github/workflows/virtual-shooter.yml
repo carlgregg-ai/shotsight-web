@@ -44,3 +44,5 @@ jobs:
         run: node tests/virtual-shooter-presentation-shot-plan-v1.mjs
       - name: Run L2 held-out whole-presentation planning population gate
         run: node tests/virtual-shooter-presentation-shot-plan-heldout-v1.mjs
+      - name: Run L3 finite gun/shooter plant constraint tests
+        run: node tests/virtual-shooter-gun-plant-v1.mjs

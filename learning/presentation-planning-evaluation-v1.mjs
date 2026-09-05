@@ -23,6 +23,12 @@ function beliefFor(record,model,{evalTime_s=0.62,window_s,noise=0.003,rateNoise=
   const belief=buildMultiFamilyBelief(history,{model,predictionHorizon_s:0.12,maxHistory_s:window_s});
   auditShooterBoundary({observations:history,beliefs:[belief]});return {history,belief};
 }
+function contextHistoryFor(record,{evalTime_s,seed}){
+  // Preserve observed progress from a fixed nominal first-clear-sight epoch (0.20 s) rather than
+  // resetting progress to the latest rolling belief window. This is perception memory, not oracle future.
+  const window_s=Math.max(0.22,evalTime_s-0.20);
+  return createL1ObservationHistory(record,{evalTime_s,window_s,angleNoiseSd_rad:0.003,rateNoiseSd_radps:0.05,acquisitionQuality:0.45,seed});
+}
 
 function makeCalibrationRows(bank,model,seedBase){
   const rows=[];
@@ -41,11 +47,13 @@ function evaluateHeldout(bank,model,waitModel,seedBase){
   const rows=[];
   for(let i=0;i<bank.length;i++){
     const record=bank[i];if(record.family!=='CROSSER')continue;
-    const initial=beliefFor(record,model,{window_s:0.22,seed:seedBase+i*113});if(!initial.belief.prediction)continue;
-    const standPrior=makeStandPrior(record),context=buildShooterVisiblePresentationContext(initial.history,initial.belief,standPrior);
+    const evalTime_s=0.62,seed=seedBase+i*113;
+    const initial=beliefFor(record,model,{evalTime_s,window_s:0.22,seed});if(!initial.belief.prediction)continue;
+    const contextHistory=contextHistoryFor(record,{evalTime_s,seed:seed+50000});auditShooterBoundary({observations:contextHistory,beliefs:[]});
+    const standPrior=makeStandPrior(record),context=buildShooterVisiblePresentationContext(contextHistory,initial.belief,standPrior);
     const decision=chooseRunwayAwareObservationWait(context,initial.belief,waitModel);
-    const selected=decision.wait_s>0?beliefFor(record,model,{window_s:0.22+decision.wait_s,seed:seedBase+i*113}):initial;
-    const always100=beliefFor(record,model,{window_s:0.32,seed:seedBase+i*113});
+    const selected=decision.wait_s>0?beliefFor(record,model,{evalTime_s:evalTime_s+decision.wait_s,window_s:0.22+decision.wait_s,seed}):initial;
+    const always100=beliefFor(record,model,{evalTime_s:evalTime_s+0.10,window_s:0.32,seed});
     const predInitial=argmax(initial.belief.familyProb),predSelected=argmax(selected.belief.familyProb),pred100=argmax(always100.belief.familyProb);
     rows.push({decision,context,initialCorrect:predInitial===record.family,selectedCorrect:predSelected===record.family,always100Correct:pred100===record.family,selectedConfidence:selected.belief.confidence,initialConfidence:initial.belief.confidence});
   }
@@ -66,8 +74,10 @@ function lateRunwayProbe(bank,model,waitModel,seedBase){
   const rows=[];
   for(let i=0;i<bank.length;i++){
     const record=bank[i];if(record.family!=='CROSSER')continue;
-    const x=beliefFor(record,model,{evalTime_s:0.84,window_s:0.22,seed:seedBase+i*127});if(!x.belief.prediction)continue;
-    const context=buildShooterVisiblePresentationContext(x.history,x.belief,makeStandPrior(record));
+    const evalTime_s=0.84,seed=seedBase+i*127;
+    const x=beliefFor(record,model,{evalTime_s,window_s:0.22,seed});if(!x.belief.prediction)continue;
+    const contextHistory=contextHistoryFor(record,{evalTime_s,seed:seed+70000});auditShooterBoundary({observations:contextHistory,beliefs:[]});
+    const context=buildShooterVisiblePresentationContext(contextHistory,x.belief,makeStandPrior(record));
     const decision=chooseRunwayAwareObservationWait(context,x.belief,waitModel);
     rows.push({remaining:context.remainingToBreakEnd,wait:decision.wait_s,confidence:x.belief.confidence});
   }
@@ -85,6 +95,6 @@ export function runL2PresentationContextBenchmark({trainNPerFamily=90,calibratio
     partitions:{familyTraining:trainNPerFamily*3,waitCalibrationCrossers:calibrationNPerFamily,heldoutCrossers:heldoutNPerFamily},
     waitModel,early,late,
     boundary:'STAND PRIOR EXPOSES ONLY COARSE DEMONSTRATED DIRECTION/FAMILY/ANGULAR-SPAN/TIME ENVELOPE; CURRENT TARGET XYZ, VELOCITY MAGNITUDE, RANGE, FUTURE PATH, LEAD AND INTERCEPT REMAIN HIDDEN',
-    interpretation:'L2 architecture test only. Accuracy is target-family reading, not shooting success. The wait utility prices expected calibration-set information gain against observation-derived remaining presentation opportunity.'
+    interpretation:'L2 architecture test only. Accuracy is target-family reading, not shooting success. The wait utility prices calibration-set information gain against remaining opportunity inferred from cumulative visible angular travel since a fixed first-clear-sight epoch.'
   });
 }

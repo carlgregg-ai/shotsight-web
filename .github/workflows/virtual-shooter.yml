@@ -91,3 +91,5 @@ jobs:
         run: node tests/virtual-shooter-human-vision-v1.mjs
       - name: Run L3 pull-away human-vision policy boundary gate
         run: node tests/virtual-shooter-pull-away-human-vision-policy-v1.mjs
+      - name: Run L3 pull-away Human Vision hit/miss reward-support gate
+        run: node tests/virtual-shooter-pull-away-human-vision-evaluation-v1.mjs

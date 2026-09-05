@@ -48,3 +48,5 @@ jobs:
         run: node tests/virtual-shooter-gun-plant-v1.mjs
       - name: Run L3 maintained-lead no-learning perception-to-shot baseline
         run: node tests/virtual-shooter-maintained-lead-baseline-v1.mjs
+      - name: Run L3 maintained-lead hit-miss-only learning probe
+        run: node tests/virtual-shooter-maintained-lead-learning-v1.mjs

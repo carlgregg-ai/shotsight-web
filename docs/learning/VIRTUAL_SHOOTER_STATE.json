@@ -3,22 +3,22 @@
   "branch": "virtual-shooter-v1",
   "master_programme": "docs/learning/SHOTSIGHT_VIRTUAL_SHOOTER_MASTER_PROGRAMME.md",
   "status": "ACTIVE",
-  "current_stage": "L1",
-  "current_stage_name": "Perception-only target reading",
-  "current_substage": "L1_AMBIGUITY_CALIBRATION_AND_WAIT_FOR_INFORMATION",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L1_MULTIFAMILY_AMBIGUITY_GREEN_1.md",
+  "current_stage": "L2",
+  "current_stage_name": "Pickup / hold / connection / break planning",
+  "current_substage": "L2_SOURCE_PRIORS_AND_PLAN_VARIABLES_FOUNDATION",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L1_SELECTIVE_WAIT_DECISION_GREEN_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33940550902,
-    "head_sha": "ca081de1868b3675fcec0031196eb1d5869ed005",
+    "run_id": 33943317943,
+    "head_sha": "e1030268d0b65cfe097488dcf32bc9994827c24c",
     "conclusion": "success"
   },
   "oracle_world_status": "L0_HIDDEN_EVALUATION_FACADE_AND_PRIVILEGED_CEILING_GREEN",
-  "shooter_observation_status": "L1_DELAYED_NOISY_ANGULAR_HISTORY_TO_PROBABILISTIC_CROSSER_QUARTERER_LOOPER_BELIEF",
-  "anti_cheat_audit_status": "GREEN_STRUCTURAL_ALLOWLIST_NESTED_LEAK_PROBES_LEARNER_IMPORT_GUARDS_CALIBRATION_PARTITION_SEPARATION_AND_MULTIFAMILY_RUNTIME_AUDIT",
+  "shooter_observation_status": "L1_COMPLETE_CALIBRATED_MULTIFAMILY_BELIEF_WITH_SELECTIVE_WAIT",
+  "anti_cheat_audit_status": "GREEN_STRUCTURAL_ALLOWLIST_NESTED_LEAK_PROBES_LEARNER_IMPORT_GUARDS_CALIBRATION_PARTITION_SEPARATION_MULTIFAMILY_RUNTIME_AUDIT_AND_WAIT_POLICY_RUNTIME_PROBABILITY_ONLY",
   "naive_baseline_status": "L0_GREEN_12_CROSSER_BANK_0_OF_12_PROXY_HITS_MEAN_MISS_1.4875M",
   "oracle_baseline_status": "L0_GREEN_12_OF_12_PROXY_HITS_ENGINEERING_CEILING",
-  "l1_perception_status": "STABLE_CROSSER_POINT_AND_UNCERTAINTY_GREEN; MULTIFAMILY_300MS_AND_240MS_USEFUL; POOR_220MS_CROSSER_QUARTERER_AMBIGUITY_EXPOSED; L1_NOT_CLOSED",
+  "l1_perception_status": "COMPLETE_GREEN_PERCEPTION_ARCHITECTURE_GATE_NOT_REAL_CLAY_VALIDATION",
   "l1_heldout_calibration": {
     "calibration_n": 120,
     "heldout_n_per_condition": 240,
@@ -33,6 +33,19 @@
     "full_300ms": {"accuracy": 0.837037037037037, "brier": 0.2603977847328156, "mean_confidence": 0.5763279282979886, "crosser_quarterer_accuracy": 0.7555555555555555, "looper_recall": 1.0, "az_rmse_rad": 0.004411563339219087, "el_rmse_rad": 0.0024872297486381372},
     "short_240ms": {"accuracy": 0.7703703703703704, "brier": 0.3982540256333347, "mean_confidence": 0.35266273753506944, "crosser_quarterer_accuracy": 0.6555555555555556, "looper_recall": 1.0, "az_rmse_rad": 0.005111169060210928, "el_rmse_rad": 0.003846183277395728},
     "partial_220ms": {"accuracy": 0.45555555555555555, "brier": 0.6489338920153938, "mean_confidence": 0.1564435493024351, "crosser_quarterer_accuracy": 0.18333333333333332, "looper_recall": 1.0, "az_rmse_rad": 0.010020285470871285, "el_rmse_rad": 0.012712719006262762}
+  },
+  "l1_selective_wait_heldout": {
+    "training_total": 270,
+    "calibration_total": 360,
+    "heldout_total": 720,
+    "family_temperature": 1.9,
+    "heldout_initial_ece": 0.03356354972910919,
+    "immediate": {"accuracy": 0.4513888888888889, "crosser_quarterer_accuracy": 0.17916666666666667, "az_rmse_rad": 0.010246118828721626, "el_rmse_rad": 0.012535442538257984},
+    "wait_50ms": {"accuracy": 0.5083333333333333, "crosser_quarterer_accuracy": 0.2625, "az_rmse_rad": 0.008868695188789936, "el_rmse_rad": 0.009054019467195192},
+    "wait_100ms": {"accuracy": 0.7666666666666667, "crosser_quarterer_accuracy": 0.6520833333333333, "az_rmse_rad": 0.00860449149477552, "el_rmse_rad": 0.003246976862773181},
+    "wait_150ms": {"accuracy": 0.7736111111111111, "crosser_quarterer_accuracy": 0.6625, "az_rmse_rad": 0.0077323344952980886, "el_rmse_rad": 0.002814651007396257},
+    "selective": {"accuracy": 0.5375, "crosser_quarterer_accuracy": 0.30625, "wait_rate": 0.3277777777777778, "mean_wait_s": 0.04916666666666645, "waited_accuracy": 0.7076271186440678, "multiclass_brier": 0.6197390237700664, "az_rmse_rad": 0.007856428215850758, "el_rmse_rad": 0.01114791601756942},
+    "policy": {"first_threshold": 0.42, "second_threshold": 0.46, "max_wait_s": 0.15, "runtime_input": "CALIBRATED_FAMILY_PROBABILITIES_ONLY"}
   },
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
@@ -49,10 +62,13 @@
     "Condition-specific global uncertainty scaling is an acceptable calibration gate but not the desired final belief architecture; a more principled heteroscedastic model should be tested later.",
     "Perfect left/right direction accuracy on simple stable crossers is an easy-task result, not general target-reading proof.",
     "Multi-family 300 ms reading is useful but crosser-v-quarterer remains materially harder than looper recognition.",
-    "Poor 220 ms acquisition collapses crosser-v-quarterer discrimination to 0.1833 accuracy; the model correctly lowers confidence but is not decision-ready in that condition.",
+    "Poor 220 ms acquisition collapses crosser-v-quarterer discrimination to 0.1833 accuracy; the model correctly lowers confidence but is not decision-ready in that condition without additional information.",
     "Current looper family is a gravity-only engineering toy with an unusually strong vertical-curvature signature; 1.0 looper recall is not real-clay looper validation.",
-    "Multi-family probability calibration has not yet received a dedicated held-out reliability/ECE calibration gate.",
+    "A first unconstrained WAIT_FOR_MORE_INFORMATION policy degenerated into waiting on every held-out target and correctly failed CI; selectivity is now an explicit behavioural gate.",
+    "Always waiting 100 ms materially outperforms the current selective policy on pure poor-view classification accuracy; later stages must price the lost shooting opportunity before claiming an optimal wait policy.",
+    "The fitted 50/100/150 ms observation waits, noise conditions and thresholds are SHOTSIGHT_HYPOTHESIS experimental parameters, not universal human timing prescriptions.",
+    "Global temperature scaling calibrates confidence but does not make the prototype family model a rich heteroscedastic representation.",
     "No Brett Winstanley hold/pickup/break-point claim promoted without a recovered primary source."
   ],
-  "next_action": "Add held-out multi-family probability calibration and a selective WAIT_FOR_MORE_INFORMATION experiment on ambiguous 200-300 ms observations. Test whether waiting 50-150 ms materially improves unseen crosser/quarterer discrimination and path prediction without oracle access; close L1 only if confidence/reliability and selective waiting are credible."
+  "next_action": "Begin L2 by implementing explicit learner-side visual pickup, gun hold, target/barrel connection and intended break-region planning variables. Seed evidence-labelled CPSA/Husthwaite/Currie priors and blank-slate controls; evaluate acquisition/runway/control from perception-limited belief only. Do not expose oracle intercept, exact lead or hidden future trajectory."
 }

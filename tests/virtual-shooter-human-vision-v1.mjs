@@ -19,6 +19,7 @@ const earlyEvidence=buildEllisHumanVisualEvidence(early,{contrast:0.9,clutter:0.
 assert.equal(earlyEvidence.phase,'FLASH_STREAK');
 assert.equal(earlyEvidence.resolved,null);
 assert.equal(earlyEvidence.usableForConnection,false);
+assert.equal(Object.hasOwn(earlyEvidence.streak,'centreApprox_rad'),false,'unresolved streak must not expose a pseudo-centre');
 assert.ok(earlyEvidence.streak.uncertaintyAlongMotionSd_rad>=earlyEvidence.streak.uncertaintyNormalSd_rad);
 assert.equal(auditHumanVisualEvidence(earlyEvidence).status,'PASS');
 
@@ -56,4 +57,4 @@ assert.equal(auditHumanVisualEvidence(occluded).status,'PASS');
 const leaked={...obs(0.2),context:{expectedDirection:'RIGHT',trapRegionKnown:true,trueRange_m:37}};
 assert.throws(()=>buildEllisHumanVisualEvidence([leaked]),/PRIVILEGED_STATE_LEAK/);
 
-console.log('PASS Ellis Human Vision V1: streak-first acquisition, anisotropic uncertainty, delayed tracking, clutter/contrast effects, reacquisition and anti-oracle containment.');
+console.log('PASS Ellis Human Vision V1: streak-first acquisition, no pseudo-centre, anisotropic uncertainty, delayed tracking, clutter/contrast effects, reacquisition and anti-oracle containment.');

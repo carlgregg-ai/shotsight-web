@@ -67,3 +67,12 @@ jobs:
       - name: Fresh L3 diagnostic marker — no binary reward support
         if: steps.fresh_coupling_reward.outputs.reward_support == 'false'
         run: echo "Fresh non-sealed diagnostic found zero engineering-proxy hits."
+      - name: Run L3 quasi-continuous relationship exploration diagnostic
+        id: continuous_relationship_reward
+        run: node tests/virtual-shooter-continuous-relationship-reward-v1.mjs
+      - name: Continuous relationship marker — binary reward support discovered
+        if: steps.continuous_relationship_reward.outputs.reward_support == 'true'
+        run: echo "Predeclared low-discrepancy shooter-visible relationship exploration found binary reward support."
+      - name: Continuous relationship marker — no binary reward support
+        if: steps.continuous_relationship_reward.outputs.reward_support == 'false'
+        run: echo "Predeclared low-discrepancy shooter-visible relationship exploration found zero engineering-proxy hits."

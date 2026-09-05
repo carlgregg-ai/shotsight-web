@@ -99,3 +99,5 @@ jobs:
         run: node tests/virtual-shooter-pull-away-human-vision-reward-replication-v1.mjs
       - name: Run L3 pull-away contextual/episodic memory gate
         run: node tests/virtual-shooter-pull-away-contextual-episodic-v1.mjs
+      - name: Run L3 pull-away contextual/episodic revision gate
+        run: node tests/virtual-shooter-pull-away-contextual-episodic-revision-v1.mjs

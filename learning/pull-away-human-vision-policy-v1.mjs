@@ -5,7 +5,6 @@
 import {assertNoPrivilegedShooterData} from './virtual-shooter-boundary-v1.mjs';
 import {perceivedAngularCommand,PROVISIONAL_GUN_PLANT_LIMITS_V1} from './gun-plant-v1.mjs';
 
-const clamp=(v,lo,hi)=>Math.min(hi,Math.max(lo,v));
 const finite=(v,n)=>{if(!Number.isFinite(v))throw new Error(`${n} must be finite`);return v;};
 function freezePlain(v){if(Array.isArray(v))return Object.freeze(v.map(freezePlain));if(v&&typeof v==='object'){const o={};for(const [k,x] of Object.entries(v))o[k]=freezePlain(x);return Object.freeze(o);}return v;}
 
@@ -18,6 +17,8 @@ export const PULL_AWAY_HUMAN_VISION_HYPOTHESES_V1=freezePlain({
   triggerSeparationFraction:0.80,
   note:'Numerical values are provisional and must be calibrated/ablated; no value is an oracle lead or certified human constant.'
 });
+
+const VALID_METHOD_PHASES=new Set(['WAIT_FOR_ACQUISITION','CONNECT','MATCH_SPEED','DEVELOP_SEPARATION','TRIGGER_READY']);
 
 function validateVisualEvidence(e){
   if(!e||e.schema!=='ELLIS_VISUAL_EVIDENCE_V1')throw new Error('PULL_AWAY_POLICY_REQUIRES_ELLIS_VISUAL_EVIDENCE_V1');
@@ -44,16 +45,17 @@ function lineBasis(resolved){
   return {speed,tAz:azRate/speed,tEl:elRate/speed,nAz:-elRate/speed,nEl:azRate/speed};
 }
 
-export function createPullAwayPolicyStateV1({visualEvidence,gunState,separationTarget_rad=PULL_AWAY_HUMAN_VISION_HYPOTHESES_V1.defaultSeparationTarget_rad,hypotheses=PULL_AWAY_HUMAN_VISION_HYPOTHESES_V1}={}){
+export function createPullAwayPolicyStateV1({visualEvidence,gunState,separationTarget_rad=PULL_AWAY_HUMAN_VISION_HYPOTHESES_V1.defaultSeparationTarget_rad,hypotheses=PULL_AWAY_HUMAN_VISION_HYPOTHESES_V1,previousPhase=null}={}){
   validateVisualEvidence(visualEvidence);validateGunState(gunState);finite(separationTarget_rad,'separationTarget_rad');
   if(separationTarget_rad<0||separationTarget_rad>0.12)throw new Error('separationTarget_rad outside exploratory bounds');
+  if(previousPhase!==null&&!VALID_METHOD_PHASES.has(previousPhase))throw new Error('invalid previousPhase');
   assertNoPrivilegedShooterData(hypotheses,{path:'pullAway.hypotheses'});
 
-  // Before TRACKING, Ellis may detect a streak and decide to wait, but may not point to a
-  // hidden pseudo-centre. The command is therefore simply to preserve the current gun state.
+  // If current vision is lost, do not continue a precise separation command from hidden truth.
+  // Acquisition/reacquisition always takes precedence over method-phase persistence.
   if(visualEvidence.phase!=='TRACKING'){
     const command=perceivedAngularCommand({t_s:gunState.t_s,desiredAz_rad:gunState.az_rad,desiredEl_rad:gunState.el_rad,source:'PULL_AWAY_WAIT_FOR_HUMAN_VISUAL_ACQUISITION'});
-    const out=freezePlain({schema:'PULL_AWAY_HUMAN_VISION_POLICY_STATE_V1',phase:'WAIT_FOR_ACQUISITION',trigger:false,usableVisualTarget:false,visualPhase:visualEvidence.phase,acquisitionScore:visualEvidence.acquisitionScore,command,connectionError_rad:null,speedMatchError_radps:null,achievedForward_rad:null,separationTarget_rad,evidenceClass:hypotheses.evidenceClass});
+    const out=freezePlain({schema:'PULL_AWAY_HUMAN_VISION_POLICY_STATE_V1',phase:'WAIT_FOR_ACQUISITION',trigger:false,usableVisualTarget:false,visualPhase:visualEvidence.phase,acquisitionScore:visualEvidence.acquisitionScore,command,connectionError_rad:null,speedMatchError_radps:null,achievedForward_rad:null,separationTarget_rad,evidenceClass:hypotheses.evidenceClass,phasePersistence:'RESET_ON_VISUAL_LOSS'});
     assertNoPrivilegedShooterData(out,{path:'pullAway.policy'});return out;
   }
 
@@ -68,12 +70,15 @@ export function createPullAwayPolicyStateV1({visualEvidence,gunState,separationT
   const connected=connectionError_rad<=hypotheses.connectionTolerance_rad;
   const speedMatched=speedMatchError_radps<=hypotheses.speedMatchTolerance_radps;
 
+  // Pull-away has topology, not just instantaneous predicates. Once Ellis has genuinely
+  // connected and matched speed, deliberately developing separation is a persistent method
+  // phase. Without this state, leaving the connection tolerance would incorrectly command a
+  // return to the target and undo the pull-away. Persistence uses only Ellis's own prior phase.
+  const separationCommitted=previousPhase==='DEVELOP_SEPARATION'||previousPhase==='TRIGGER_READY';
   let phase='CONNECT';
   if(connected&&confidenceReady)phase='MATCH_SPEED';
-  if(connected&&confidenceReady&&speedMatched)phase='DEVELOP_SEPARATION';
-  // Once separation has developed, the gun no longer needs to remain within the original
-  // connection tolerance. Trigger readiness is based on the learner-visible forward picture.
-  if(confidenceReady&&achievedForward_rad>=separationTarget_rad*hypotheses.triggerSeparationFraction)phase='TRIGGER_READY';
+  if((connected&&confidenceReady&&speedMatched)||separationCommitted)phase='DEVELOP_SEPARATION';
+  if(confidenceReady&&separationCommitted&&achievedForward_rad>=separationTarget_rad*hypotheses.triggerSeparationFraction)phase='TRIGGER_READY';
 
   const responseDt=PROVISIONAL_GUN_PLANT_LIMITS_V1.visualMotorDelay_s;
   const targetAtResponseAz=r.az_rad+r.apparentAzRate_radps*responseDt;
@@ -84,13 +89,11 @@ export function createPullAwayPolicyStateV1({visualEvidence,gunState,separationT
   const desiredEl=targetAtResponseEl+line.tEl*desiredForward;
   const command=perceivedAngularCommand({t_s:gunState.t_s,desiredAz_rad:desiredAz,desiredEl_rad:desiredEl,source:`PULL_AWAY_${phase}_FROM_RESOLVED_HUMAN_VISUAL_EVIDENCE`});
   const trigger=phase==='TRIGGER_READY';
-  const out=freezePlain({schema:'PULL_AWAY_HUMAN_VISION_POLICY_STATE_V1',phase,trigger,usableVisualTarget:true,visualPhase:visualEvidence.phase,acquisitionScore:visualEvidence.acquisitionScore,visualConfidence:visualEvidence.confidence,connectionError_rad,speedMatchError_radps,achievedForward_rad,achievedNormal_rad,separationTarget_rad,lineSpeed_radps:line.speed,command,evidenceClass:hypotheses.evidenceClass,boundary:'NO_RAW_SHOOTER_OBSERVATION_OR_ORACLE_STATE_ACCEPTED'});
+  const out=freezePlain({schema:'PULL_AWAY_HUMAN_VISION_POLICY_STATE_V1',phase,previousPhase,trigger,usableVisualTarget:true,visualPhase:visualEvidence.phase,acquisitionScore:visualEvidence.acquisitionScore,visualConfidence:visualEvidence.confidence,connectionError_rad,speedMatchError_radps,achievedForward_rad,achievedNormal_rad,separationTarget_rad,lineSpeed_radps:line.speed,command,evidenceClass:hypotheses.evidenceClass,phasePersistence:'LEARNER_INTERNAL_METHOD_PHASE_ONLY_RESET_ON_VISUAL_LOSS',boundary:'NO_RAW_SHOOTER_OBSERVATION_OR_ORACLE_STATE_ACCEPTED'});
   assertNoPrivilegedShooterData(out,{path:'pullAway.policy'});return out;
 }
 
 export function auditPullAwayHumanVisionPolicyInputV1(input){
-  // Explicitly fail raw ShooterObservation objects even though they are legitimate upstream
-  // sensory records. Pull-away policy is downstream of Human Vision V1, never parallel to it.
   if(input?.schema==='SHOOTER_OBSERVATION_V1')throw new Error('PULL_AWAY_POLICY_RAW_OBSERVATION_BYPASS_FORBIDDEN');
   validateVisualEvidence(input);
   return freezePlain({schema:'PULL_AWAY_HUMAN_VISION_POLICY_AUDIT_V1',status:'PASS',rawObservationAccepted:false,privilegedFieldAccess:0});

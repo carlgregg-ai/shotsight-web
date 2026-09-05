@@ -5,15 +5,14 @@
   "status": "ACTIVE",
   "current_stage": "L3",
   "current_stage_name": "Single-method crosser learning",
-  "current_substage": "L3_PULL_AWAY_HUMAN_VISION_REWARD_SUPPORT_REPLICATION_PENDING_CI_V1",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_LEARNING_NO_TRANSFER_1.md",
-  "pending_checkpoint": "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_REWARD_REPLICATION_PENDING_CI_1.md",
+  "current_substage": "L3_PULL_AWAY_CONTEXTUAL_EPISODIC_MEMORY_DESIGN_NEXT",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_REWARD_REPLICATION_GREEN_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33985663294,
-    "head_sha": "44d701594e455de61475d98417782a5203106a17",
+    "run_id": 33988682722,
+    "head_sha": "311599eff16d335c2137851bada2b692b1e379a1",
     "conclusion": "success",
-    "note": "Full L0->L3 regression green including Human Vision pull-away reward support and first hit/miss memory-learning gate. Binary reward support exists but is sparse/population-sensitive; the first one-dimensional UCB1 memory produced no positive development-held-out learning signal."
+    "note": "Full L0->L3 regression green. Human Vision pull-away binary engineering-proxy reward support replicated on 3 of 4 fresh independently seeded development blocks (4 hits / 976 attempts), while the first context-free one-dimensional UCB1 memory remains a verified negative held-out learning result."
   },
   "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, PLANS, ACTS, REMEMBERS AND LEARNS.",
   "shooting_axiom": "GOOD SHOOTING IS CONTINUOUS PERCEPTUAL COUPLING BETWEEN TARGET AND GUN: READ THE LINE -> MATCH THE SPEED -> APPLY THE METHOD -> TRIGGER -> FOLLOW THROUGH.",
@@ -24,7 +23,7 @@
   "acquisition_experience_schema": "ELLIS_ACQUISITION_EXPERIENCE_V1",
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
-  "anti_cheat_audit_status": "GREEN_THROUGH_L3_PULL_AWAY_HUMAN_VISION_HIT_MISS_LEARNING_AT_CI_33985663294; LEARNER MEMORY IMPORTS NO ORACLE/PHYSICS/REFEREE; HELDOUT UNUSED FOR POLICY SELECTION; ORACLE SCORES POST_TRIGGER_ONLY; TARGET_SEED_SCENARIO_SEED_MISS_DISTANCE_TRUE_RANGE_FUTURE_PATH_INTERCEPT_PELLET_TOF_REQUIRED_LEAD_AND_DIRECT_CORRECTION REMAIN OUTSIDE LEARNER POLICY AND MEMORY",
+  "anti_cheat_audit_status": "GREEN_THROUGH_L3_PULL_AWAY_HUMAN_VISION_REWARD_REPLICATION_AT_CI_33988682722; LEARNER MEMORY IMPORTS NO ORACLE/PHYSICS/REFEREE; REPLICATION USES SAME PREDECLARED ACTION GRID ON EACH FRESH BLOCK AND PERFORMS NO POLICY SELECTION; ORACLE SCORES POST_TRIGGER_ONLY; TARGET_SEED_SCENARIO_SEED_MISS_DISTANCE_TRUE_RANGE_FUTURE_PATH_INTERCEPT_PELLET_TOF_REQUIRED_LEAD_AND_DIRECT_CORRECTION REMAIN OUTSIDE LEARNER POLICY AND MEMORY",
   "first_experiment_target_family": "CROSSERS",
   "initial_presentation_budget": 100000,
   "scale_to_100k_authorised": false,
@@ -46,7 +45,8 @@
     "L3_PULL_AWAY_HUMAN_VISION_INTEGRATION": "GREEN",
     "L3_PULL_AWAY_HIT_MISS_REWARD_SUPPORT": "GREEN_SPARSE_POPULATION_SENSITIVE_4_HITS_1098_ATTEMPTS",
     "L3_PULL_AWAY_HIT_MISS_LEARNING": "NEGATIVE_NO_DEVELOPMENT_HELDOUT_LEARNING_SIGNAL",
-    "L3_PULL_AWAY_REWARD_REPLICATION": "IMPLEMENTED_PENDING_CI"
+    "L3_PULL_AWAY_REWARD_REPLICATION": "GREEN_SUPPORT_ON_3_OF_4_FRESH_BLOCKS_4_HITS_976_ATTEMPTS",
+    "L3_CONTEXTUAL_EPISODIC_MEMORY": "NEXT"
   },
   "reference_metrics": {
     "L0": {"oracle_proxy_hits": "12/12", "naive_proxy_hits": "0/12"},
@@ -55,19 +55,16 @@
     "L3_finite_gun": {"integration_hz": 120, "visual_motor_delay_s": 0.12, "max_angular_velocity_radps": 2.4, "max_angular_acceleration_radps2": 12, "max_angular_jerk_radps3": 120, "evidence_class": "PROVISIONAL_METHOD_KINEMATICS"},
     "L3_phase_relationship_binary_reward_support": {"seed_base": 371000, "phase_attempts": 1024, "phase_hits": 4, "constant_attempts": 1024, "constant_hits": 5, "phase_superiority_observed": false},
     "L3_pull_away_human_vision_reward_support": {
-      "verified_ci_run_id": 33985663294,
-      "verified_head_sha": "44d701594e455de61475d98417782a5203106a17",
+      "verified_ci_run_id": 33988682722,
       "attempts": 1098,
       "triggers": 772,
       "hits": 4,
       "train": {"attempts": 366, "triggers": 272, "hits": 0},
       "calibration": {"attempts": 366, "triggers": 311, "hits": 4},
-      "heldout_development": {"attempts": 366, "triggers": 189, "hits": 0},
-      "reproducible_across_populations": false
+      "heldout_development": {"attempts": 366, "triggers": 189, "hits": 0}
     },
     "L3_pull_away_human_vision_hit_miss_learning": {
-      "verified_ci_run_id": 33985663294,
-      "verified_head_sha": "44d701594e455de61475d98417782a5203106a17",
+      "verified_ci_run_id": 33988682722,
       "training": {"attempts": 244, "triggers": 117, "hits": 1},
       "calibration_candidate_count": 5,
       "calibration_candidate_hits": 0,
@@ -75,14 +72,30 @@
       "heldout_no_memory_uniform": {"attempts": 183, "hits": 1, "hit_rate": 0.00546448087431694},
       "memory_advantage_hit_rate": -0.00546448087431694,
       "learning_signal_observed": false
+    },
+    "L3_pull_away_human_vision_reward_replication": {
+      "verified_ci_run_id": 33988682722,
+      "verified_head_sha": "311599eff16d335c2137851bada2b692b1e379a1",
+      "block_count": 4,
+      "support_blocks": 3,
+      "attempts": 976,
+      "triggers": 730,
+      "hits": 4,
+      "blocks": [
+        {"name": "REPLICATION_A", "seed_base": 401000, "attempts": 244, "triggers": 244, "hits": 2},
+        {"name": "REPLICATION_B", "seed_base": 402000, "attempts": 244, "triggers": 244, "hits": 1},
+        {"name": "REPLICATION_C", "seed_base": 403000, "attempts": 244, "triggers": 123, "hits": 0},
+        {"name": "REPLICATION_D", "seed_base": 404000, "attempts": 244, "triggers": 119, "hits": 1}
+      ],
+      "reward_support_replicated_multiple_fresh_blocks": true
     }
   },
   "active_hypotheses": [
     "Good shooting is continuous perceptual coupling: read the live line, match gun speed, apply method, trigger, and follow through.",
     "Human-analogous acquisition creates an information-versus-runway trade-off: waiting may improve line/speed belief but consumes shooting opportunity.",
     "Pull-away remains the primary L3 method because acquire/connect/match/separate/trigger/follow-through gives an interpretable adaptation loop.",
-    "Sparse binary reward support under Human Vision may be too population-sensitive for a context-free one-dimensional memory; establish replication before enriching memory or scaling compute.",
-    "Ellis apprenticeship records are learner-safe context that may later support episodic/contextual memory if reward support proves reproducible.",
+    "Binary reward support now demonstrably exists on multiple independently seeded fresh Human Vision populations; the next uncertainty is whether learner-safe context/episodic memory can exploit it and transfer.",
+    "Ellis apprenticeship records contain learner-safe acquisition/process context that may support episodic/contextual memory without target identity or oracle geometry.",
     "Satisfaction and affect-like variables remain experimental and must survive explicit ablation before retention."
   ],
   "negative_findings": [
@@ -90,9 +103,9 @@
     "Shooter-visible trigger timing expansion produced 100 physical follow-through shots across 1512 attempts and zero proxy hits.",
     "Fresh post-geometry diagnostic produced 0/660 hits; quasi-continuous constant relationship exploration produced 0/1024 hits.",
     "Phase-dependent relationship representation did not outperform constant control: 4/1024 versus 5/1024 proxy hits on the same bank.",
-    "Human Vision pull-away reward support was sparse and population-sensitive: 4/1098 overall, all four hits in calibration, with zero in train and development-heldout populations.",
     "The first context-free one-dimensional pull-away UCB1 hit/miss memory failed held-out transfer: learned 0/3 versus no-memory uniform 1/183; memory advantage -0.00546448087431694.",
-    "Do not widen the hit proxy, inject referee miss gradients, expose oracle lead, seed learner memory from rewarded action identities, or treat the 55 mm engineering proxy as real-world break probability.",
+    "Reward remains sparse even though it replicated: 4/976 hits across four fresh blocks, with one entire block producing zero hits.",
+    "Do not copy fresh-block rewarded action identities into Ellis memory, widen the hit proxy, inject referee miss gradients, expose oracle lead, or treat the 55 mm engineering proxy as real-world break probability.",
     "Human Vision V1 numerical defaults and pull-away policy thresholds remain SHOTSIGHT_HYPOTHESIS / PROVISIONAL_METHOD_KINEMATICS pending human calibration."
   ],
   "completed_checkpoints": [
@@ -103,7 +116,8 @@
     "docs/learning/checkpoints/L3_EXPERIENCE_RECORD_FOUNDATION_GREEN_1.md",
     "docs/learning/checkpoints/L3_HUMAN_VISUAL_ACQUISITION_GREEN_1.md",
     "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_POLICY_GREEN_1.md",
-    "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_LEARNING_NO_TRANSFER_1.md"
+    "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_LEARNING_NO_TRANSFER_1.md",
+    "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_REWARD_REPLICATION_GREEN_1.md"
   ],
-  "next_action": "Run the new four-block Human Vision pull-away binary reward-support replication gate on seed bases 401000-404000 using the unchanged 61-point learner-safe visual-separation grid. Preserve either outcome. If support occurs on multiple fresh blocks, proceed to learner-safe episodic/contextual memory experiments with the current one-dimensional UCB1 learner as a negative baseline. If support remains isolated/absent, diagnose reward landscape, trigger opportunity, presentation context and learner-safe representation before adding memory complexity or compute. Do not scale to 100k until reproducible held-out learning is demonstrated."
+  "next_action": "Design and implement the first interpretable learner-safe contextual/episodic pull-away memory using only pre-action or learner-experienced Human Vision/acquisition/process context. Retain the context-free one-dimensional UCB1 learner as a negative baseline and compare both against no-memory exploration on distinct train/calibration/development-heldout populations. Context may include learner-visible acquisition quality/phase, confidence, observation span, presentation progress/runway and method/process state, but must exclude target seed, exact range, future trajectory, intercept, miss distance, required lead and oracle action. Do not scale to 100k until contextual memory demonstrates reproducible held-out learning advantage."
 }

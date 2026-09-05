@@ -5,21 +5,22 @@
   "status": "ACTIVE",
   "current_stage": "L3",
   "current_stage_name": "Single-method crosser learning",
-  "current_substage": "L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_FINITE_GUN_PLANT_GREEN_1.md",
+  "current_substage": "L3_MAINTAINED_LEAD_HIT_MISS_LEARNING_V1",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE_GREEN_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33951254843,
-    "head_sha": "f0d70853c09691413a30c15075b59afb0b203988",
+    "run_id": 33954406860,
+    "head_sha": "5e05a698edefab3cc44635ce24acab669d73b4cc",
     "conclusion": "success"
   },
   "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, ACTS, REMEMBERS AND LEARNS.",
-  "anti_cheat_audit_status": "GREEN_THROUGH_L3_FINITE_GUN_PLANT; ORACLE_FUTURE_INTERCEPT_LEAD_RANGE_AND_PELLET_TOF_REMAIN_HIDDEN",
+  "anti_cheat_audit_status": "GREEN_THROUGH_L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE; ORACLE_FUTURE_INTERCEPT_LEAD_RANGE_PELLET_TOF_AND_PRE_SHOT_MISS_REMAIN_HIDDEN",
   "oracle_world_status": "L0_HIDDEN_EVALUATION_FACADE_AND_PRIVILEGED_CEILING_GREEN",
   "shooter_observation_status": "L1_COMPLETE_CALIBRATED_MULTIFAMILY_BELIEF_WITH_SELECTIVE_WAIT",
   "l1_perception_status": "COMPLETE_GREEN_PERCEPTION_ARCHITECTURE_GATE_NOT_REAL_CLAY_VALIDATION",
   "l2_planning_status": "COMPLETE_GREEN_PRESENTATION_LEVEL_PLANNING_ARCHITECTURE_NOT_SHOOTING_SUCCESS",
   "l3_motor_status": "FINITE_GUN_PLANT_GREEN_NOT_HUMAN_CALIBRATED_NOT_SHOOTING_SUCCESS",
+  "l3_no_learning_baseline_status": "GREEN_FULL_PERCEPTION_PLAN_FINITE_GUN_TRIGGER_POST_ACTION_REFEREE_PATH; ZERO_PROXY_HITS_ON_INITIAL_STATIC_SWEEP",
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
   "first_experiment_target_family": "CROSSERS",
@@ -29,7 +30,8 @@
     "docs/learning/checkpoints/L2_PLANNING_ADAPTATION_GREEN_1.md",
     "docs/learning/checkpoints/L2_PRESENTATION_CONTEXT_RUNWAY_GREEN_1.md",
     "docs/learning/checkpoints/L2_PRESENTATION_LEVEL_PLANNING_COMPLETE.md",
-    "docs/learning/checkpoints/L3_FINITE_GUN_PLANT_GREEN_1.md"
+    "docs/learning/checkpoints/L3_FINITE_GUN_PLANT_GREEN_1.md",
+    "docs/learning/checkpoints/L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE_GREEN_1.md"
   ],
   "l0_reference": {
     "oracle_proxy_hits": "12/12",
@@ -86,11 +88,27 @@
     "evidence_class": "PROVISIONAL_METHOD_KINEMATICS",
     "interpretation": "Active engineering constraints only; values are not certified human limits and require Sense/video calibration and sensitivity analysis."
   },
+  "l3_no_learning_reference": {
+    "calibration_seed_base": 151000,
+    "calibration_crossers": 30,
+    "calibrated_demonstrated_angular_span_rad": 0.4136418192551735,
+    "calibrated_observed_presentation_duration_s": 0.9333333333333333,
+    "heldout_seed_base": 181000,
+    "heldout_crossers": 24,
+    "static_separation_grid_rad": [0, 0.015, 0.030, 0.045, 0.060, 0.075],
+    "proxy_hits_by_grid": [0, 0, 0, 0, 0, 0],
+    "trigger_rates": [0.3333333333333333, 0.125, 0.16666666666666666, 0.16666666666666666, 0.25, 0.20833333333333334],
+    "poor_observation_0045_trigger_rate": 0,
+    "retired_diagnostic_seed_base": 131000,
+    "interpretation": "End-to-end no-learning route now fires finite-gun shots and scores only after action, but every predeclared initial static visual picture missed the 55 mm engineering centreline proxy. This negative result is preserved and is the starting point for hit/miss-only learning."
+  },
   "active_hypotheses": [
     "First-clear-sight epoch, expected presentation duration, demonstrated angular span, break-window coordinates and runway penalty remain provisional SHOTSIGHT_HYPOTHESIS values pending Sense/video calibration.",
-    "The source-informed L2 hold/connection/break coordinates are priors only and must now compete with blank-slate/learned alternatives on actual motor/shot outcomes.",
+    "The source-informed L2 hold/connection/break coordinates are priors only and must compete with blank-slate/learned alternatives on actual motor/shot outcomes.",
     "L3 begins with maintained lead as the cleanest controlled experiment; this is experimental sequencing, not a claim that maintained lead is universally best.",
-    "Human gun angular velocity, acceleration, jerk and reaction limits remain provisional; current plant limits are active calibration parameters rather than human facts."
+    "Human gun angular velocity, acceleration, jerk and reaction limits remain provisional; current plant limits are active calibration parameters rather than human facts.",
+    "Maintained-lead motor-delay feed-forward derived from perceived angular rate is a SHOTSIGHT_HYPOTHESIS controller feature, not a measured human strategy.",
+    "The next learner may explore angular target-gun visual relationships only inside the predeclared learner-safe action bounds; it must never receive the referee miss distance or exact ballistic answer."
   ],
   "negative_findings": [
     "Inherited canonical flat-crosser exposes exact intercept/physical lead and remains hidden oracle/reference truth only.",
@@ -104,7 +122,9 @@
     "Scalar confidence gain was a misleading surrogate for information value and was replaced by calibration Brier-loss improvement.",
     "The old internal plan-structure proxy favoured blank-slate over source priors; it is bookkeeping only and prohibited as a success objective.",
     "No Brett Winstanley hold/pickup/break claim is promoted without a recovered primary source.",
-    "The first finite gun controller can reach its provisional kinematic caps; learned shooting behaviour will therefore be sensitive to those engineering limits until real motion calibration is available."
+    "The first finite gun controller can reach its provisional kinematic caps; learned shooting behaviour will therefore be sensitive to those engineering limits until real motion calibration is available.",
+    "The first L3 end-to-end baseline produced zero triggers because the fixed whole-presentation prior covered too little of the target and the trigger incorrectly gated on current prospective servo-command error; diagnostic seed bank 131000 was retired from held-out status after inspection.",
+    "After observation-only stand-prior calibration and visual-picture trigger repair, the initial 0-0.075 rad maintained-lead static separation sweep produced zero proxy hits on 24 untouched crossers despite valid triggers. Do not tune this away; learning must discover useful behaviour or expose an architectural failure."
   ],
-  "next_action": "Build the L3 maintained-lead no-learning crosser baseline. Convert only live apparent target belief plus L2 presentation plan into a target-gun angular-separation command and pass it through the finite gun plant. Trigger from shooter-visible state only; oracle scores only after the action. Establish static/poor and exploratory separation baselines before adaptive learning. Do not supply exact required lead, intercept, range or pellet TOF."
+  "next_action": "Build L3 maintained-lead hit/miss-only learning with a simple interpretable memory policy before RL/neural methods. Use a broader predeclared angular visual-picture action grid within existing learner-safe bounds. Separate training/calibration/new held-out banks. After a trigger, expose only HIT_MISS_ONLY_FEEDBACK_V1 to the learner; never expose referee miss distance/vector, exact required lead, intercept, range or pellet TOF. Test whether sequential memory can discover non-zero proxy reward and improve unseen-target performance versus a no-memory control. If reward remains absent, preserve the failure and diagnose perception/motor/action-space architecture before adding compute or richer feedback."
 }

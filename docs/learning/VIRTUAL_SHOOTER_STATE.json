@@ -5,22 +5,23 @@
   "status": "ACTIVE",
   "current_stage": "L3",
   "current_stage_name": "Single-method crosser learning",
-  "current_substage": "L3_MAINTAINED_LEAD_HIT_MISS_LEARNING_V1",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE_GREEN_1.md",
+  "current_substage": "L3_MAINTAINED_LEAD_REWARD_SUPPORT_DIAGNOSIS_V1",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_MAINTAINED_LEAD_HIT_MISS_NO_REWARD_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33954406860,
-    "head_sha": "5e05a698edefab3cc44635ce24acab669d73b4cc",
+    "run_id": 33954620241,
+    "head_sha": "468a3aad31b09c8d5dd1e4e5785cf9ee14a5357b",
     "conclusion": "success"
   },
   "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, ACTS, REMEMBERS AND LEARNS.",
-  "anti_cheat_audit_status": "GREEN_THROUGH_L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE; ORACLE_FUTURE_INTERCEPT_LEAD_RANGE_PELLET_TOF_AND_PRE_SHOT_MISS_REMAIN_HIDDEN",
+  "anti_cheat_audit_status": "GREEN_THROUGH_L3_HIT_MISS_LEARNING_PROBE; LEARNER MEMORY RECEIVES BINARY HIT_MISS ONLY; ORACLE_FUTURE_INTERCEPT_LEAD_RANGE_PELLET_TOF_PRE_SHOT_MISS_AND_POST_SHOT_REFEREE_DISTANCE_REMAIN OUTSIDE LEARNER",
   "oracle_world_status": "L0_HIDDEN_EVALUATION_FACADE_AND_PRIVILEGED_CEILING_GREEN",
   "shooter_observation_status": "L1_COMPLETE_CALIBRATED_MULTIFAMILY_BELIEF_WITH_SELECTIVE_WAIT",
   "l1_perception_status": "COMPLETE_GREEN_PERCEPTION_ARCHITECTURE_GATE_NOT_REAL_CLAY_VALIDATION",
   "l2_planning_status": "COMPLETE_GREEN_PRESENTATION_LEVEL_PLANNING_ARCHITECTURE_NOT_SHOOTING_SUCCESS",
   "l3_motor_status": "FINITE_GUN_PLANT_GREEN_NOT_HUMAN_CALIBRATED_NOT_SHOOTING_SUCCESS",
   "l3_no_learning_baseline_status": "GREEN_FULL_PERCEPTION_PLAN_FINITE_GUN_TRIGGER_POST_ACTION_REFEREE_PATH; ZERO_PROXY_HITS_ON_INITIAL_STATIC_SWEEP",
+  "l3_hit_miss_learning_status": "NEGATIVE_NO_BINARY_REWARD_DISCOVERED; DIAGNOSE_ACTION_REWARD_SUPPORT_BEFORE_SCALING",
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
   "first_experiment_target_family": "CROSSERS",
@@ -31,7 +32,8 @@
     "docs/learning/checkpoints/L2_PRESENTATION_CONTEXT_RUNWAY_GREEN_1.md",
     "docs/learning/checkpoints/L2_PRESENTATION_LEVEL_PLANNING_COMPLETE.md",
     "docs/learning/checkpoints/L3_FINITE_GUN_PLANT_GREEN_1.md",
-    "docs/learning/checkpoints/L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE_GREEN_1.md"
+    "docs/learning/checkpoints/L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE_GREEN_1.md",
+    "docs/learning/checkpoints/L3_MAINTAINED_LEAD_HIT_MISS_NO_REWARD_1.md"
   ],
   "l0_reference": {
     "oracle_proxy_hits": "12/12",
@@ -100,7 +102,24 @@
     "trigger_rates": [0.3333333333333333, 0.125, 0.16666666666666666, 0.16666666666666666, 0.25, 0.20833333333333334],
     "poor_observation_0045_trigger_rate": 0,
     "retired_diagnostic_seed_base": 131000,
-    "interpretation": "End-to-end no-learning route now fires finite-gun shots and scores only after action, but every predeclared initial static visual picture missed the 55 mm engineering centreline proxy. This negative result is preserved and is the starting point for hit/miss-only learning."
+    "interpretation": "End-to-end no-learning route fires finite-gun shots and scores only after action, but every predeclared initial static visual picture missed the 55 mm engineering centreline proxy."
+  },
+  "l3_hit_miss_learning_reference": {
+    "learner_training_seed_base": 211000,
+    "training_crossers": 132,
+    "action_grid_rad": [0, 0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25],
+    "training_triggers": 31,
+    "training_trigger_rate": 0.23484848484848486,
+    "training_proxy_hits": 0,
+    "training_hit_rate": 0,
+    "training_hit_rate_wilson95_upper": 0.02827898679860847,
+    "heldout_seed_base": 271000,
+    "heldout_crossers": 48,
+    "heldout_frozen_fallback_triggers": 19,
+    "heldout_frozen_fallback_hits": 0,
+    "heldout_no_memory_triggers": 10,
+    "heldout_no_memory_hits": 0,
+    "interpretation": "The first binary-feedback learner had no positive reward to learn from. The nominal frozen 0-rad action is a deterministic all-zero tie-break, not a learned useful policy. Diagnose reward/action support before scaling or richer feedback."
   },
   "active_hypotheses": [
     "First-clear-sight epoch, expected presentation duration, demonstrated angular span, break-window coordinates and runway penalty remain provisional SHOTSIGHT_HYPOTHESIS values pending Sense/video calibration.",
@@ -108,7 +127,7 @@
     "L3 begins with maintained lead as the cleanest controlled experiment; this is experimental sequencing, not a claim that maintained lead is universally best.",
     "Human gun angular velocity, acceleration, jerk and reaction limits remain provisional; current plant limits are active calibration parameters rather than human facts.",
     "Maintained-lead motor-delay feed-forward derived from perceived angular rate is a SHOTSIGHT_HYPOTHESIS controller feature, not a measured human strategy.",
-    "The next learner may explore angular target-gun visual relationships only inside the predeclared learner-safe action bounds; it must never receive the referee miss distance or exact ballistic answer."
+    "The maintained-lead action may require more than one scalar horizontal target-gun separation; researcher-only post-action diagnostics must test that without supplying an oracle correction to the learner."
   ],
   "negative_findings": [
     "Inherited canonical flat-crosser exposes exact intercept/physical lead and remains hidden oracle/reference truth only.",
@@ -124,7 +143,8 @@
     "No Brett Winstanley hold/pickup/break claim is promoted without a recovered primary source.",
     "The first finite gun controller can reach its provisional kinematic caps; learned shooting behaviour will therefore be sensitive to those engineering limits until real motion calibration is available.",
     "The first L3 end-to-end baseline produced zero triggers because the fixed whole-presentation prior covered too little of the target and the trigger incorrectly gated on current prospective servo-command error; diagnostic seed bank 131000 was retired from held-out status after inspection.",
-    "After observation-only stand-prior calibration and visual-picture trigger repair, the initial 0-0.075 rad maintained-lead static separation sweep produced zero proxy hits on 24 untouched crossers despite valid triggers. Do not tune this away; learning must discover useful behaviour or expose an architectural failure."
+    "After observation-only stand-prior calibration and visual-picture trigger repair, the initial 0-0.075 rad maintained-lead static separation sweep produced zero proxy hits on 24 untouched crossers despite valid triggers.",
+    "The first maintained-lead hit/miss-only learner explored 11 visual-separation actions from 0 to 0.25 rad over 132 training crossers, fired 31 valid shots, and received zero positive binary rewards. The untouched 48-crosser transfer bank also produced zero hits for both frozen fallback and no-memory control. Do not use referee miss distance as a hidden learning gradient or scale brute-force before diagnosing support."
   ],
-  "next_action": "Build L3 maintained-lead hit/miss-only learning with a simple interpretable memory policy before RL/neural methods. Use a broader predeclared angular visual-picture action grid within existing learner-safe bounds. Separate training/calibration/new held-out banks. After a trigger, expose only HIT_MISS_ONLY_FEEDBACK_V1 to the learner; never expose referee miss distance/vector, exact required lead, intercept, range or pellet TOF. Test whether sequential memory can discover non-zero proxy reward and improve unseen-target performance versus a no-memory control. If reward remains absent, preserve the failure and diagnose perception/motor/action-space architecture before adding compute or richer feedback."
+  "next_action": "Run L3 maintained-lead reward-support diagnosis using researcher/referee-side post-action data on training/calibration populations only. Quantify trigger feasibility by action, achieved versus requested visual separation, trigger progress, motor constraint effects and post-action miss-distance trend strictly as researcher diagnostics. Determine whether the current one-dimensional horizontal visual-picture action can physically reach any reward under the existing perception/plan/motor/trigger system. Do not use these diagnostics to pass an exact oracle correction into learner memory or policy. If support is absent, redesign the learner-safe shooter-visible action representation before any 100k scaling or richer feedback."
 }

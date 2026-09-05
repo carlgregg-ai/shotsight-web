@@ -5,19 +5,19 @@
   "status": "ACTIVE",
   "current_stage": "L3",
   "current_stage_name": "Single-method crosser learning",
-  "current_substage": "L3_DYNAMIC_COUPLING_GEOMETRY_EXPRESSIVITY_AUDIT_V1",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_SHOOTER_VISIBLE_TRIGGER_TIMING_NO_REWARD_1.md",
+  "current_substage": "L3_CONTINUOUS_RELATIONSHIP_EXPLORATION_REWARD_SUPPORT_V1",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_DYNAMIC_COUPLING_GEOMETRY_GREEN_FRESH_NO_REWARD_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33956510699,
-    "head_sha": "a374f7e070011ca75f2fe1ecc993461239b34680",
+    "run_id": 33961889245,
+    "head_sha": "27417098e11e135211472106c6483ee6037ad3bd",
     "conclusion": "success"
   },
   "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, PLANS, ACTS, REMEMBERS AND LEARNS.",
   "shooting_axiom": "GOOD SHOOTING IS CONTINUOUS PERCEPTUAL COUPLING BETWEEN TARGET AND GUN: READ THE LINE -> MATCH THE SPEED -> APPLY THE METHOD -> TRIGGER -> FOLLOW THROUGH.",
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
-  "anti_cheat_audit_status": "GREEN_THROUGH_L3_TRIGGER_TIMING; LEARNER CONTROLLERS HAVE NO ORACLE OR PHYSICS-SCORING IMPORT; PROCESS CALIBRATION USES NO ORACLE SCORE; TRIGGER TIMING IS NORMALISED SHOOTER_VISIBLE PRESENTATION PROGRESS; REFEREE SCORES ONLY AFTER TRIGGER; MISS_DISTANCE_RANGE_FUTURE_PATH_INTERCEPT_PELLET_TOF_METRIC_LEAD_SEED_AND_DIRECT_CORRECTION_REMAIN OUTSIDE CONTROLLER_AND_MEMORY",
+  "anti_cheat_audit_status": "GREEN_THROUGH_L3_GEOMETRY_TIME_ALIGNMENT_AND_FRESH_REWARD_SUPPORT_DIAGNOSTIC; LEARNER CONTROLLERS HAVE NO ORACLE OR PHYSICS-SCORING IMPORT; PROCESS CALIBRATION USES NO ORACLE SCORE; TARGET_LINE_GEOMETRY_AND_FRAME_STATE_TIME_ALIGNMENT_ARE_EXPLICITLY_AUDITED; REFEREE SCORES ONLY AFTER TRIGGER; MISS_DISTANCE_RANGE_FUTURE_PATH_INTERCEPT_PELLET_TOF_METRIC_LEAD_SEED_AND_DIRECT_CORRECTION_REMAIN OUTSIDE_CONTROLLER_AND_MEMORY",
   "first_experiment_target_family": "CROSSERS",
   "initial_presentation_budget": 100000,
   "primary_methods": ["SWING_THROUGH", "PULL_AWAY", "MAINTAINED_LEAD"],
@@ -27,8 +27,9 @@
     "L2": "COMPLETE_GREEN_PRESENTATION_LEVEL_PLANNING_ARCHITECTURE",
     "L3_MOTOR": "GREEN_FINITE_GUN_PLANT_NOT_HUMAN_CALIBRATED",
     "L3_STATIC_ACTION": "NEGATIVE_NO_BINARY_REWARD_SUPPORT",
-    "L3_DYNAMIC_COUPLING": "GREEN_ARCHITECTURE_AND_PROCESS_SUPPORT_BUT_NO_BINARY_REWARD_YET",
-    "L3_TRIGGER_TIMING": "NEGATIVE_NO_BINARY_REWARD_SUPPORT_AFTER_SHOOTER_VISIBLE_TIMING_EXPANSION"
+    "L3_DYNAMIC_COUPLING": "GREEN_GEOMETRY_TIME_ALIGNMENT_AND_PROCESS_SUPPORT_BUT_NO_BINARY_REWARD_YET",
+    "L3_TRIGGER_TIMING": "NEGATIVE_NO_BINARY_REWARD_SUPPORT_AFTER_SHOOTER_VISIBLE_TIMING_EXPANSION",
+    "L3_FRESH_POST_GEOMETRY_REWARD": "NEGATIVE_ZERO_HITS_660_ATTEMPTS"
   },
   "completed_checkpoints": [
     "docs/learning/checkpoints/L2_PLANNING_ADAPTATION_GREEN_1.md",
@@ -39,7 +40,8 @@
     "docs/learning/checkpoints/L3_MAINTAINED_LEAD_HIT_MISS_NO_REWARD_1.md",
     "docs/learning/checkpoints/L3_MAINTAINED_LEAD_REWARD_SUPPORT_DIAGNOSIS_1.md",
     "docs/learning/checkpoints/L3_DYNAMIC_PERCEPTUAL_COUPLING_NO_REWARD_1.md",
-    "docs/learning/checkpoints/L3_SHOOTER_VISIBLE_TRIGGER_TIMING_NO_REWARD_1.md"
+    "docs/learning/checkpoints/L3_SHOOTER_VISIBLE_TRIGGER_TIMING_NO_REWARD_1.md",
+    "docs/learning/checkpoints/L3_DYNAMIC_COUPLING_GEOMETRY_GREEN_FRESH_NO_REWARD_1.md"
   ],
   "reference_metrics": {
     "L0": {"oracle_proxy_hits": "12/12", "naive_proxy_hits": "0/12"},
@@ -120,13 +122,26 @@
       "fixed_timing_hits": 0,
       "variant_timing_hits": 0,
       "reward_support_observed": false
+    },
+    "L3_fresh_post_geometry_reward_support": {
+      "seed_base": 351000,
+      "crossers": 12,
+      "relationship_actions": 55,
+      "attempts": 660,
+      "hits": 0,
+      "physical_triggers_present": true,
+      "follow_through_present": true,
+      "reward_support_observed": false,
+      "ci_run_id": 33961889245
     }
   },
   "active_hypotheses": [
     "Good shooting is continuous perceptual coupling: read the live line, match gun speed, apply method, trigger, and follow through.",
     "A demonstrated clay is a presentation prior rather than a deterministic trajectory; each live clay must be re-read as it varies with launch/aerodynamic/wind disturbance.",
     "Maintained lead requires a dynamic 2D target-line relationship rather than a single scalar horizontal separation.",
-    "The next likely failure mode is representational/geometry expressivity: verify the target-line tangent, line-normal basis, sign/orientation, speed-match coordinate and finite-controller ability to maintain the requested live relationship before further reward learning.",
+    "The corrected tangent/normal geometry and timestamp alignment are now green, so the next controlled question is whether the coarse 55-point shooter-visible relationship grid is artificially preventing sparse binary reward discovery.",
+    "A deterministic low-discrepancy sampling of the same existing shooter-visible relationship bounds can test quantisation without using oracle miss gradients or mathematical intercept information.",
+    "If quasi-continuous relationship exploration still produces no reward, a constant maintained-lead relationship may be insufficient and the next representation should allow shooter-visible phase-dependent relationship trajectories.",
     "Human kinematic limits, follow-through duration, coupling tolerances and timing values remain SHOTSIGHT_HYPOTHESIS / PROVISIONAL_METHOD_KINEMATICS pending Sense/video calibration."
   ],
   "negative_findings": [
@@ -136,7 +151,9 @@
     "The first dynamic-coupling diagnostic was under-triggered at 5/550; process-only diagnostics showed the original relationship-stability threshold suppressed exploration.",
     "A distinct process-only calibration removed trigger scarcity without using oracle outcomes, producing 50/550 physical follow-through shots, but still zero proxy hits.",
     "Shooter-visible trigger timing expansion produced 100 physical follow-through shots across 1512 attempts and 126 relationship/timing actions but still zero proxy hits; timing inside the planned break region alone is therefore not supported as the missing ingredient.",
-    "Do not widen the hit proxy, inject referee miss gradients, expose oracle lead, or scale to 100k until binary reward support exists in a scientifically defensible shooter-visible action/timing representation."
+    "The learner-side geometry/time-alignment audit found and fixed a 16.7 ms frame/state mismatch; the complete L0->L3 suite is green with the correction.",
+    "A fresh post-fix non-sealed diagnostic on seed base 351000 produced zero engineering-proxy hits across 660 attempts despite physical trigger and follow-through support; corrected geometry alone therefore does not establish binary reward support.",
+    "Do not widen the hit proxy, inject referee miss gradients, expose oracle lead, or scale to 100k until binary reward support exists in a scientifically defensible shooter-visible action representation."
   ],
-  "next_action": "Execute L3_DYNAMIC_COUPLING_GEOMETRY_EXPRESSIVITY_AUDIT_V1. Inspect and test the learner-side line tangent/line-normal coordinate basis for both target directions, confirm command and speed-match calculations use the same shooter-visible geometry, and prove the finite gun controller can establish and maintain requested live target-gun relationships through the engagement interval using process-only diagnostics. Use no oracle score or miss geometry to tune those commands. Preserve current scalar, dynamic-coupling and trigger-timing policies as negative baselines. After the geometry/expressivity audit is green, rerun a fresh non-sealed binary reward-support diagnostic before any larger learning experiment."
+  "next_action": "Execute L3_CONTINUOUS_RELATIONSHIP_EXPLORATION_REWARD_SUPPORT_V1. Keep the corrected controller, finite plant, 55 mm engineering proxy and process-only trigger calibration fixed. Add a deterministic predeclared low-discrepancy/quasi-continuous sampling of the SAME existing shooter-visible forward/line-normal relationship bounds for diagnostic exploration, defined without consulting range, miss distances, intercepts or required lead. Use a fresh non-sealed bank identical across actions, score only post-trigger binary outcomes, retain the coarse 55-point grid as a negative baseline, and preserve anti-cheat tests. If binary support appears, freeze the sampling design and proceed to actual hit/miss learning rather than tuning around the rewarded point. If reward remains absent, move to shooter-visible phase-dependent relationship trajectories before any 100k scaling."
 }

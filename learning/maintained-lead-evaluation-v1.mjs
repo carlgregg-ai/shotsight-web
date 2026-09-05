@@ -46,7 +46,11 @@ export function runL3MaintainedLeadEpisode({record,model,separation_rad=0,seed=1
 
 function summarise(episodes){
   const fired=episodes.filter(e=>e.run.trigger),scores=fired.map(e=>e.score),misses=scores.map(s=>s.missDistance_m).filter(Number.isFinite);
-  return freezePlain({n:episodes.length,triggers:fired.length,triggerRate:fired.length/episodes.length,proxyHits:scores.filter(s=>s.proxyHit).length,proxyHitRateAll:episodes.filter(e=>e.score.proxyHit).length/episodes.length,proxyHitRateTriggered:fired.length?scores.filter(s=>s.proxyHit).length/fired.length:0,meanMissDistance_m:mean(misses),meanTriggerTime_s:mean(fired.map(e=>e.run.trigger.t_s)),meanTrackingError_rad:mean(fired.map(e=>e.run.trigger.trackingError_rad))});
+  const decisions=episodes.flatMap(e=>e.run.decisionTrace??[]),commit=decisions.filter(d=>d.inCommitWindow);
+  return freezePlain({
+    n:episodes.length,triggers:fired.length,triggerRate:fired.length/episodes.length,proxyHits:scores.filter(s=>s.proxyHit).length,proxyHitRateAll:episodes.filter(e=>e.score.proxyHit).length/episodes.length,proxyHitRateTriggered:fired.length?scores.filter(s=>s.proxyHit).length/fired.length:0,meanMissDistance_m:mean(misses),meanTriggerTime_s:mean(fired.map(e=>e.run.trigger.t_s)),meanTrackingError_rad:mean(fired.map(e=>e.run.trigger.trackingError_rad)),
+    triggerDiagnostics:{decisionN:decisions.length,commitWindowDecisionN:commit.length,episodesReachingCommitWindow:episodes.filter(e=>(e.run.decisionTrace??[]).some(d=>d.inCommitWindow)).length,episodesConfidenceReady:episodes.filter(e=>(e.run.decisionTrace??[]).some(d=>d.confidenceReady)).length,episodesTrackingReady:episodes.filter(e=>(e.run.decisionTrace??[]).some(d=>d.trackingReady)).length,episodesAllThreeReady:episodes.filter(e=>(e.run.decisionTrace??[]).some(d=>d.inCommitWindow&&d.confidenceReady&&d.trackingReady)).length,meanMaxProgress:mean(episodes.map(e=>Math.max(...(e.run.decisionTrace??[]).map(d=>d.currentProgress)))),meanMaxConfidence:mean(episodes.map(e=>Math.max(...(e.run.decisionTrace??[]).map(d=>d.confidence)))),meanMinTrackingErrorInCommitWindow_rad:mean(episodes.map(e=>{const xs=(e.run.decisionTrace??[]).filter(d=>d.inCommitWindow).map(d=>d.trackingError_rad);return xs.length?Math.min(...xs):null;}).filter(Number.isFinite))}
+  });
 }
 
 export function runL3MaintainedLeadNoLearningBenchmark({nCrossers=36,trainNPerFamily=60,trainSeedBase=41000,heldoutSeedBase=131000}={}){

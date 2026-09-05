@@ -4,7 +4,7 @@
 
 import {createL1MultiFamilyBank,createL1ObservationHistory} from './multifamily-evaluation-v1.mjs';
 import {buildEllisHumanVisualEvidence} from './human-visual-acquisition-v1.mjs';
-import {createGunPlantState,stepFiniteGunPlant,PROVISIONAL_GUN_PLANT_LIMITS_V1} from './gun-plant-v1.mjs';
+import {createGunPlantState,stepFiniteGunPlant} from './gun-plant-v1.mjs';
 import {createPullAwayPolicyStateV1} from './pull-away-human-vision-policy-v1.mjs';
 import {apparentAnglesToWorldUnit} from './naive-shooter-v1.mjs';
 import {evaluateOracleShot,L0_DISC_PROXY_RADIUS_M,L0_SCORE_STATUS} from './oracle-evaluation-v1.mjs';
@@ -49,7 +49,10 @@ function finalAcquisitionExperience(evidence,waited){
   });
 }
 
-function runEpisode({record,separationTarget_rad,observationSeed,episodeIndex}){
+export function runPullAwayHumanVisionEpisodeV1({record,separationTarget_rad,observationSeed,episodeIndex=0}={}){
+  if(!record||record.family!=='CROSSER')throw new Error('CROSSER record required');
+  if(!Number.isFinite(separationTarget_rad)||separationTarget_rad<0||separationTarget_rad>0.12)throw new Error('learner-safe visual separation must be within [0,0.12] rad');
+  if(!Number.isFinite(observationSeed))throw new Error('finite observationSeed required');
   const observations=createL1ObservationHistory(record,{evalTime_s:0.98,window_s:0.80,latency_s:0.08,angleNoiseSd_rad:0.0015,rateNoiseSd_radps:0.02,acquisitionQuality:0.95,seed:observationSeed});
   let gun=createGunPlantState({t_s:observations[0].observationTime_s});
   let previousPhase=null,triggerState=null,triggerPolicy=null,lastEvidence=null,maxConfidence=0,waited=false;
@@ -98,7 +101,7 @@ function runEpisode({record,separationTarget_rad,observationSeed,episodeIndex}){
   });
   auditExperienceRecordV1(experience);
   assertNoPrivilegedShooterData({observations,policyTrace,experience},{path:'pullAwayHumanVision.learnerCorpus'});
-  return freezePlain({triggered:Boolean(triggerState),hit:feedback.hit,selectedVisualSeparation_rad:separationTarget_rad,finalPhase:triggerPolicy?.phase??phases.at(-1)??null,maxVisualConfidence:maxConfidence,methodTopologyScore:topology,experience});
+  return freezePlain({triggered:Boolean(triggerState),hit:feedback.hit,feedback,selectedVisualSeparation_rad:separationTarget_rad,finalPhase:triggerPolicy?.phase??phases.at(-1)??null,maxVisualConfidence:maxConfidence,methodTopologyScore:topology,experience});
 }
 
 function runPartition({seedBase,partition,nCrossers}){
@@ -106,7 +109,7 @@ function runPartition({seedBase,partition,nCrossers}){
   const actions=[];let totalTriggers=0,totalHits=0,episodeIndex=0;
   for(const separationTarget_rad of L3_PULL_AWAY_HUMAN_VISION_EXPLORATION_GRID_V1){
     const episodes=[];
-    for(let i=0;i<bank.length;i++)episodes.push(runEpisode({record:bank[i],separationTarget_rad,observationSeed:seedBase*7+i*1009+Math.round(separationTarget_rad*100000),episodeIndex:episodeIndex++}));
+    for(let i=0;i<bank.length;i++)episodes.push(runPullAwayHumanVisionEpisodeV1({record:bank[i],separationTarget_rad,observationSeed:seedBase*7+i*1009+Math.round(separationTarget_rad*100000),episodeIndex:episodeIndex++}));
     const triggers=episodes.filter(e=>e.triggered).length,hits=episodes.filter(e=>e.hit).length;
     totalTriggers+=triggers;totalHits+=hits;
     actions.push(freezePlain({separationTarget_rad,attempts:episodes.length,triggers,hits,hitRateAll:hits/episodes.length,triggerRate:triggers/episodes.length,meanTopologyScore:mean(episodes.map(e=>e.methodTopologyScore)),meanVisualConfidence:mean(episodes.map(e=>e.maxVisualConfidence))}));

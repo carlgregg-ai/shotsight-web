@@ -7,20 +7,21 @@
   "scope": "canonical_flat_crosser_three_method_videos_plus_cpsa_s3e3_reconstruction",
   "frame_rate_hz": 60,
   "duration_s": 2,
-  "latest_completed_gate": "H_ENGINEERING_VIDEO_PIPELINE",
-  "current_gate": "FINAL_BIBLE_RENDER_AND_CPSA_VIDEO_OBSERVATION",
-  "status": "THREE_METHOD_MP4_PIPELINE_GREEN_FINAL_STYLE_AND_CPSA_RECONSTRUCTION_PENDING",
-  "head": "80c1ce11b04cb210171f381aa0ca19f59a35ac97",
-  "ci_run": 33929522627,
+  "latest_completed_gate": "I_BIBLE_STYLE_CANDIDATE_CI_AND_VISUAL_QA",
+  "current_gate": "J_FINAL_RENDER_COMPOSITION_AND_CPSA_VIDEO_OBSERVATION",
+  "status": "STYLE_CANDIDATE_CI_GREEN_VISUAL_QA_HOLD_FINAL_RENDER_COMPOSITION_REQUIRED",
+  "head_under_style_verification": "3667884d9a0779151f0535f2ec1d1d1e3767db63",
+  "ci_run": 33932658938,
   "ci_result": "SUCCESS",
-  "checkpoint": "docs/reviewer-animation/GATE_H_THREE_METHOD_VIDEO_PIPELINE_GREEN_STYLE_HOLD.md",
+  "checkpoint": "docs/reviewer-animation/GATE_I_BIBLE_STYLE_RENDERER_CI_GREEN_VISUAL_QA_HOLD.md",
   "model_source": "physics/canonical-flat-crosser-v1.mjs",
   "reviewer_adapter": "physics/reviewer-flat-crosser-v1.mjs",
   "method_comparison_adapter": "physics/reviewer-method-comparison-v1.mjs",
   "method_manifest_exporter": "tools/export-reviewer-method-comparison.mjs",
   "method_video_renderer": "tools/render-reviewer-method-videos.mjs",
   "method_review_surface": "reviewer-method-comparison.html",
-  "video_artifact_id": 9958047818,
+  "video_artifact_id": 9959107117,
+  "video_artifact_digest": "sha256:c789a0bcac85c735820eb66bde404a3a7cd6c70032ce8324f81bd720e0c412c7",
   "realistic_clay_certified": false,
   "instructional_motion_authorised": false,
   "method_comparison_status": "SHOTSIGHT_HYPOTHESIS_PENDING_EXPERT_REVIEW",
@@ -43,10 +44,21 @@
     "target orientation remains HOLD"
   ],
   "method_video_pipeline": {
-    "status": "PASS_ENGINEERING_REVIEW_BUILD",
+    "status": "PASS_ENGINEERING_AND_STYLE_CANDIDATE_BUILD_BUT_FINAL_VISUAL_HOLD",
     "mp4s_rendered": ["swing_through.mp4", "pull_away.mp4", "maintained_lead.mp4"],
+    "render_dimensions": "1440x980",
+    "render_fps": 60,
     "final_bible_quality_accepted": false,
-    "style_hold_reason": "current Canvas renderer is a polished technical review surface but not yet the premium rounded/stylised 3D fidelity required by the Visual Style & Animation Bible"
+    "visual_qa": {
+      "rounded_mannequin": "IMPROVED_PASS_DIRECTIONALLY",
+      "first_person_barrel_hierarchy": "PASS",
+      "world_palette_and_negative_space": "PASS_DIRECTIONALLY",
+      "shooter_mount_legibility": "HOLD_SHOOTER_TOO_SMALL_IN_PRINCIPAL_VIEW",
+      "target_movement_decisive_point_hierarchy": "HOLD_DASHBOARD_COMPETES_WITH_SCENE",
+      "premium_3d_depth": "HOLD_STILL_READS_AS_TECHNICAL_PSEUDO_3D",
+      "final_video_composition": "HOLD_ENGINEERING_UI_TOO_PROMINENT"
+    },
+    "style_hold_reason": "The rounded renderer improves the technical surface but final encoded movies still read primarily as an engineering dashboard; shooter/mount is too small and premium 3D teaching-scene hierarchy is not yet achieved."
   },
   "cpsa_s3e3": {
     "youtube_id": "ejE_ljX-ylE",
@@ -54,8 +66,9 @@
     "status": "VIDEO_FRAME_ACCESS_REQUIRED",
     "direction_conflict": "modern CPSA summary says L-R; CPSA video-library title and original May 2019 companion article say R-L; footage must resolve",
     "pixel_or_angular_track_observed": false,
-    "reconstruction_rendered": false
+    "reconstruction_rendered": false,
+    "latest_access_attempt": "2026-09-05: available web retrieval did not expose frame-accessible YouTube footage; no unseen measurements inferred"
   },
   "restart_rule": "resume_from_latest_verified_gate_not_from_start",
-  "next_action": "Upgrade the renderer to final bible-quality without changing model motion; then obtain frame-accessible CPSA Episode 3 footage, resolve source-direction conflict, build observation table, fit uncertainty-aware dynamic reconstruction, render fourth video, and complete four-video QA."
+  "next_action": "Implement dedicated FINAL_RENDER/CINEMATIC_REVIEW_MODE using exact existing frame state: dominant hero coach scene with larger technically legible mannequin, synchronized shooter-eye/elevated-oblique as subordinate views, minimal video chrome/telemetry, stronger deterministic rounded-depth treatment. Rerender all three and repeat numerical + visual QA. In parallel continue seeking frame-accessible CPSA Episode 3 footage; do not infer direction or tracks from conflicting metadata."
 }

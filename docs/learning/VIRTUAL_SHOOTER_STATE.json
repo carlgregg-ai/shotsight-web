@@ -5,30 +5,30 @@
   "status": "ACTIVE",
   "current_stage": "L3",
   "current_stage_name": "Single-method crosser learning",
-  "current_substage": "L3_DYNAMIC_PERCEPTUAL_COUPLING_ACTION_V1",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_MAINTAINED_LEAD_REWARD_SUPPORT_DIAGNOSIS_1.md",
+  "current_substage": "L3_DYNAMIC_COUPLING_TRIGGER_TIMING_EXPLORATION_V1",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_DYNAMIC_PERCEPTUAL_COUPLING_NO_REWARD_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33955131080,
-    "head_sha": "3a89b948a0b336bd4305054a6f964654d3145c54",
+    "run_id": 33956051848,
+    "head_sha": "65c1833c832743e572610ce4781a38b5efc73711",
     "conclusion": "success"
   },
-  "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, ACTS, REMEMBERS AND LEARNS.",
+  "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, PLANS, ACTS, REMEMBERS AND LEARNS.",
   "shooting_axiom": "GOOD SHOOTING IS CONTINUOUS PERCEPTUAL COUPLING BETWEEN TARGET AND GUN: READ THE LINE -> MATCH THE SPEED -> APPLY THE METHOD -> TRIGGER -> FOLLOW THROUGH.",
-  "anti_cheat_audit_status": "GREEN_THROUGH_L3_REWARD_SUPPORT_DIAGNOSIS; LEARNER MEMORY RECEIVES BINARY HIT_MISS ONLY; RESEARCHER MISS DISTANCE/ACHIEVED SEPARATION/TRIGGER PROGRESS REMAIN POST_ACTION_REFEREE_ONLY; ORACLE_FUTURE_INTERCEPT_LEAD_RANGE_PELLET_TOF_PRE_SHOT_MISS_AND_DIRECT_CORRECTION_REMAIN OUTSIDE LEARNER",
-  "oracle_world_status": "L0_HIDDEN_EVALUATION_FACADE_AND_PRIVILEGED_CEILING_GREEN",
-  "shooter_observation_status": "L1_COMPLETE_CALIBRATED_MULTIFAMILY_BELIEF_WITH_SELECTIVE_WAIT",
-  "l1_perception_status": "COMPLETE_GREEN_PERCEPTION_ARCHITECTURE_GATE_NOT_REAL_CLAY_VALIDATION",
-  "l2_planning_status": "COMPLETE_GREEN_PRESENTATION_LEVEL_PLANNING_ARCHITECTURE_NOT_SHOOTING_SUCCESS",
-  "l3_motor_status": "FINITE_GUN_PLANT_GREEN_NOT_HUMAN_CALIBRATED_NOT_SHOOTING_SUCCESS",
-  "l3_no_learning_baseline_status": "GREEN_FULL_PERCEPTION_PLAN_FINITE_GUN_TRIGGER_POST_ACTION_REFEREE_PATH; ZERO_PROXY_HITS_ON_INITIAL_STATIC_SWEEP",
-  "l3_hit_miss_learning_status": "NEGATIVE_NO_BINARY_REWARD_DISCOVERED; REWARD_SUPPORT_DIAGNOSIS_CONFIRMS_CURRENT_STATIC_1D_ACTION_HAS_NO_OBSERVED_REWARD_SUPPORT",
-  "l3_reward_support_status": "NEGATIVE_STATIC_1D_ACTION_SUPPORT; MOTOR_AND_TRIGGER_SUPPORT_PRESENT; REDESIGN_TO_DYNAMIC_SHOOTER_VISIBLE_PERCEPTUAL_COUPLING",
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
+  "anti_cheat_audit_status": "GREEN_THROUGH_L3_DYNAMIC_COUPLING; PROCESS_TRIGGER_CALIBRATION_USES_NO_ORACLE_SCORE; DYNAMIC_CONTROLLER_HAS_NO_ORACLE_OR_PHYSICS_IMPORT; REFEREE_SCORES_ONLY_AFTER_TRIGGER; MISS_DISTANCE_RANGE_FUTURE_PATH_INTERCEPT_PELLET_TOF_METRIC_LEAD_SEED_AND_DIRECT_CORRECTION_REMAIN_OUTSIDE_CONTROLLER_AND_MEMORY",
   "first_experiment_target_family": "CROSSERS",
   "initial_presentation_budget": 100000,
   "primary_methods": ["SWING_THROUGH", "PULL_AWAY", "MAINTAINED_LEAD"],
+  "stage_status": {
+    "L0": "GREEN_ORACLE_SHOOTER_CONTAINMENT_AND_BASELINES",
+    "L1": "COMPLETE_GREEN_CALIBRATED_PARTIAL_OBSERVATION_ARCHITECTURE",
+    "L2": "COMPLETE_GREEN_PRESENTATION_LEVEL_PLANNING_ARCHITECTURE",
+    "L3_MOTOR": "GREEN_FINITE_GUN_PLANT_NOT_HUMAN_CALIBRATED",
+    "L3_STATIC_ACTION": "NEGATIVE_NO_BINARY_REWARD_SUPPORT",
+    "L3_DYNAMIC_COUPLING": "GREEN_ARCHITECTURE_AND_PROCESS_SUPPORT_BUT_NO_BINARY_REWARD_YET"
+  },
   "completed_checkpoints": [
     "docs/learning/checkpoints/L2_PLANNING_ADAPTATION_GREEN_1.md",
     "docs/learning/checkpoints/L2_PRESENTATION_CONTEXT_RUNWAY_GREEN_1.md",
@@ -36,136 +36,93 @@
     "docs/learning/checkpoints/L3_FINITE_GUN_PLANT_GREEN_1.md",
     "docs/learning/checkpoints/L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE_GREEN_1.md",
     "docs/learning/checkpoints/L3_MAINTAINED_LEAD_HIT_MISS_NO_REWARD_1.md",
-    "docs/learning/checkpoints/L3_MAINTAINED_LEAD_REWARD_SUPPORT_DIAGNOSIS_1.md"
+    "docs/learning/checkpoints/L3_MAINTAINED_LEAD_REWARD_SUPPORT_DIAGNOSIS_1.md",
+    "docs/learning/checkpoints/L3_DYNAMIC_PERCEPTUAL_COUPLING_NO_REWARD_1.md"
   ],
-  "l0_reference": {
-    "oracle_proxy_hits": "12/12",
-    "naive_proxy_hits": "0/12",
-    "naive_mean_miss_m": 1.4875,
-    "interpretation": "Engineering ceiling and weak lower baseline only; not human performance or real break probability."
-  },
-  "l1_reference": {
-    "multifamily_300ms_accuracy": 0.837037037037037,
-    "multifamily_240ms_accuracy": 0.7703703703703704,
-    "multifamily_220ms_accuracy": 0.45555555555555555,
-    "selective_wait_accuracy": 0.5375,
-    "selective_wait_rate": 0.3277777777777778,
-    "selective_mean_wait_s": 0.04916666666666645,
-    "fixed_100ms_accuracy": 0.7666666666666667,
-    "fixed_150ms_accuracy": 0.7736111111111111,
-    "interpretation": "L1 architecture is complete; poor-view ambiguity is real and later stages must price observation time against shooting opportunity."
-  },
-  "l2_presentation_context_runway": {
-    "heldout_crossers": 160,
-    "early_immediate_accuracy": 0.1625,
-    "early_runway_aware_accuracy": 0.5125,
-    "early_fixed_100ms_accuracy": 0.43125,
-    "early_mean_wait_s": 0.1446874999999998,
-    "late_wait_rate": 0.73125,
-    "late_mean_wait_s": 0.09437500000000001,
-    "interpretation": "Calibration-learned decision-quality value of more observation is traded against shooter-visible runway without runtime oracle labels or actions."
-  },
-  "l2_presentation_plan_reference": {
-    "heldout_crossers": 180,
-    "source_progress_priors": {
-      "SWING_THROUGH": {"hold": 0.22, "connection": 0.50, "break": 0.86},
-      "PULL_AWAY": {"hold": 0.32, "connection": 0.60, "break": 0.88},
-      "MAINTAINED_LEAD": {"hold": 0.44, "connection": 0.66, "break": 0.88}
+  "reference_metrics": {
+    "L0": {
+      "oracle_proxy_hits": "12/12",
+      "naive_proxy_hits": "0/12"
     },
-    "early_clear_mean_confidence": 0.5167113786434471,
-    "early_poor_mean_confidence": 0.14984615305341276,
-    "late_poor_mean_progress": 0.49010499716166317,
-    "late_connection_passed_rate": {
-      "SWING_THROUGH": 0.43333333333333335,
-      "PULL_AWAY": 0.15555555555555556,
-      "MAINTAINED_LEAD": 0.07777777777777778
+    "L1": {
+      "multifamily_300ms_accuracy": 0.837037037037037,
+      "multifamily_240ms_accuracy": 0.7703703703703704,
+      "multifamily_220ms_accuracy": 0.45555555555555555,
+      "selective_wait_accuracy": 0.5375,
+      "selective_wait_rate": 0.3277777777777778,
+      "selective_mean_wait_s": 0.04916666666666645
     },
-    "interpretation": "Low confidence no longer drags the intended break point later. Consumed observed presentation instead reports lost connection runway and may force only the effective live connection later."
-  },
-  "l3_finite_gun_reference": {
-    "integration_hz": 120,
-    "visual_motor_delay_s": 0.12,
-    "max_angular_velocity_radps": 2.4,
-    "max_angular_acceleration_radps2": 12,
-    "max_angular_jerk_radps3": 120,
-    "reference_command_az_rad": 0.6,
-    "reference_final_az_after_1s_rad": 0.4397222222222225,
-    "evidence_class": "PROVISIONAL_METHOD_KINEMATICS",
-    "interpretation": "Active engineering constraints only; values are not certified human limits and require Sense/video calibration and sensitivity analysis."
-  },
-  "l3_no_learning_reference": {
-    "calibration_seed_base": 151000,
-    "calibration_crossers": 30,
-    "calibrated_demonstrated_angular_span_rad": 0.4136418192551735,
-    "calibrated_observed_presentation_duration_s": 0.9333333333333333,
-    "heldout_seed_base": 181000,
-    "heldout_crossers": 24,
-    "static_separation_grid_rad": [0, 0.015, 0.030, 0.045, 0.060, 0.075],
-    "proxy_hits_by_grid": [0, 0, 0, 0, 0, 0],
-    "trigger_rates": [0.3333333333333333, 0.125, 0.16666666666666666, 0.16666666666666666, 0.25, 0.20833333333333334],
-    "poor_observation_0045_trigger_rate": 0,
-    "retired_diagnostic_seed_base": 131000,
-    "interpretation": "End-to-end no-learning route fires finite-gun shots and scores only after action, but every predeclared initial static visual picture missed the 55 mm engineering centreline proxy."
-  },
-  "l3_hit_miss_learning_reference": {
-    "learner_training_seed_base": 211000,
-    "training_crossers": 132,
-    "action_grid_rad": [0, 0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25],
-    "training_triggers": 31,
-    "training_trigger_rate": 0.23484848484848486,
-    "training_proxy_hits": 0,
-    "training_hit_rate": 0,
-    "training_hit_rate_wilson95_upper": 0.02827898679860847,
-    "heldout_seed_base": 271000,
-    "heldout_crossers": 48,
-    "heldout_frozen_fallback_triggers": 19,
-    "heldout_frozen_fallback_hits": 0,
-    "heldout_no_memory_triggers": 10,
-    "heldout_no_memory_hits": 0,
-    "interpretation": "The first binary-feedback learner had no positive reward to learn from. The nominal frozen 0-rad action is a deterministic all-zero tie-break, not a learned useful policy."
-  },
-  "l3_reward_support_reference": {
-    "diagnostic_training_crossers": 242,
-    "diagnostic_triggers": 61,
-    "diagnostic_trigger_rate": 0.25206611570247933,
-    "diagnostic_proxy_hits": 0,
-    "diagnostic_hit_rate_wilson95_upper": 0.01562575669344655,
-    "best_observed_action_rad": 0,
-    "best_observed_min_miss_m": 0.3232475910830171,
-    "proxy_radius_m": 0.055,
-    "reward_support_observed": false,
-    "requested_max_separation_rad": 0.25,
-    "max_mean_achieved_separation_rad": 0.2556371371045545,
-    "motor_support_ratio": 1.022548548418218,
-    "max_trigger_rate": 0.5,
-    "mean_trigger_progress_across_firing_actions": 0.8675795318260822,
-    "interpretation": "The current scalar horizontal visual-separation action has no observed reward support on the expanded diagnostic population. Finite motor travel and trigger feasibility are present, so the next scientific move is a shooter-visible dynamic perceptual-coupling action rather than brute-force scaling or oracle-derived correction."
+    "L2": {
+      "runway_aware_early_accuracy": 0.5125,
+      "always_wait_100ms_early_accuracy": 0.43125,
+      "early_mean_wait_s": 0.1446874999999998,
+      "late_mean_wait_s": 0.09437500000000001
+    },
+    "L3_finite_gun": {
+      "integration_hz": 120,
+      "visual_motor_delay_s": 0.12,
+      "max_angular_velocity_radps": 2.4,
+      "max_angular_acceleration_radps2": 12,
+      "max_angular_jerk_radps3": 120,
+      "evidence_class": "PROVISIONAL_METHOD_KINEMATICS"
+    },
+    "L3_static_after_timing_fix": {
+      "training_crossers": 132,
+      "training_triggers": 43,
+      "training_hits": 0,
+      "transfer_crossers": 48,
+      "frozen_transfer_triggers": 18,
+      "frozen_transfer_hits": 0,
+      "no_memory_transfer_triggers": 7,
+      "no_memory_transfer_hits": 0,
+      "expanded_diagnostic_crossers": 242,
+      "expanded_diagnostic_triggers": 81,
+      "expanded_diagnostic_hits": 0,
+      "closest_post_action_miss_m": 0.24140867572923824,
+      "proxy_radius_m": 0.055
+    },
+    "L3_dynamic_process_calibration": {
+      "seed_base": 321000,
+      "crossers": 6,
+      "process_runs": 330,
+      "commit_runs": 275,
+      "speed_matched_commit_runs": 186,
+      "oracle_scoring": "NONE",
+      "quantile_level": 0.65,
+      "raw_relationship_tolerance_rad": 0.1807662199927166,
+      "frozen_exploration_relationship_tolerance_rad": 0.12
+    },
+    "L3_dynamic_reward_support": {
+      "seed_base": 331000,
+      "crossers": 10,
+      "action_pairs": 55,
+      "attempts": 550,
+      "triggers": 50,
+      "hits": 0,
+      "follow_through_triggers": 50,
+      "commit_window_coverage": 0.7,
+      "relationship_and_commit_coverage": 0.48727272727272725,
+      "speed_and_commit_coverage": 0.4109090909090909,
+      "all_current_process_gates_coverage": 0.09090909090909091,
+      "mean_min_commit_relationship_error_rad": 0.09190248230290918,
+      "mean_min_commit_speed_match_error_radps": 0.3675451801607552,
+      "reward_support_observed": false
+    }
   },
   "active_hypotheses": [
-    "First-clear-sight epoch, expected presentation duration, demonstrated angular span, break-window coordinates and runway penalty remain provisional SHOTSIGHT_HYPOTHESIS values pending Sense/video calibration.",
-    "The source-informed L2 hold/connection/break coordinates are priors only and must compete with blank-slate/learned alternatives on actual motor/shot outcomes.",
-    "L3 begins with maintained lead as the cleanest controlled experiment; this is experimental sequencing, not a claim that maintained lead is universally best.",
-    "Human gun angular velocity, acceleration, jerk and reaction limits remain provisional; current plant limits are active calibration parameters rather than human facts.",
-    "Maintained-lead motor-delay feed-forward derived from perceived angular rate is a SHOTSIGHT_HYPOTHESIS controller feature, not a measured human strategy.",
-    "The maintained-lead action requires a richer dynamic target-gun coupling representation than one scalar horizontal separation. Candidate learner-safe state/action components are apparent 2D target-line tangent, target-gun angular-speed relationship, forward relationship along the perceived line, line-normal picture, coupling stability and follow-through."
+    "Good shooting is continuous perceptual coupling: read the live line, match gun speed, apply method, trigger, and follow through.",
+    "A demonstrated clay is a presentation prior rather than a deterministic trajectory; each live clay must be re-read as it varies with launch/aerodynamic/wind disturbance.",
+    "Maintained lead requires a dynamic 2D target-line relationship rather than a single scalar horizontal separation.",
+    "Trigger commitment timing inside the shooter-visible break region may be a missing learnable dimension; it must be learned from binary outcome rather than oracle pellet time-of-flight or intercept.",
+    "Human kinematic limits, follow-through duration, coupling tolerances and timing values remain SHOTSIGHT_HYPOTHESIS / PROVISIONAL_METHOD_KINEMATICS pending Sense/video calibration."
   ],
   "negative_findings": [
-    "Inherited canonical flat-crosser exposes exact intercept/physical lead and remains hidden oracle/reference truth only.",
-    "Current target engine and centreline evaluator are engineering proxies, not certified realistic clay aerodynamics, shot cloud or breakability.",
-    "Base L1 stable-crosser uncertainty was under-dispersed and required held-out calibration.",
-    "Poor 220 ms acquisition materially collapses crosser-versus-quarterer discrimination; uncertainty must be allowed to change behaviour.",
-    "Gravity-only looper recognition is too easy and is not real-looper validation.",
-    "An unconstrained L1 wait policy degenerated into waiting on every target; opportunity cost is required.",
-    "The original L2 0.12 s local planning coordinate was conceptually wrong for pre-call target planning.",
-    "A rolling 220 ms presentation context erased remembered target progress and was rejected.",
-    "Scalar confidence gain was a misleading surrogate for information value and was replaced by calibration Brier-loss improvement.",
-    "The old internal plan-structure proxy favoured blank-slate over source priors; it is bookkeeping only and prohibited as a success objective.",
-    "No Brett Winstanley hold/pickup/break claim is promoted without a recovered primary source.",
-    "The first finite gun controller can reach its provisional kinematic caps; learned shooting behaviour will therefore be sensitive to those engineering limits until real motion calibration is available.",
-    "The first L3 end-to-end baseline produced zero triggers because the fixed whole-presentation prior covered too little of the target and the trigger incorrectly gated on current prospective servo-command error; diagnostic seed bank 131000 was retired from held-out status after inspection.",
-    "After observation-only stand-prior calibration and visual-picture trigger repair, the initial 0-0.075 rad maintained-lead static separation sweep produced zero proxy hits on 24 untouched crossers despite valid triggers.",
-    "The first maintained-lead hit/miss-only learner explored 11 visual-separation actions from 0 to 0.25 rad over 132 training crossers, fired 31 valid shots, and received zero positive binary rewards. The untouched 48-crosser transfer bank also produced zero hits for both frozen fallback and no-memory control.",
-    "Expanded reward-support diagnosis over 242 training/calibration crossers produced 61 triggers and zero proxy hits. The best post-action miss was 0.323 m versus a 0.055 m proxy radius while the plant achieved the requested separation envelope, rejecting motor-range shortage as the primary explanation and rejecting brute-force scaling of the static 1D action."
+    "Static one-dimensional maintained-lead separation had no binary reward support after expanded diagnosis; motor travel was not the primary limitation.",
+    "L3 had been over-projecting delayed observations by 40 ms because a 120 ms belief horizon was used for an 80 ms-old observation while motor anticipation was also applied separately; this semantic bug is fixed.",
+    "After the timing fix the static representation still produced zero hits, so the fix did not manufacture success.",
+    "The first dynamic-coupling diagnostic was under-triggered at 5/550; process-only diagnostics showed the original relationship-stability threshold suppressed exploration.",
+    "A distinct process-only calibration removed trigger scarcity without using oracle outcomes, producing 50/550 physical follow-through shots, but still zero proxy hits.",
+    "Do not widen the hit proxy, inject referee miss gradients, expose oracle lead, or scale to 100k until binary reward support exists in a scientifically defensible shooter-visible action/timing representation."
   ],
-  "next_action": "Build L3_DYNAMIC_PERCEPTUAL_COUPLING_ACTION_V1 from shooter-visible delayed/noisy angular evidence only. Preserve the static-separation learner as a negative baseline. Represent/read the live apparent target line in azimuth/elevation, match target-gun angular speed, develop method-specific forward relationship along the perceived line, allow a learner-safe line-normal picture, trigger on stable coupling plus break-region opportunity, and continue gun motion after trigger for follow-through. First use fresh training/calibration seeds and researcher-only post-action diagnostics to establish binary reward support. Do not use oracle intercept, exact range, pellet TOF, metric lead, miss vector or direct correction to initialise or update the learner; do not touch sealed final-test banks."
+  "next_action": "Implement L3_DYNAMIC_COUPLING_TRIGGER_TIMING_EXPLORATION_V1. Preserve current dynamic coupling and static scalar policies as negative baselines. Add a shooter-visible trigger-commitment timing/action dimension within the already planned break region while continuing to read the live 2D target line, match gun speed, maintain the selected target-gun relationship and follow through. Use fresh non-sealed training/calibration seeds; learner feedback remains binary hit/miss only. Do not derive timing from oracle pellet TOF, intercept, range or miss geometry, and do not touch sealed final-test banks."
 }

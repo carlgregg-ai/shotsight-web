@@ -16,11 +16,12 @@ for(const method of ['SWING_THROUGH','PULL_AWAY','MAINTAINED_LEAD']){
 }
 
 const early=buildPresentationLevelShotPlan(belief(0.12),context(0.34),{method:'PULL_AWAY'});
-const consumed=buildPresentationLevelShotPlan(belief(0.12),context(0.67),{method:'PULL_AWAY'});
+const consumed=buildPresentationLevelShotPlan(belief(0.12),context(0.76),{method:'PULL_AWAY'});
 assert.equal(early.presentationProgress.intendedBreak,consumed.presentationProgress.intendedBreak,'consumed runway must not fabricate a later ideal break point');
 assert.equal(early.executionAdaptation.connectionAlreadyPassed,false);
 assert.equal(consumed.executionAdaptation.connectionAlreadyPassed,true);
 assert.ok(consumed.executionAdaptation.effectiveConnection>consumed.presentationProgress.plannedConnection,'live connection may be forced later when planned connection is already passed');
+assert.ok(consumed.executionAdaptation.remainingPreBreakRunway<0.18,'probe must genuinely be in compressed/critical runway');
 assert.ok(consumed.executionAdaptation.remainingPreBreakRunway<early.executionAdaptation.remainingPreBreakRunway);
 assert.notEqual(consumed.executionAdaptation.informationNeed,'CONSIDER_MORE_OBSERVATION','compressed runway should force commit/replan rather than endless observation');
 

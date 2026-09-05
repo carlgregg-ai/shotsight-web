@@ -5,22 +5,24 @@
   "status": "ACTIVE",
   "current_stage": "L3",
   "current_stage_name": "Single-method crosser learning",
-  "current_substage": "L3_HIT_MISS_LEARNING_OVER_SHOOTER_VISIBLE_RELATIONSHIPS_V1",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_SHOOTER_VISIBLE_BINARY_REWARD_SUPPORT_GREEN_1.md",
+  "current_substage": "L3_EXPERIENCE_RECORD_AND_SATISFACTION_IMPLEMENTATION_V1",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_EXPERIENCE_SATISFACTION_DESIGN_FROZEN_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
     "run_id": 33965136396,
     "head_sha": "317c2b4162e102e3ee6c9f01522bd22c1e6cb6c8",
-    "conclusion": "success"
+    "conclusion": "success",
+    "note": "Latest authoritative code CI predates the experience/satisfaction design-only commits; no new performance claim has been made."
   },
   "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, PLANS, ACTS, REMEMBERS AND LEARNS.",
   "shooting_axiom": "GOOD SHOOTING IS CONTINUOUS PERCEPTUAL COUPLING BETWEEN TARGET AND GUN: READ THE LINE -> MATCH THE SPEED -> APPLY THE METHOD -> TRIGGER -> FOLLOW THROUGH.",
+  "experience_spec": "docs/learning/ELLIS_EXPERIENCE_AND_SATISFACTION_V1.md",
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
-  "anti_cheat_audit_status": "GREEN_THROUGH_L3_SHOOTER_VISIBLE_BINARY_REWARD_SUPPORT; LEARNER CONTROLLERS AND ACTION GENERATORS HAVE NO ORACLE OR PHYSICS-SCORING IMPORT; PROCESS CALIBRATION USES NO ORACLE SCORE; REFEREE SCORES ONLY AFTER TRIGGER; MISS_DISTANCE_RANGE_FUTURE_PATH_INTERCEPT_PELLET_TOF_METRIC_LEAD_SEED_AND_DIRECT_CORRECTION_REMAIN OUTSIDE_CONTROLLER_ACTION_DEFINITION_AND_MEMORY",
+  "anti_cheat_audit_status": "GREEN_THROUGH_L3_SHOOTER_VISIBLE_BINARY_REWARD_SUPPORT; EXPERIENCE_RECORD_SATISFACTION_SELF_DIAGNOSIS_AND_INTERVENTION_FIELDS_NOW_REQUIRE_EXPLICIT LEAKAGE TESTS BEFORE LEARNING RUNS",
   "first_experiment_target_family": "CROSSERS",
   "initial_presentation_budget": 100000,
-  "primary_methods": ["SWING_THROUGH", "PULL_AWAY", "MAINTAINED_LEAD"],
+  "primary_methods": ["PULL_AWAY", "SWING_THROUGH", "MAINTAINED_LEAD"],
   "stage_status": {
     "L0": "GREEN_ORACLE_SHOOTER_CONTAINMENT_AND_BASELINES",
     "L1": "COMPLETE_GREEN_CALIBRATED_PARTIAL_OBSERVATION_ARCHITECTURE",
@@ -32,7 +34,8 @@
     "L3_FRESH_POST_GEOMETRY_REWARD": "NEGATIVE_ZERO_HITS_660_ATTEMPTS",
     "L3_CONTINUOUS_RELATIONSHIP": "NEGATIVE_ZERO_HITS_1024_ATTEMPTS_ON_SEED_361000",
     "L3_PHASE_RELATIONSHIP_SUPPORT": "GREEN_BINARY_REWARD_SUPPORT_EXISTS_BUT_PHASE_DEPENDENCE_NOT_SUPERIOR_TO_CONSTANT_CONTROL",
-    "L3_HIT_MISS_LEARNING": "NEXT"
+    "L3_HIT_MISS_LEARNING": "QUEUED_AFTER_EXPERIENCE_RECORD_SCHEMA",
+    "L3_EXPERIENCE_SATISFACTION_DESIGN": "FROZEN_PENDING_IMPLEMENTATION_AND_ABLATION"
   },
   "completed_checkpoints": [
     "docs/learning/checkpoints/L2_PLANNING_ADAPTATION_GREEN_1.md",
@@ -45,7 +48,8 @@
     "docs/learning/checkpoints/L3_DYNAMIC_PERCEPTUAL_COUPLING_NO_REWARD_1.md",
     "docs/learning/checkpoints/L3_SHOOTER_VISIBLE_TRIGGER_TIMING_NO_REWARD_1.md",
     "docs/learning/checkpoints/L3_DYNAMIC_COUPLING_GEOMETRY_GREEN_FRESH_NO_REWARD_1.md",
-    "docs/learning/checkpoints/L3_SHOOTER_VISIBLE_BINARY_REWARD_SUPPORT_GREEN_1.md"
+    "docs/learning/checkpoints/L3_SHOOTER_VISIBLE_BINARY_REWARD_SUPPORT_GREEN_1.md",
+    "docs/learning/checkpoints/L3_EXPERIENCE_SATISFACTION_DESIGN_FROZEN_1.md"
   ],
   "reference_metrics": {
     "L0": {"oracle_proxy_hits": "12/12", "naive_proxy_hits": "0/12"},
@@ -124,10 +128,13 @@
   "active_hypotheses": [
     "Good shooting is continuous perceptual coupling: read the live line, match gun speed, apply method, trigger, and follow through.",
     "A demonstrated clay is a presentation prior rather than a deterministic trajectory; each live clay must be re-read as it varies with launch/aerodynamic/wind disturbance.",
-    "Binary reward support is sparse but now demonstrably present in the current shooter-visible maintained-lead coupling architecture on a fresh non-sealed population.",
-    "The useful learning variable may be a target-gun relationship or relationship trajectory learned from outcomes rather than a metric lead supplied by an oracle.",
-    "Constant and phase-dependent relationship representations must remain competing hypotheses: the first support diagnostic found 5 constant-control hits versus 4 phase-trajectory hits on the same bank, so phase dependence is not currently supported as superior.",
-    "A hit/miss-only learner with memory should now be tested on frozen predeclared action generators and separate training/held-out banks without storing target seeds or referee miss geometry.",
+    "Binary reward support is sparse but demonstrably present in the current shooter-visible architecture.",
+    "Ellis's complete apprenticeship — perception, belief, intention, movement, outcome, self-diagnosis, intervention and later result — is scientifically valuable and should become a future causal training corpus for Chiron.",
+    "Shot Quality and Break Quality should remain distinct learner-visible assessments; a Satisfaction Score may improve learning by reinforcing good dynamic execution without redefining a miss as a hit.",
+    "Satisfaction must be ablated against binary-only learning and rejected if it improves shaped score without improving held-out breaks, transfer, calibration or robust movement.",
+    "Pull-away is now the primary next-method learning hypothesis because acquire/connect/match/separate/trigger/follow-through creates an interpretable adaptation loop; maintained lead remains a comparator/specialist method rather than a primary teaching assumption.",
+    "Human-plausible post-shot chip/fragment/coach/video/Sense evidence may later support coarse intuitive correction, but must remain delayed, noisy and non-oracle.",
+    "Constant and phase-dependent relationship representations remain competing hypotheses; prior diagnostic 5 constant-control hits versus 4 phase-trajectory hits does not support phase superiority.",
     "Human kinematic limits, follow-through duration, coupling tolerances and timing values remain SHOTSIGHT_HYPOTHESIS / PROVISIONAL_METHOD_KINEMATICS pending Sense/video calibration."
   ],
   "negative_findings": [
@@ -141,5 +148,5 @@
     "Reward support is population-sensitive and sparse: 0/1024 constant attempts on seed base 361000 versus 5/1024 on seed base 371000. Do not post-hoc tune to rewarded action identities.",
     "Do not widen the hit proxy, inject referee miss gradients, expose oracle lead, or treat the 55 mm engineering proxy as real-world break probability."
   ],
-  "next_action": "Freeze the current constant low-discrepancy and phase-dependent shooter-visible action generators and the 55 mm engineering scorer before learning. Implement L3_HIT_MISS_LEARNING_OVER_SHOOTER_VISIBLE_RELATIONSHIPS_V1 with episodic/generalised memory that receives only permitted post-shot hit/miss outcomes and never stores target seeds, referee miss distances, range, intercept, pellet TOF or direct correction. Use explicit non-sealed training and calibration populations plus an untouched held-out transfer population. Compare constant vs phase-dependent representations and memory vs no-memory. Do not use the identities or referee miss distances of the 4/5 rewarded diagnostic samples to initialise or steer the learner. Demonstrate reproducible held-out improvement above naive/static sparse support before scaling to the 100k existential bank."
+  "next_action": "Implement docs/learning/ELLIS_EXPERIENCE_AND_SATISFACTION_V1.md before genuine learning: create immutable learner-side Experience Records, explicit reasons for action selection, process traces, BQ/SQ/SS fields behind experiment flags, uncertain self-diagnosis and one-variable intervention chains, plus anti-cheat tests over every persisted field. Preserve binary hit/miss-only as baseline. Make pull-away the primary learner condition while retaining maintained-lead/swing-through and constant/phase representations as controlled comparisons. Use non-sealed train/calibration/held-out populations; compare Satisfaction ON/OFF and memory ON/OFF. Never initialise from the identities or oracle geometry of the previously observed sparse successful actions."
 }

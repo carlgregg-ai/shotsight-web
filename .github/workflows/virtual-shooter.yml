@@ -50,3 +50,5 @@ jobs:
         run: node tests/virtual-shooter-maintained-lead-baseline-v1.mjs
       - name: Run L3 maintained-lead hit-miss-only learning probe
         run: node tests/virtual-shooter-maintained-lead-learning-v1.mjs
+      - name: Run L3 maintained-lead reward-support diagnosis
+        run: node tests/virtual-shooter-maintained-lead-reward-support-v1.mjs

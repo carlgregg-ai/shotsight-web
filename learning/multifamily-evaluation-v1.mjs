@@ -27,7 +27,9 @@ export function createL1MultiFamilyBank({nPerFamily=90,seedBase=41000}={}){
   const records=[];for(const family of ['CROSSER','QUARTERER','LOOPER'])for(let i=0;i<nPerFamily;i++)records.push(freezePlain({id:`${family}_${i}`,family,scenario:createScenario(family,seedBase+i+(family==='CROSSER'?0:family==='QUARTERER'?10000:20000))}));return Object.freeze(records);
 }
 
-function observationHistory(record,{evalTime_s=0.62,window_s=0.30,latency_s=0.08,angleNoiseSd_rad=0.0015,rateNoiseSd_radps=0.02,acquisitionQuality=0.9,seed=1}={}){
+// Exported only for referee-side L1 experiments that need to compare different observation durations.
+// Returned values remain ShooterObservation objects and therefore pass through the same anti-cheat boundary.
+export function createL1ObservationHistory(record,{evalTime_s=0.62,window_s=0.30,latency_s=0.08,angleNoiseSd_rad=0.0015,rateNoiseSd_radps=0.02,acquisitionQuality=0.9,seed=1}={}){
   const frames=hiddenFrames(record),obs=[];let k=0;const start=Math.max(0,evalTime_s-window_s);
   for(let t=start;t<=evalTime_s+1e-12;t+=1/60)obs.push(createShooterObservation({oracleFrames:frames,now_s:t,latency_s,angleNoiseSd_rad,rateNoiseSd_radps,acquisitionQuality,seed:seed+k++,context:{trapRegionKnown:true,experiment:'L1_MULTIFAMILY_READING'}}));
   return Object.freeze(obs);
@@ -35,7 +37,7 @@ function observationHistory(record,{evalTime_s=0.62,window_s=0.30,latency_s=0.08
 
 export function trainL1FamilyPrototypeModel({nPerFamily=90,seedBase=41000}={}){
   const bank=createL1MultiFamilyBank({nPerFamily,seedBase});
-  const examples=bank.map((record,i)=>({family:record.family,observationHistory:observationHistory(record,{window_s:0.30,seed:seedBase*3+i*100})}));
+  const examples=bank.map((record,i)=>({family:record.family,observationHistory:createL1ObservationHistory(record,{window_s:0.30,seed:seedBase*3+i*100})}));
   return fitFamilyPrototypeModel(examples);
 }
 
@@ -44,7 +46,7 @@ function truthAngles(record,t){const s=simulateRecord(record,t);return {az:s.tar
 function evaluateCondition({bank,model,condition,seedBase}){
   const episodes=[];
   for(let i=0;i<bank.length;i++){
-    const record=bank[i],history=observationHistory(record,{...condition,seed:seedBase+i*100});const belief=buildMultiFamilyBelief(history,{model,predictionHorizon_s:0.12,maxHistory_s:condition.window_s});auditShooterBoundary({observations:history,beliefs:[belief]});
+    const record=bank[i],history=createL1ObservationHistory(record,{...condition,seed:seedBase+i*100});const belief=buildMultiFamilyBelief(history,{model,predictionHorizon_s:0.12,maxHistory_s:condition.window_s});auditShooterBoundary({observations:history,beliefs:[belief]});
     if(!belief.prediction){episodes.push({family:record.family,belief,valid:false});continue;}
     const truth=truthAngles(record,belief.prediction.fromObservationTime_s+belief.prediction.horizon_s),pred=argmax(belief.familyProb);let brier=0;for(const f of ['CROSSER','QUARTERER','LOOPER'])brier+=(belief.familyProb[f]-(f===record.family?1:0))**2;
     episodes.push({family:record.family,pred,belief,valid:true,correct:pred===record.family,brier,azError:belief.prediction.azMean_rad-truth.az,elError:belief.prediction.elMean_rad-truth.el});

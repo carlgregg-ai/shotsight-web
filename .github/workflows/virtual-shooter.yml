@@ -46,3 +46,5 @@ jobs:
         run: node tests/virtual-shooter-presentation-shot-plan-heldout-v1.mjs
       - name: Run L3 finite gun/shooter plant constraint tests
         run: node tests/virtual-shooter-gun-plant-v1.mjs
+      - name: Run L3 maintained-lead no-learning perception-to-shot baseline
+        run: node tests/virtual-shooter-maintained-lead-baseline-v1.mjs

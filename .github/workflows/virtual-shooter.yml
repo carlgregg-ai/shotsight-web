@@ -38,3 +38,5 @@ jobs:
         run: node tests/virtual-shooter-shot-plan-v1.mjs
       - name: Run L2 held-out planning adaptation benchmark
         run: node tests/virtual-shooter-planning-evaluation-v1.mjs
+      - name: Run L2 shooter-visible presentation context and runway tradeoff benchmark
+        run: node tests/virtual-shooter-presentation-context-v1.mjs

@@ -3,22 +3,22 @@
   "branch": "virtual-shooter-v1",
   "master_programme": "docs/learning/SHOTSIGHT_VIRTUAL_SHOOTER_MASTER_PROGRAMME.md",
   "status": "ACTIVE",
-  "current_stage": "L2",
-  "current_stage_name": "Pickup / hold / connection / break planning",
-  "current_substage": "L2_PRESENTATION_LEVEL_SHOT_PLAN_INTEGRATION",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L2_PRESENTATION_CONTEXT_RUNWAY_GREEN_1.md",
+  "current_stage": "L3",
+  "current_stage_name": "Single-method crosser learning",
+  "current_substage": "L3_FINITE_GUN_PLANT_AND_MAINTAINED_LEAD_BASELINE",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L2_PRESENTATION_LEVEL_PLANNING_COMPLETE.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33948921738,
-    "head_sha": "517181462b062ffbdf904cd4d367f92a2ef81b70",
+    "run_id": 33949190178,
+    "head_sha": "dc05296156016a25b3769d663d81526bdeb93efe",
     "conclusion": "success"
   },
   "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, ACTS, REMEMBERS AND LEARNS.",
-  "anti_cheat_audit_status": "GREEN_STRUCTURAL_ALLOWLIST_NESTED_LEAK_PROBES_LEARNER_IMPORT_GUARDS_CALIBRATION_PARTITION_SEPARATION_MULTIFAMILY_RUNTIME_AUDIT_L2_PLAN_NO_ORACLE_IMPORTS_AND_PRESENTATION_CONTEXT_RUNTIME_SHOOTER_VISIBLE_ONLY",
+  "anti_cheat_audit_status": "GREEN_THROUGH_L2_PRESENTATION_LEVEL_PLANNING; ORACLE_FUTURE_INTERCEPT_LEAD_RANGE_AND_PELLET_TOF_REMAIN_HIDDEN",
   "oracle_world_status": "L0_HIDDEN_EVALUATION_FACADE_AND_PRIVILEGED_CEILING_GREEN",
   "shooter_observation_status": "L1_COMPLETE_CALIBRATED_MULTIFAMILY_BELIEF_WITH_SELECTIVE_WAIT",
   "l1_perception_status": "COMPLETE_GREEN_PERCEPTION_ARCHITECTURE_GATE_NOT_REAL_CLAY_VALIDATION",
-  "l2_planning_status": "WHOLE_PRESENTATION_CONTEXT_AND_RUNWAY_VALUE_GREEN; ACTUAL SHOT PLAN STILL MUST MIGRATE OFF LOCAL_0.12S_HORIZON_BEFORE_MOTOR_STAGE",
+  "l2_planning_status": "COMPLETE_GREEN_PRESENTATION_LEVEL_PLANNING_ARCHITECTURE_NOT_SHOOTING_SUCCESS",
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
   "first_experiment_target_family": "CROSSERS",
@@ -26,7 +26,8 @@
   "primary_methods": ["SWING_THROUGH", "PULL_AWAY", "MAINTAINED_LEAD"],
   "completed_checkpoints": [
     "docs/learning/checkpoints/L2_PLANNING_ADAPTATION_GREEN_1.md",
-    "docs/learning/checkpoints/L2_PRESENTATION_CONTEXT_RUNWAY_GREEN_1.md"
+    "docs/learning/checkpoints/L2_PRESENTATION_CONTEXT_RUNWAY_GREEN_1.md",
+    "docs/learning/checkpoints/L2_PRESENTATION_LEVEL_PLANNING_COMPLETE.md"
   ],
   "l0_reference": {
     "oracle_proxy_hits": "12/12",
@@ -45,60 +46,51 @@
     "fixed_150ms_accuracy": 0.7736111111111111,
     "interpretation": "L1 architecture is complete; poor-view ambiguity is real and later stages must price observation time against shooting opportunity."
   },
-  "l2_local_plan_reference": {
-    "heldout_crossers": 120,
-    "clear_mean_confidence": 0.4997180192795303,
-    "poor_mean_confidence": 0.15354266133085148,
-    "poor_pull_away_connection_local_progress": 0.6814532117238609,
-    "poor_pull_away_break_local_progress": 0.9685876187465414,
-    "interpretation": "Perception-sensitive and method-distinct, but invalid as whole-presentation planning because coordinates are tied to a local 0.12 s belief horizon."
-  },
   "l2_presentation_context_runway": {
-    "family_training_total": 270,
-    "wait_value_calibration_crossers": 100,
     "heldout_crossers": 160,
-    "value_model": "CALIBRATION_EXPECTED_MULTICLASS_BRIER_LOSS_REDUCTION_BY_WAIT_AND_CONFIDENCE_BIN",
-    "runtime_inputs": ["MULTIFAMILY_BELIEF_V1", "SHOOTER_VISIBLE_PRESENTATION_CONTEXT_V1", "WAIT_INFORMATION_MODEL_V1"],
-    "early": {
-      "immediate_accuracy": 0.1625,
-      "runway_aware_accuracy": 0.5125,
-      "fixed_100ms_accuracy": 0.43125,
-      "wait_rate": 1.0,
-      "mean_wait_s": 0.1446874999999998,
-      "mean_remaining_to_break_start": 0.3499560180698179,
-      "mean_remaining_to_break_end": 0.5499560180698179
+    "early_immediate_accuracy": 0.1625,
+    "early_runway_aware_accuracy": 0.5125,
+    "early_fixed_100ms_accuracy": 0.43125,
+    "early_mean_wait_s": 0.1446874999999998,
+    "late_wait_rate": 0.73125,
+    "late_mean_wait_s": 0.09437500000000001,
+    "interpretation": "Calibration-learned decision-quality value of more observation is traded against shooter-visible runway without runtime oracle labels or actions."
+  },
+  "l2_presentation_plan_reference": {
+    "heldout_crossers": 180,
+    "source_progress_priors": {
+      "SWING_THROUGH": {"hold": 0.22, "connection": 0.50, "break": 0.86},
+      "PULL_AWAY": {"hold": 0.32, "connection": 0.60, "break": 0.88},
+      "MAINTAINED_LEAD": {"hold": 0.44, "connection": 0.66, "break": 0.88}
     },
-    "late": {
-      "wait_rate": 0.73125,
-      "mean_wait_s": 0.09437500000000001,
-      "mean_remaining_to_break_start": 0.21165741280889033,
-      "mean_remaining_to_break_end": 0.4097332309760674
+    "early_clear_mean_confidence": 0.5167113786434471,
+    "early_poor_mean_confidence": 0.14984615305341276,
+    "late_poor_mean_progress": 0.49010499716166317,
+    "late_connection_passed_rate": {
+      "SWING_THROUGH": 0.43333333333333335,
+      "PULL_AWAY": 0.15555555555555556,
+      "MAINTAINED_LEAD": 0.07777777777777778
     },
-    "calibration_expected_decision_quality_gain_low_confidence": {
-      "wait_50ms": 0.06611221329955881,
-      "wait_100ms": 0.1600768930865435,
-      "wait_150ms": 0.2061296529701123
-    },
-    "interpretation": "Ellis can retain cumulative observed presentation progress separately from a short working belief window and trade calibration-learned expected information value against diminishing shooter-visible pre-break runway without oracle future/intercept data. This is not shooting success."
+    "interpretation": "Low confidence no longer drags the intended break point later. Consumed observed presentation instead reports lost connection runway and may force only the effective live connection later."
   },
   "active_hypotheses": [
-    "First-clear-sight epoch 0.20 s, expected presentation duration 0.95 s, demonstrated angular span 0.62 rad, break-window progress 0.70–0.90 and runway penalty are provisional SHOTSIGHT_HYPOTHESIS values, not human prescriptions.",
-    "Calibration labels may estimate the expected value of additional observation; held-out labels/oracle actions remain unavailable at runtime.",
-    "Pre-break runway should price information-seeking more strongly than time remaining to the far edge of a break window; this must later be tested against motor/shot outcomes and Sense/video evidence."
+    "First-clear-sight epoch, expected presentation duration, demonstrated angular span, break-window coordinates and runway penalty remain provisional SHOTSIGHT_HYPOTHESIS values pending Sense/video calibration.",
+    "The source-informed L2 hold/connection/break coordinates are priors only and must now compete with blank-slate/learned alternatives on actual motor/shot outcomes.",
+    "L3 should begin with maintained lead if it provides the cleanest controlled experiment; this is an experimental sequencing choice, not a claim that maintained lead is universally best.",
+    "Human gun angular velocity, acceleration, jerk and reaction limits are provisional until measured; L3 must expose them as calibration parameters rather than silently treating them as facts."
   ],
   "negative_findings": [
     "Inherited canonical flat-crosser exposes exact intercept/physical lead and remains hidden oracle/reference truth only.",
     "Current target engine and centreline evaluator are engineering proxies, not certified realistic clay aerodynamics, shot cloud or breakability.",
-    "Base L1 stable-crosser uncertainty was under-dispersed and required held-out calibration; simple stable crossers are an easy task.",
+    "Base L1 stable-crosser uncertainty was under-dispersed and required held-out calibration.",
     "Poor 220 ms acquisition materially collapses crosser-versus-quarterer discrimination; uncertainty must be allowed to change behaviour.",
     "Gravity-only looper recognition is too easy and is not real-looper validation.",
-    "An unconstrained L1 wait policy degenerated into waiting on every target; selectivity/opportunity cost is a required behavioural gate.",
-    "L2 source-informed plans score lower than blank-slate on the internal structure proxy; that proxy is bookkeeping only and cannot be a success objective.",
-    "The first L2 local planner delayed the break toward 0.97 under poor perception and maps the whole target onto only 0.12 s; it must not feed motors in this form.",
-    "The first whole-presentation context incorrectly used a rolling 220 ms history and therefore forgot how much target travel had already passed; cumulative visible presentation memory fixed this.",
-    "The first runway policy used confidence gain as information value and selected 50 ms on every early target, giving 18.75% held-out accuracy versus 43.125% for fixed 100 ms. Confidence gain was rejected as a misleading surrogate and replaced with calibration Brier-loss improvement.",
-    "The current value-of-information calibration is crosser-only because the existential experiment begins with crossers; mixed-family value models remain future validation.",
-    "No Brett Winstanley hold/pickup/break-point claim is promoted without a recovered primary source."
+    "An unconstrained L1 wait policy degenerated into waiting on every target; opportunity cost is required.",
+    "The original L2 0.12 s local planning coordinate was conceptually wrong for pre-call target planning.",
+    "A rolling 220 ms presentation context erased remembered target progress and was rejected.",
+    "Scalar confidence gain was a misleading surrogate for information value and was replaced by calibration Brier-loss improvement.",
+    "The old internal plan-structure proxy favoured blank-slate over source priors; it is bookkeeping only and prohibited as a success objective.",
+    "No Brett Winstanley hold/pickup/break claim is promoted without a recovered primary source."
   ],
-  "next_action": "Integrate SHOOTER_VISIBLE_PRESENTATION_CONTEXT_V1 into the actual source-informed and blank-slate pickup/hold/connection/break planner so plan coordinates live on the whole shooter-visible presentation rather than the 0.12 s prediction horizon. On held-out crossers, verify that consumed runway constrains connection/break planning and that poor perception can invoke the value-of-information policy without simply driving break points to the far end. Preserve method topology and source evidence classes. Do not advance to motor/trigger learning until this presentation-level planner is green, and do not expose oracle intercept, exact lead, range or hidden future trajectory."
+  "next_action": "Begin L3 single-method crosser learning. First implement and test a finite gun/shooter plant with explicit visual-motor delay, angular velocity, acceleration and jerk limits plus motor variability. It must accept only perception/plan-derived angular commands and must make missed connection/runway visible rather than teleporting. Then build the cleanest maintained-lead crosser baseline controller using live apparent target belief and a learnable target-gun angular relationship; do not supply exact required lead or oracle intercept. Keep all human-limit constants PROVISIONAL_METHOD_KINEMATICS / SHOTSIGHT_HYPOTHESIS and establish no-learning motor baselines before any adaptive learner."
 }

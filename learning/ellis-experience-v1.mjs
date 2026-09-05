@@ -41,14 +41,28 @@ export function createSatisfactionV1({shotQuality,breakQuality,enabled=true,weig
   safe(out,'ellis.satisfaction');return out;
 }
 
-export function createEllisExperienceRecordV1({episodeIndex,before,during,outcome,shotQuality,breakQuality,satisfaction,selfDiagnosis=null}={}){
+export function createAcquisitionExperienceV1({phase,acquisitionScore,observationSpan_s,contrast,clutter,occluded=false,waitedForMoreEvidence=false,reacquisitionOccurred=false,streakVsResolved}={}){
+  const allowed=new Set(['EXPECTED_RELEASE','FLASH_STREAK','ACQUIRING','TRACKING','REACQUIRING']);
+  if(!allowed.has(phase))throw new Error('invalid acquisition phase');
+  unit(acquisitionScore,'acquisitionScore');finite(observationSpan_s,'observationSpan_s');if(observationSpan_s<0)throw new Error('observationSpan_s must be non-negative');
+  unit(contrast,'contrast');unit(clutter,'clutter');
+  if(typeof occluded!=='boolean'||typeof waitedForMoreEvidence!=='boolean'||typeof reacquisitionOccurred!=='boolean')throw new Error('acquisition flags must be boolean');
+  if(!['STREAK','RESOLVED','NONE'].includes(streakVsResolved))throw new Error('streakVsResolved invalid');
+  if(phase==='TRACKING'&&streakVsResolved!=='RESOLVED')throw new Error('TRACKING acquisition record must be RESOLVED');
+  if(['FLASH_STREAK','ACQUIRING','REACQUIRING'].includes(phase)&&streakVsResolved==='RESOLVED')throw new Error('unresolved phase cannot be recorded as RESOLVED');
+  const out=freezePlain({schema:'ELLIS_ACQUISITION_EXPERIENCE_V1',phase,acquisitionScore,observationSpan_s,contrast,clutter,occluded,waitedForMoreEvidence,reacquisitionOccurred,streakVsResolved,boundary:'LEARNER_VISIBLE_HUMAN_ANALOGOUS_ACQUISITION_ONLY'});
+  safe(out,'ellis.acquisition');return out;
+}
+
+export function createEllisExperienceRecordV1({episodeIndex,before,during,outcome,shotQuality,breakQuality,satisfaction,selfDiagnosis=null,acquisition=null}={}){
   if(!Number.isInteger(episodeIndex)||episodeIndex<0)throw new Error('episodeIndex must be non-negative integer');
   if(!before||typeof before!=='object'||!during||typeof during!=='object')throw new Error('before/during required');
   if(!outcome||outcome.schema!=='HIT_MISS_ONLY_FEEDBACK_V1')throw new Error('binary outcome feedback required');
   if(!shotQuality||shotQuality.schema!=='ELLIS_SHOT_QUALITY_V1')throw new Error('shotQuality required');
   if(!breakQuality||breakQuality.schema!=='ELLIS_BREAK_QUALITY_BINARY_V1')throw new Error('breakQuality required');
   if(!satisfaction||satisfaction.schema!=='ELLIS_SATISFACTION_V1')throw new Error('satisfaction required');
-  const out=freezePlain({schema:'ELLIS_EXPERIENCE_RECORD_V1',episodeIndex,before,during,outcome,shotQuality,breakQuality,satisfaction,selfDiagnosis,immutability:'FROZEN_LEARNER_VISIBLE_APPRENTICESHIP_RECORD'});
+  if(acquisition!==null&&acquisition?.schema!=='ELLIS_ACQUISITION_EXPERIENCE_V1')throw new Error('acquisition must be ELLIS_ACQUISITION_EXPERIENCE_V1 or null');
+  const out=freezePlain({schema:'ELLIS_EXPERIENCE_RECORD_V1',episodeIndex,before,during,acquisition,outcome,shotQuality,breakQuality,satisfaction,selfDiagnosis,immutability:'FROZEN_LEARNER_VISIBLE_APPRENTICESHIP_RECORD'});
   safe(out,'ellis.experience');return out;
 }
 

@@ -30,3 +30,5 @@ jobs:
         run: node tests/virtual-shooter-perception-v1.mjs
       - name: Run L1 held-out uncertainty calibration tests
         run: node tests/virtual-shooter-perception-calibration-v1.mjs
+      - name: Run L1 held-out mixed-family ambiguity tests
+        run: node tests/virtual-shooter-multifamily-v1.mjs

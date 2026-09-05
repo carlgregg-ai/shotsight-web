@@ -4,12 +4,12 @@
 // It imports no target physics, ballistics, oracle/referee, scenario generator or target identity.
 
 import {assertNoPrivilegedShooterData} from './virtual-shooter-boundary-v1.mjs';
-import {L3_PULL_AWAY_HUMAN_VISION_EXPLORATION_GRID_V1} from './pull-away-human-vision-evaluation-v1.mjs';
 
 function freezePlain(v){if(Array.isArray(v))return Object.freeze(v.map(freezePlain));if(v&&typeof v==='object'){const o={};for(const [k,x] of Object.entries(v))o[k]=freezePlain(x);return Object.freeze(o);}return v;}
 const finite=(v,n)=>{if(!Number.isFinite(v))throw new Error(`${n} must be finite`);return v;};
+export const L3_PULL_AWAY_LEARNER_ACTION_GRID_V1=Object.freeze(Array.from({length:61},(_,i)=>Number((i*0.002).toFixed(3))));
 
-export function createPullAwayHitMissMemoryV1({actions=L3_PULL_AWAY_HUMAN_VISION_EXPLORATION_GRID_V1,explorationStrength=Math.SQRT2}={}){
+export function createPullAwayHitMissMemoryV1({actions=L3_PULL_AWAY_LEARNER_ACTION_GRID_V1,explorationStrength=Math.SQRT2}={}){
   if(!Array.isArray(actions)||actions.length<2)throw new Error('at least two pull-away actions required');
   const sorted=[...actions].map((x,i)=>{finite(x,`actions[${i}]`);if(x<0||x>0.12)throw new Error('pull-away action outside learner-safe visual-picture bounds');return x;}).sort((a,b)=>a-b);
   finite(explorationStrength,'explorationStrength');if(explorationStrength<0)throw new Error('explorationStrength must be non-negative');

@@ -58,3 +58,12 @@ jobs:
         run: node tests/virtual-shooter-dynamic-coupling-geometry-v1.mjs
       - name: Run L3 shooter-visible dynamic trigger timing diagnostic
         run: node tests/virtual-shooter-dynamic-trigger-timing-v1.mjs
+      - name: Run fresh post-audit L3 dynamic-coupling reward-support diagnostic
+        id: fresh_coupling_reward
+        run: node tests/virtual-shooter-dynamic-coupling-fresh-reward-v2.mjs
+      - name: Fresh L3 diagnostic marker — binary reward support discovered
+        if: steps.fresh_coupling_reward.outputs.reward_support == 'true'
+        run: echo "Fresh non-sealed diagnostic found at least one post-trigger engineering-proxy hit."
+      - name: Fresh L3 diagnostic marker — no binary reward support
+        if: steps.fresh_coupling_reward.outputs.reward_support == 'false'
+        run: echo "Fresh non-sealed diagnostic found zero engineering-proxy hits."

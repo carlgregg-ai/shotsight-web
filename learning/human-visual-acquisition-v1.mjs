@@ -80,7 +80,6 @@ export function buildEllisHumanVisualEvidence(observationHistory,options={}){
   const halfAlong=2*alongSd,halfNormal=2*normalSd;
   const streak=freezePlain({
     orientation:direction(rate),
-    centreApprox_rad:{az:latest.az_rad,el:latest.el_rad},
     angularRegion_rad:{azMin:latest.az_rad-halfAlong,azMax:latest.az_rad+halfAlong,elMin:latest.el_rad-halfNormal,elMax:latest.el_rad+halfNormal},
     uncertaintyAlongMotionSd_rad:alongSd,
     uncertaintyNormalSd_rad:normalSd,
@@ -93,8 +92,8 @@ export function buildEllisHumanVisualEvidence(observationHistory,options={}){
   else if(span_s>=cfg.temporalIntegration_s)phase='ACQUIRING';
 
   // Crucial anti-oracle property: FLASH/STREAK and ACQUIRING do not expose a precise
-  // instantaneous target centre as a policy-ready resolved observation. Only broad
-  // angular region + coarse motion are available until the acquisition gate passes.
+  // instantaneous target centre. Only a broad angular region + coarse motion are
+  // available until the acquisition gate passes.
   const resolved=phase==='TRACKING'?freezePlain({
     az_rad:latest.az_rad,
     el_rad:latest.el_rad,

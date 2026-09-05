@@ -8,9 +8,33 @@ import {assertNoPrivilegedShooterData} from './virtual-shooter-boundary-v1.mjs';
 
 function freezePlain(v){if(Array.isArray(v))return Object.freeze(v.map(freezePlain));if(v&&typeof v==='object'){const o={};for(const [k,x] of Object.entries(v))o[k]=freezePlain(x);return Object.freeze(o);}return v;}
 function mean(xs){return xs.length?xs.reduce((a,b)=>a+b,0)/xs.length:null;}
+function minFinite(xs){const a=xs.filter(Number.isFinite);return a.length?Math.min(...a):null;}
 function wilson95(k,n){if(!n)return {lo:null,hi:null};const z=1.959963984540054,p=k/n,d=1+z*z/n,c=(p+z*z/(2*n))/d,h=z*Math.sqrt((p*(1-p)+z*z/(4*n))/n)/d;return {lo:Math.max(0,c-h),hi:Math.min(1,c+h)};}
 function episodeOutcome(e){return {hit:Boolean(e.score.proxyHit),triggered:Boolean(e.run.trigger)};}
 function summariseOutcomes(rows){const n=rows.length,hits=rows.filter(r=>r.hit).length,triggers=rows.filter(r=>r.triggered).length;return freezePlain({n,hits,hitRate:n?hits/n:0,hitRateWilson95:wilson95(hits,n),triggers,triggerRate:n?triggers/n:0});}
+
+function refereeDiagnosticsByAction(rows){
+  const out={};
+  for(const separation_rad of L3_MAINTAINED_LEAD_LEARNING_ACTIONS_V1){
+    const arm=rows.filter(r=>Math.abs(r.separation_rad-separation_rad)<1e-12),fired=arm.filter(r=>r.triggered);
+    out[separation_rad.toFixed(3)]={
+      attempts:arm.length,
+      triggers:fired.length,
+      triggerRate:arm.length?fired.length/arm.length:0,
+      hits:arm.filter(r=>r.hit).length,
+      meanPostActionMissDistance_m:mean(fired.map(r=>r.referee?.missDistance_m).filter(Number.isFinite)),
+      minPostActionMissDistance_m:minFinite(fired.map(r=>r.referee?.missDistance_m)),
+      meanAchievedSeparation_rad:mean(fired.map(r=>r.referee?.achievedSeparation_rad).filter(Number.isFinite)),
+      meanSeparationError_rad:mean(fired.map(r=>r.referee?.separationError_rad).filter(Number.isFinite)),
+      meanVisualPictureError_rad:mean(fired.map(r=>r.referee?.visualPictureError_rad).filter(Number.isFinite)),
+      meanTriggerProgress:mean(fired.map(r=>r.referee?.triggerProgress).filter(Number.isFinite))
+    };
+  }
+  return freezePlain({
+    boundary:'RESEARCHER/REFEREE POST-ACTION DIAGNOSTICS ONLY. NONE OF THESE VALUES ARE PASSED TO LEARNER MEMORY OR ACTION SELECTION.',
+    byAction:out
+  });
+}
 
 function evaluateFrozenPolicy({bank,model,standPrior,separation_rad,seedBase}){
   return bank.map((record,i)=>episodeOutcome(runL3MaintainedLeadEpisode({record,model,standPrior,separation_rad,seed:seedBase+i*1009})));
@@ -42,7 +66,18 @@ export function runL3MaintainedLeadHitMissLearningExperiment({
     // This is the ONLY referee information transferred into learner memory.
     const feedback=createHitMissOnlyFeedback({hit:outcome.hit});
     updateMaintainedLeadHitMissMemory(memory,selection,feedback);
-    trainingRows.push({step:i+1,separation_rad:selection.separation_rad,hit:outcome.hit,triggered:outcome.triggered});
+    const d=episode.run.trigger;
+    trainingRows.push({
+      step:i+1,separation_rad:selection.separation_rad,hit:outcome.hit,triggered:outcome.triggered,
+      // Referee-only, retained outside learner memory for architecture diagnosis after action.
+      referee:outcome.triggered?{
+        missDistance_m:episode.score.missDistance_m,
+        achievedSeparation_rad:d.achievedSeparation_rad,
+        separationError_rad:d.separationError_rad,
+        visualPictureError_rad:d.visualPictureError_rad,
+        triggerProgress:d.currentProgress
+      }:null
+    });
   }
   const frozenPolicy=freezeLearnedMaintainedLeadPolicy(memory);
   const memorySummary=publicMemorySummary(memory);
@@ -60,10 +95,13 @@ export function runL3MaintainedLeadHitMissLearningExperiment({
     actionSpace:{values_rad:L3_MAINTAINED_LEAD_LEARNING_ACTIONS_V1,evidenceClass:'PREDECLARED_BROAD_VISUAL_PICTURE_GRID_NOT_BALLISTIC_LEAD_LOOKUP'},
     feedbackBoundary:'LEARNER UPDATE RECEIVES ONLY HIT_MISS_ONLY_FEEDBACK_V1 BOOLEAN; REFEREE MISS DISTANCE/TRUTH IS NOT PASSED',
     training:{overall:summariseOutcomes(trainingRows),firstThird:first,lastThird:last,memory:memorySummary,frozenPolicy},
+    refereeTrainingDiagnostics:refereeDiagnosticsByAction(trainingRows),
     heldout:{learnedFrozenPolicy:learnedHeldout,noMemoryRoundRobin:noMemoryHeldout,deltaHitRate:learnedHeldout.hitRate-noMemoryHeldout.hitRate},
     antiCheat:'PASS_LEARNER_MEMORY_CONTAINS_ONLY_ACTION_COUNTS_AND_BINARY_HIT_COUNTS_NO_TARGET_ID_SEED_MISS_DISTANCE_RANGE_INTERCEPT_OR_PELLET_TOF',
     interpretation:trainingHits>0?'Binary outcome experience found at least one rewarded visual relationship; held-out comparison determines whether that experience transfers.':'The broad learner-safe visual-picture action space produced no binary reward during this probe. Do not invent a gradient from referee miss distance; diagnose perception/trigger/motor/action-space support before scaling.'
   });
+  // Deliberately exclude refereeTrainingDiagnostics from this learner-boundary audit: it is a researcher-only
+  // post-action report and must never be routed into memory/action selection.
   assertNoPrivilegedShooterData({partitions:result.partitions,actionSpace:result.actionSpace,feedbackBoundary:result.feedbackBoundary,training:{memory:result.training.memory,frozenPolicy:result.training.frozenPolicy},heldout:result.heldout,antiCheat:result.antiCheat},{path:'l3HitMissLearningPublic'});
   return result;
 }

@@ -24,7 +24,10 @@ function mul3(R,v){return [R[0][0]*v[0]+R[0][1]*v[1]+R[0][2]*v[2],R[1][0]*v[0]+R
 export function apparentAnglesToWorldUnit({az_rad,el_rad,R_CW=L0_PUBLIC_CAMERA_R_CW}={}){
   assertFinite(az_rad,'az_rad');assertFinite(el_rad,'el_rad');
   const ce=Math.cos(el_rad);
-  const cameraUnit=[Math.sin(az_rad)*ce,Math.sin(el_rad),Math.cos(az_rad)*ce];
+  // Projection contract is camera +Y raster-down while apparent elevation is
+  // shooter-intuitive positive-up: el = atan2(-Y, hypot(X,Z)). Therefore the
+  // exact inverse MUST reconstruct camera Y as -sin(el), not +sin(el).
+  const cameraUnit=[Math.sin(az_rad)*ce,-Math.sin(el_rad),Math.cos(az_rad)*ce];
   return Object.freeze(unit3(mul3(transpose3(R_CW),cameraUnit)));
 }
 

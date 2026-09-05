@@ -5,9 +5,13 @@ import {runL3MaintainedLeadNoLearningBenchmark,L3_EXPLORATORY_STATIC_SEPARATIONS
 const learnerSource=fs.readFileSync(new URL('../learning/maintained-lead-baseline-v1.mjs',import.meta.url),'utf8');
 for(const forbidden of ['oracle-evaluation','../physics/','physicalLead_m','pelletTOF_s','requiredLead','exactIntercept'])assert.equal(learnerSource.includes(forbidden),false,`learner-side L3 module must not contain/import ${forbidden}`);
 
-const out=runL3MaintainedLeadNoLearningBenchmark({nCrossers:24,trainNPerFamily:48,trainSeedBase:41000,heldoutSeedBase:131000});
+const out=runL3MaintainedLeadNoLearningBenchmark({nCrossers:24,trainNPerFamily:48,trainSeedBase:41000,calibrationN:30,calibrationSeedBase:151000,heldoutSeedBase:181000});
 console.log(JSON.stringify(out,null,2));
 assert.equal(out.status,'L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE_V1');
+assert.equal(out.standPriorFit.boundary.includes('NO RANGE'),true);
+assert.equal(out.heldout.seedBase,181000);
+assert.equal(out.heldout.retiredDiagnosticSeedBase,131000);
+assert.equal(out.heldout.untouchedByStandPriorFit,true);
 assert.equal(out.heldout.sameHiddenBankAcrossSeparations,true);
 assert.equal(out.staticSeparationSweep.values_rad.length,L3_EXPLORATORY_STATIC_SEPARATIONS_RAD.length);
 const rows=Object.values(out.staticSeparationSweep.conditions);
@@ -17,6 +21,7 @@ assert.ok(rows.some(r=>r.triggers>0),'at least one predeclared static picture mu
 const finiteMisses=rows.map(r=>r.meanMissDistance_m).filter(Number.isFinite);
 assert.ok(finiteMisses.length>0,'triggered shots must produce finite post-action referee miss distances');
 assert.ok(Math.max(...finiteMisses)-Math.min(...finiteMisses)>1e-6,'different static visual separations should produce measurably different referee outcomes');
+assert.ok(rows.every(r=>r.triggerDiagnostics.meanMaxProgress>0.70),'calibration-frozen whole-presentation scale must expose the planned break region on the new population');
 assert.equal(out.antiCheat.includes('SCORES ONLY AFTER TRIGGER'),true);
 assert.equal(out.poorObservationAt0045.n,24);
 

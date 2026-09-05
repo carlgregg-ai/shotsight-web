@@ -5,19 +5,19 @@
   "status": "ACTIVE",
   "current_stage": "L3",
   "current_stage_name": "Single-method crosser learning",
-  "current_substage": "L3_DYNAMIC_COUPLING_TRIGGER_TIMING_EXPLORATION_V1",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_DYNAMIC_PERCEPTUAL_COUPLING_NO_REWARD_1.md",
+  "current_substage": "L3_DYNAMIC_COUPLING_GEOMETRY_EXPRESSIVITY_AUDIT_V1",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_SHOOTER_VISIBLE_TRIGGER_TIMING_NO_REWARD_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33956051848,
-    "head_sha": "65c1833c832743e572610ce4781a38b5efc73711",
+    "run_id": 33956510699,
+    "head_sha": "a374f7e070011ca75f2fe1ecc993461239b34680",
     "conclusion": "success"
   },
   "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, PLANS, ACTS, REMEMBERS AND LEARNS.",
   "shooting_axiom": "GOOD SHOOTING IS CONTINUOUS PERCEPTUAL COUPLING BETWEEN TARGET AND GUN: READ THE LINE -> MATCH THE SPEED -> APPLY THE METHOD -> TRIGGER -> FOLLOW THROUGH.",
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
-  "anti_cheat_audit_status": "GREEN_THROUGH_L3_DYNAMIC_COUPLING; PROCESS_TRIGGER_CALIBRATION_USES_NO_ORACLE_SCORE; DYNAMIC_CONTROLLER_HAS_NO_ORACLE_OR_PHYSICS_IMPORT; REFEREE_SCORES_ONLY_AFTER_TRIGGER; MISS_DISTANCE_RANGE_FUTURE_PATH_INTERCEPT_PELLET_TOF_METRIC_LEAD_SEED_AND_DIRECT_CORRECTION_REMAIN_OUTSIDE_CONTROLLER_AND_MEMORY",
+  "anti_cheat_audit_status": "GREEN_THROUGH_L3_TRIGGER_TIMING; LEARNER CONTROLLERS HAVE NO ORACLE OR PHYSICS-SCORING IMPORT; PROCESS CALIBRATION USES NO ORACLE SCORE; TRIGGER TIMING IS NORMALISED SHOOTER_VISIBLE PRESENTATION PROGRESS; REFEREE SCORES ONLY AFTER TRIGGER; MISS_DISTANCE_RANGE_FUTURE_PATH_INTERCEPT_PELLET_TOF_METRIC_LEAD_SEED_AND_DIRECT_CORRECTION_REMAIN OUTSIDE CONTROLLER_AND_MEMORY",
   "first_experiment_target_family": "CROSSERS",
   "initial_presentation_budget": 100000,
   "primary_methods": ["SWING_THROUGH", "PULL_AWAY", "MAINTAINED_LEAD"],
@@ -27,7 +27,8 @@
     "L2": "COMPLETE_GREEN_PRESENTATION_LEVEL_PLANNING_ARCHITECTURE",
     "L3_MOTOR": "GREEN_FINITE_GUN_PLANT_NOT_HUMAN_CALIBRATED",
     "L3_STATIC_ACTION": "NEGATIVE_NO_BINARY_REWARD_SUPPORT",
-    "L3_DYNAMIC_COUPLING": "GREEN_ARCHITECTURE_AND_PROCESS_SUPPORT_BUT_NO_BINARY_REWARD_YET"
+    "L3_DYNAMIC_COUPLING": "GREEN_ARCHITECTURE_AND_PROCESS_SUPPORT_BUT_NO_BINARY_REWARD_YET",
+    "L3_TRIGGER_TIMING": "NEGATIVE_NO_BINARY_REWARD_SUPPORT_AFTER_SHOOTER_VISIBLE_TIMING_EXPANSION"
   },
   "completed_checkpoints": [
     "docs/learning/checkpoints/L2_PLANNING_ADAPTATION_GREEN_1.md",
@@ -37,13 +38,11 @@
     "docs/learning/checkpoints/L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE_GREEN_1.md",
     "docs/learning/checkpoints/L3_MAINTAINED_LEAD_HIT_MISS_NO_REWARD_1.md",
     "docs/learning/checkpoints/L3_MAINTAINED_LEAD_REWARD_SUPPORT_DIAGNOSIS_1.md",
-    "docs/learning/checkpoints/L3_DYNAMIC_PERCEPTUAL_COUPLING_NO_REWARD_1.md"
+    "docs/learning/checkpoints/L3_DYNAMIC_PERCEPTUAL_COUPLING_NO_REWARD_1.md",
+    "docs/learning/checkpoints/L3_SHOOTER_VISIBLE_TRIGGER_TIMING_NO_REWARD_1.md"
   ],
   "reference_metrics": {
-    "L0": {
-      "oracle_proxy_hits": "12/12",
-      "naive_proxy_hits": "0/12"
-    },
+    "L0": {"oracle_proxy_hits": "12/12", "naive_proxy_hits": "0/12"},
     "L1": {
       "multifamily_300ms_accuracy": 0.837037037037037,
       "multifamily_240ms_accuracy": 0.7703703703703704,
@@ -107,13 +106,27 @@
       "mean_min_commit_relationship_error_rad": 0.09190248230290918,
       "mean_min_commit_speed_match_error_radps": 0.3675451801607552,
       "reward_support_observed": false
+    },
+    "L3_trigger_timing_reward_support": {
+      "seed_base": 341000,
+      "crossers": 12,
+      "relationship_actions": 18,
+      "timing_offsets": 7,
+      "total_actions": 126,
+      "attempts": 1512,
+      "triggers": 100,
+      "hits": 0,
+      "follow_through_triggers": 100,
+      "fixed_timing_hits": 0,
+      "variant_timing_hits": 0,
+      "reward_support_observed": false
     }
   },
   "active_hypotheses": [
     "Good shooting is continuous perceptual coupling: read the live line, match gun speed, apply method, trigger, and follow through.",
     "A demonstrated clay is a presentation prior rather than a deterministic trajectory; each live clay must be re-read as it varies with launch/aerodynamic/wind disturbance.",
     "Maintained lead requires a dynamic 2D target-line relationship rather than a single scalar horizontal separation.",
-    "Trigger commitment timing inside the shooter-visible break region may be a missing learnable dimension; it must be learned from binary outcome rather than oracle pellet time-of-flight or intercept.",
+    "The next likely failure mode is representational/geometry expressivity: verify the target-line tangent, line-normal basis, sign/orientation, speed-match coordinate and finite-controller ability to maintain the requested live relationship before further reward learning.",
     "Human kinematic limits, follow-through duration, coupling tolerances and timing values remain SHOTSIGHT_HYPOTHESIS / PROVISIONAL_METHOD_KINEMATICS pending Sense/video calibration."
   ],
   "negative_findings": [
@@ -122,7 +135,8 @@
     "After the timing fix the static representation still produced zero hits, so the fix did not manufacture success.",
     "The first dynamic-coupling diagnostic was under-triggered at 5/550; process-only diagnostics showed the original relationship-stability threshold suppressed exploration.",
     "A distinct process-only calibration removed trigger scarcity without using oracle outcomes, producing 50/550 physical follow-through shots, but still zero proxy hits.",
+    "Shooter-visible trigger timing expansion produced 100 physical follow-through shots across 1512 attempts and 126 relationship/timing actions but still zero proxy hits; timing inside the planned break region alone is therefore not supported as the missing ingredient.",
     "Do not widen the hit proxy, inject referee miss gradients, expose oracle lead, or scale to 100k until binary reward support exists in a scientifically defensible shooter-visible action/timing representation."
   ],
-  "next_action": "Implement L3_DYNAMIC_COUPLING_TRIGGER_TIMING_EXPLORATION_V1. Preserve current dynamic coupling and static scalar policies as negative baselines. Add a shooter-visible trigger-commitment timing/action dimension within the already planned break region while continuing to read the live 2D target line, match gun speed, maintain the selected target-gun relationship and follow through. Use fresh non-sealed training/calibration seeds; learner feedback remains binary hit/miss only. Do not derive timing from oracle pellet TOF, intercept, range or miss geometry, and do not touch sealed final-test banks."
+  "next_action": "Execute L3_DYNAMIC_COUPLING_GEOMETRY_EXPRESSIVITY_AUDIT_V1. Inspect and test the learner-side line tangent/line-normal coordinate basis for both target directions, confirm command and speed-match calculations use the same shooter-visible geometry, and prove the finite gun controller can establish and maintain requested live target-gun relationships through the engagement interval using process-only diagnostics. Use no oracle score or miss geometry to tune those commands. Preserve current scalar, dynamic-coupling and trigger-timing policies as negative baselines. After the geometry/expressivity audit is green, rerun a fresh non-sealed binary reward-support diagnostic before any larger learning experiment."
 }

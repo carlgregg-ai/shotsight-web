@@ -89,3 +89,5 @@ jobs:
         run: node tests/virtual-shooter-ellis-experience-v1.mjs
       - name: Run L3 Ellis human-analogous visual acquisition gate
         run: node tests/virtual-shooter-human-vision-v1.mjs
+      - name: Run L3 pull-away human-vision policy boundary gate
+        run: node tests/virtual-shooter-pull-away-human-vision-policy-v1.mjs

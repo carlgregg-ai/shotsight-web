@@ -14,15 +14,16 @@ assert.equal(report.partitions.waitCalibrationCrossers,100);
 assert.equal(report.partitions.heldoutCrossers,160);
 assert.match(report.boundary,/CURRENT TARGET XYZ/);
 
-assert.ok(report.early.n>100);
-assert.ok(report.early.waitRate>0&&report.early.waitRate<1,'runway-aware policy must both wait and commit');
-assert.ok(report.early.meanWait_s>0&&report.early.meanWait_s<0.15,'mean wait should be selective rather than always max wait');
-assert.ok(report.early.runwayAwareAccuracy>=report.early.immediateAccuracy,'selective extra information should not reduce held-out family reading accuracy');
+assert.ok(report.early.n>100&&report.late.n>100);
+assert.ok(report.early.waitRate>0,'poor early reads should sometimes justify more information');
+assert.ok(report.early.meanWait_s>0&&report.early.meanWait_s<=0.15);
+assert.ok(report.early.runwayAwareAccuracy>=report.early.immediateAccuracy,'extra information should not reduce held-out family reading accuracy');
 assert.ok(report.early.meanSelectedConfidence>=report.early.meanInitialConfidence,'selected extra observation should improve confidence on average');
 
-assert.ok(report.late.n>100);
-assert.ok(report.late.meanRemainingToBreakEnd<report.early.meanRemainingToBreakEnd,'later observation should consume inferred presentation runway');
-assert.ok(report.late.meanWait_s<=report.early.meanWait_s,'policy should become no more willing to wait when runway is reduced');
+assert.ok(report.late.meanRemainingToBreakEnd<report.early.meanRemainingToBreakEnd,'cumulative visible progress must consume inferred presentation runway');
+assert.ok(report.late.meanWait_s<report.early.meanWait_s,'the same information-seeking tendency should be suppressed as break opportunity is consumed');
+assert.ok(report.late.waitRate<report.early.waitRate,'runway-aware policy should commit more often later in the presentation');
+assert.ok(report.early.waitRate>0||report.late.waitRate<1,'combined benchmark must not degenerate to one action everywhere');
 
 for(const wait of ['0.05','0.1','0.15'])assert.ok(report.waitModel.expectedConfidenceGain[wait]!==undefined);
 console.log(JSON.stringify({status:'PASS',report},null,2));

@@ -42,3 +42,5 @@ jobs:
         run: node tests/virtual-shooter-presentation-context-v1.mjs
       - name: Run L2 whole-presentation shot plan anchoring and consumed-runway tests
         run: node tests/virtual-shooter-presentation-shot-plan-v1.mjs
+      - name: Run L2 held-out whole-presentation planning population gate
+        run: node tests/virtual-shooter-presentation-shot-plan-heldout-v1.mjs

@@ -7,7 +7,12 @@ const FORBIDDEN_SHOOTER_KEYS=Object.freeze([
   'position_W','velocity_W','range_m','targetInitial_W','targetVelocity_W','shotOrigin_W',
   'currentIntercept','shotIntercept','pelletTOF_s','pelletArrival_s','physicalLead_m',
   'ballisticShotOriginLeadAngle_rad','exactIntercept','interceptPoint_W','requiredLead',
-  'missVector_W','oracleAction','oracleTargetClass','provider','providerId','providerStatus'
+  'missVector_W','oracleAction','oracleTargetClass','provider','providerId','providerStatus',
+  // Apprenticeship/memory aliases: explicitly block common renamings so privileged truth
+  // cannot enter Experience Records, diagnoses or interventions under a friendlier key.
+  'targetSeed','scenarioSeed','missDistance','missDistance_m','trueRange_m',
+  'requiredLead_rad','requiredLead_m','futureTrajectory','exactFuturePath',
+  'oracleCorrection','correctionDirection','directCorrection','exactTargetState'
 ]);
 
 export const SHOOTER_OBSERVATION_SCHEMA=Object.freeze({

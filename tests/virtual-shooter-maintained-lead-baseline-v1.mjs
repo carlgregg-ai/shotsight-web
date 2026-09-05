@@ -6,6 +6,7 @@ const learnerSource=fs.readFileSync(new URL('../learning/maintained-lead-baselin
 for(const forbidden of ['oracle-evaluation','../physics/','physicalLead_m','pelletTOF_s','requiredLead','exactIntercept'])assert.equal(learnerSource.includes(forbidden),false,`learner-side L3 module must not contain/import ${forbidden}`);
 
 const out=runL3MaintainedLeadNoLearningBenchmark({nCrossers:24,trainNPerFamily:48,trainSeedBase:41000,heldoutSeedBase:131000});
+console.log(JSON.stringify(out,null,2));
 assert.equal(out.status,'L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE_V1');
 assert.equal(out.heldout.sameHiddenBankAcrossSeparations,true);
 assert.equal(out.staticSeparationSweep.values_rad.length,L3_EXPLORATORY_STATIC_SEPARATIONS_RAD.length);
@@ -19,5 +20,4 @@ assert.ok(Math.max(...finiteMisses)-Math.min(...finiteMisses)>1e-6,'different st
 assert.equal(out.antiCheat.includes('SCORES ONLY AFTER TRIGGER'),true);
 assert.equal(out.poorObservationAt0045.n,24);
 
-console.log(JSON.stringify(out,null,2));
 console.log('virtual-shooter-maintained-lead-baseline-v1: PASS');

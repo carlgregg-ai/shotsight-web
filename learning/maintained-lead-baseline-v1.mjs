@@ -42,8 +42,11 @@ export function chooseMaintainedLeadTrigger(frame,gunState,command,{hypotheses=L
   const confidence=clamp(frame.belief.confidence??0,0,1);
   const trackingError_rad=Math.hypot(command.desiredAz_rad-gunState.az_rad,command.desiredEl_rad-gunState.el_rad);
   const inCommitWindow=current>=Math.max(window.start,intended-hypotheses.triggerProgressEarlyMargin)&&current<=window.end;
-  const ready=inCommitWindow&&confidence>=hypotheses.triggerConfidenceMin&&trackingError_rad<=hypotheses.triggerTrackingTolerance_rad&&!frame.plan.executionAdaptation.breakWindowMissed;
-  return freezePlain({schema:'MAINTAINED_LEAD_TRIGGER_DECISION_V1',trigger:ready,t_s:frame.t_s,confidence,currentProgress:current,intendedBreak:intended,trackingError_rad,inCommitWindow,evidenceClass:'SHOTSIGHT_HYPOTHESIS_TRIGGER_POLICY_NO_ORACLE'});
+  const confidenceReady=confidence>=hypotheses.triggerConfidenceMin;
+  const trackingReady=trackingError_rad<=hypotheses.triggerTrackingTolerance_rad;
+  const breakWindowOpen=!frame.plan.executionAdaptation.breakWindowMissed;
+  const ready=inCommitWindow&&confidenceReady&&trackingReady&&breakWindowOpen;
+  return freezePlain({schema:'MAINTAINED_LEAD_TRIGGER_DECISION_V1',trigger:ready,t_s:frame.t_s,confidence,currentProgress:current,intendedBreak:intended,trackingError_rad,inCommitWindow,confidenceReady,trackingReady,breakWindowOpen,evidenceClass:'SHOTSIGHT_HYPOTHESIS_TRIGGER_POLICY_NO_ORACLE'});
 }
 
 export function runMaintainedLeadNoLearning({frames,separation_rad=0,limits=PROVISIONAL_GUN_PLANT_LIMITS_V1,seed=1}={}){
@@ -52,12 +55,12 @@ export function runMaintainedLeadNoLearning({frames,separation_rad=0,limits=PROV
   const initialState=createGunPlantState({t_s:frames[0].t_s,az_rad:frames[0].belief.prediction.azMean_rad,el_rad:frames[0].belief.prediction.elMean_rad});
   const commands=[];for(const f of frames){const c=buildMaintainedLeadPerceivedCommand(f,{separation_rad});commands.push(c,c);}
   const trace=runFiniteGunPlant({initialState,commands,limits,seed});
-  let trigger=null,triggerState=null,triggerCommand=null;
+  let trigger=null,triggerState=null,triggerCommand=null;const decisionTrace=[];
   for(let i=0;i<frames.length;i++){
     const state=trace.states[Math.min(trace.states.length-1,(i+1)*2)],command=buildMaintainedLeadPerceivedCommand(frames[i],{separation_rad});
-    const decision=chooseMaintainedLeadTrigger(frames[i],state,command);
+    const decision=chooseMaintainedLeadTrigger(frames[i],state,command);decisionTrace.push(decision);
     if(decision.trigger){trigger=decision;triggerState=state;triggerCommand=command;break;}
   }
-  const result=freezePlain({schema:'MAINTAINED_LEAD_NO_LEARNING_RUN_V1',status:trigger?'TRIGGERED':'NO_TRIGGER',method:'MAINTAINED_LEAD',separation_rad,initialState,firstCommand,trigger,triggerState,triggerCommand,gunTrace:trace,evidenceClass:'NO_LEARNING_STATIC_VISUAL_SEPARATION_BASELINE'});
+  const result=freezePlain({schema:'MAINTAINED_LEAD_NO_LEARNING_RUN_V1',status:trigger?'TRIGGERED':'NO_TRIGGER',method:'MAINTAINED_LEAD',separation_rad,initialState,firstCommand,trigger,triggerState,triggerCommand,decisionTrace,gunTrace:trace,evidenceClass:'NO_LEARNING_STATIC_VISUAL_SEPARATION_BASELINE'});
   assertNoPrivilegedShooterData(result,{path:'maintainedLead.run'});return result;
 }

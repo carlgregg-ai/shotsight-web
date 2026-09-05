@@ -5,20 +5,20 @@
   "status": "ACTIVE",
   "current_stage": "L1",
   "current_stage_name": "Perception-only target reading",
-  "current_substage": "L1_TARGET_FAMILY_AMBIGUITY_AND_TRANSFER",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L1_UNCERTAINTY_CALIBRATION_GREEN_1.md",
+  "current_substage": "L1_AMBIGUITY_CALIBRATION_AND_WAIT_FOR_INFORMATION",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L1_MULTIFAMILY_AMBIGUITY_GREEN_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33937721467,
-    "head_sha": "94a7ffd88680a65cbcbece3a9700e2c3e9a6bf0c",
+    "run_id": 33940550902,
+    "head_sha": "ca081de1868b3675fcec0031196eb1d5869ed005",
     "conclusion": "success"
   },
   "oracle_world_status": "L0_HIDDEN_EVALUATION_FACADE_AND_PRIVILEGED_CEILING_GREEN",
-  "shooter_observation_status": "L1_DELAYED_NOISY_ANGULAR_HISTORY_TO_PROBABILISTIC_CROSSER_BELIEF_WITH_HELDOUT_UNCERTAINTY_CALIBRATION",
-  "anti_cheat_audit_status": "GREEN_STRUCTURAL_ALLOWLIST_NESTED_LEAK_PROBES_LEARNER_IMPORT_GUARDS_AND_CALIBRATION_PARTITION_SEPARATION",
+  "shooter_observation_status": "L1_DELAYED_NOISY_ANGULAR_HISTORY_TO_PROBABILISTIC_CROSSER_QUARTERER_LOOPER_BELIEF",
+  "anti_cheat_audit_status": "GREEN_STRUCTURAL_ALLOWLIST_NESTED_LEAK_PROBES_LEARNER_IMPORT_GUARDS_CALIBRATION_PARTITION_SEPARATION_AND_MULTIFAMILY_RUNTIME_AUDIT",
   "naive_baseline_status": "L0_GREEN_12_CROSSER_BANK_0_OF_12_PROXY_HITS_MEAN_MISS_1.4875M",
   "oracle_baseline_status": "L0_GREEN_12_OF_12_PROXY_HITS_ENGINEERING_CEILING",
-  "l1_perception_status": "STABLE_CROSSER_POINT_PREDICTION_AND_HELDOUT_UNCERTAINTY_CALIBRATION_GREEN; TARGET_FAMILY_TRANSFER_NOT_YET_COMPLETE",
+  "l1_perception_status": "STABLE_CROSSER_POINT_AND_UNCERTAINTY_GREEN; MULTIFAMILY_300MS_AND_240MS_USEFUL; POOR_220MS_CROSSER_QUARTERER_AMBIGUITY_EXPOSED; L1_NOT_CLOSED",
   "l1_heldout_calibration": {
     "calibration_n": 120,
     "heldout_n_per_condition": 240,
@@ -26,6 +26,13 @@
     "short": {"az_rmse_rad": 0.005189980125759081, "az_coverage95_calibrated": 0.9375, "el_coverage95_calibrated": 0.9458333333333333, "mean_confidence": 0.3824644780836081},
     "noisy": {"az_rmse_rad": 0.009767859670944486, "az_coverage95_calibrated": 0.9666666666666667, "el_coverage95_calibrated": 0.9625, "mean_confidence": 0.5388290295297639},
     "partial": {"az_rmse_rad": 0.009017327358137414, "az_coverage95_calibrated": 0.9666666666666667, "el_coverage95_calibrated": 0.9291666666666667, "mean_confidence": 0.13366693096845716}
+  },
+  "l1_multifamily_heldout": {
+    "training_total": 270,
+    "heldout_total_per_condition": 540,
+    "full_300ms": {"accuracy": 0.837037037037037, "brier": 0.2603977847328156, "mean_confidence": 0.5763279282979886, "crosser_quarterer_accuracy": 0.7555555555555555, "looper_recall": 1.0, "az_rmse_rad": 0.004411563339219087, "el_rmse_rad": 0.0024872297486381372},
+    "short_240ms": {"accuracy": 0.7703703703703704, "brier": 0.3982540256333347, "mean_confidence": 0.35266273753506944, "crosser_quarterer_accuracy": 0.6555555555555556, "looper_recall": 1.0, "az_rmse_rad": 0.005111169060210928, "el_rmse_rad": 0.003846183277395728},
+    "partial_220ms": {"accuracy": 0.45555555555555555, "brier": 0.6489338920153938, "mean_confidence": 0.1564435493024351, "crosser_quarterer_accuracy": 0.18333333333333332, "looper_recall": 1.0, "az_rmse_rad": 0.010020285470871285, "el_rmse_rad": 0.012712719006262762}
   },
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
@@ -41,7 +48,11 @@
     "Base L1 stable-crosser uncertainty was materially under-dispersed; held-out calibration requires large azimuth sigma scale factors of roughly 2.0–3.5 depending on observation condition.",
     "Condition-specific global uncertainty scaling is an acceptable calibration gate but not the desired final belief architecture; a more principled heteroscedastic model should be tested later.",
     "Perfect left/right direction accuracy on simple stable crossers is an easy-task result, not general target-reading proof.",
+    "Multi-family 300 ms reading is useful but crosser-v-quarterer remains materially harder than looper recognition.",
+    "Poor 220 ms acquisition collapses crosser-v-quarterer discrimination to 0.1833 accuracy; the model correctly lowers confidence but is not decision-ready in that condition.",
+    "Current looper family is a gravity-only engineering toy with an unusually strong vertical-curvature signature; 1.0 looper recall is not real-clay looper validation.",
+    "Multi-family probability calibration has not yet received a dedicated held-out reliability/ECE calibration gate.",
     "No Brett Winstanley hold/pickup/break-point claim promoted without a recovered primary source."
   ],
-  "next_action": "Build a hidden multi-family L1 bank (stable crossers, quarterers, simple loopers), keep gun absent, estimate family probabilities and apparent future-path distributions from human-like observations only, and test unseen transfer/calibration under 200-300 ms and partial acquisition before allowing L2 planning."
+  "next_action": "Add held-out multi-family probability calibration and a selective WAIT_FOR_MORE_INFORMATION experiment on ambiguous 200-300 ms observations. Test whether waiting 50-150 ms materially improves unseen crosser/quarterer discrimination and path prediction without oracle access; close L1 only if confidence/reliability and selective waiting are credible."
 }

@@ -34,3 +34,5 @@ jobs:
         run: node tests/virtual-shooter-multifamily-v1.mjs
       - name: Run L1 calibrated selective-wait decision tests
         run: node tests/virtual-shooter-selective-wait-v1.mjs
+      - name: Run L2 perception-limited pickup/hold/connection/break planning tests
+        run: node tests/virtual-shooter-shot-plan-v1.mjs

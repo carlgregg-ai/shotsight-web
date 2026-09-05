@@ -5,20 +5,21 @@
   "status": "ACTIVE",
   "current_stage": "L2",
   "current_stage_name": "Pickup / hold / connection / break planning",
-  "current_substage": "L2_SOURCE_PRIORS_AND_PLAN_VARIABLES_FOUNDATION",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L1_SELECTIVE_WAIT_DECISION_GREEN_1.md",
+  "current_substage": "L2_PRESENTATION_LEVEL_CONTEXT_AND_INFORMATION_RUNWAY_TRADEOFF",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L2_PLANNING_ADAPTATION_GREEN_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33943317943,
-    "head_sha": "e1030268d0b65cfe097488dcf32bc9994827c24c",
+    "run_id": 33945907666,
+    "head_sha": "400d71f0f26135426264f7378a51fe63a6e75666",
     "conclusion": "success"
   },
   "oracle_world_status": "L0_HIDDEN_EVALUATION_FACADE_AND_PRIVILEGED_CEILING_GREEN",
   "shooter_observation_status": "L1_COMPLETE_CALIBRATED_MULTIFAMILY_BELIEF_WITH_SELECTIVE_WAIT",
-  "anti_cheat_audit_status": "GREEN_STRUCTURAL_ALLOWLIST_NESTED_LEAK_PROBES_LEARNER_IMPORT_GUARDS_CALIBRATION_PARTITION_SEPARATION_MULTIFAMILY_RUNTIME_AUDIT_AND_WAIT_POLICY_RUNTIME_PROBABILITY_ONLY",
+  "anti_cheat_audit_status": "GREEN_STRUCTURAL_ALLOWLIST_NESTED_LEAK_PROBES_LEARNER_IMPORT_GUARDS_CALIBRATION_PARTITION_SEPARATION_MULTIFAMILY_RUNTIME_AUDIT_WAIT_POLICY_RUNTIME_PROBABILITY_ONLY_AND_L2_PLAN_NO_ORACLE_IMPORTS",
   "naive_baseline_status": "L0_GREEN_12_CROSSER_BANK_0_OF_12_PROXY_HITS_MEAN_MISS_1.4875M",
   "oracle_baseline_status": "L0_GREEN_12_OF_12_PROXY_HITS_ENGINEERING_CEILING",
   "l1_perception_status": "COMPLETE_GREEN_PERCEPTION_ARCHITECTURE_GATE_NOT_REAL_CLAY_VALIDATION",
+  "l2_planning_status": "FOUNDATION_GREEN_HELDOUT_ADAPTATION_GREEN_PRESENTATION_LEVEL_COORDINATE_REPAIR_REQUIRED_BEFORE_MOTOR_STAGE",
   "l1_heldout_calibration": {
     "calibration_n": 120,
     "heldout_n_per_condition": 240,
@@ -47,6 +48,27 @@
     "selective": {"accuracy": 0.5375, "crosser_quarterer_accuracy": 0.30625, "wait_rate": 0.3277777777777778, "mean_wait_s": 0.04916666666666645, "waited_accuracy": 0.7076271186440678, "multiclass_brier": 0.6197390237700664, "az_rmse_rad": 0.007856428215850758, "el_rmse_rad": 0.01114791601756942},
     "policy": {"first_threshold": 0.42, "second_threshold": 0.46, "max_wait_s": 0.15, "runtime_input": "CALIBRATED_FAMILY_PROBABILITIES_ONLY"}
   },
+  "l2_planning_heldout": {
+    "training_total": 270,
+    "heldout_crossers": 120,
+    "plans_per_condition": 360,
+    "clear": {
+      "mean_belief_confidence": 0.4997180192795303,
+      "mean_changing_evidence": 0.26876164929933105,
+      "swing_through": {"hold": 0.2376960759146075, "connection": 0.5407673848152014, "break": 0.9161482574155974, "structure_proxy": 0.6676946027321304},
+      "pull_away": {"hold": 0.3376960759146075, "connection": 0.6407673848152017, "break": 0.9361416657949023, "structure_proxy": 0.6536065248157102},
+      "maintained_lead": {"hold": 0.45769607591460737, "connection": 0.7007673848152014, "break": 0.9361416657949023, "structure_proxy": 0.6191634549499749}
+    },
+    "poor": {
+      "mean_belief_confidence": 0.15354266133085148,
+      "mean_changing_evidence": 0.7666442850928031,
+      "swing_through": {"hold": 0.2530601630110025, "connection": 0.5814532117238609, "break": 0.9634995989903054, "structure_proxy": 0.6590397905680043},
+      "pull_away": {"hold": 0.3530601630110027, "connection": 0.6814532117238609, "break": 0.9685876187465414, "structure_proxy": 0.6476829963662241},
+      "maintained_lead": {"hold": 0.4730601630110023, "connection": 0.741453211723861, "break": 0.9685876187465414, "structure_proxy": 0.6042022282084915}
+    },
+    "blank_slate_initialisation": {"hold": 0.25, "connection": 0.5, "break": 0.75, "structure_proxy": 0.6831428571428558},
+    "interpretation": "Representation is perception-sensitive and method-distinct, but this is not a target-break success metric."
+  },
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
   "first_experiment_target_family": "CROSSERS",
@@ -68,7 +90,10 @@
     "Always waiting 100 ms materially outperforms the current selective policy on pure poor-view classification accuracy; later stages must price the lost shooting opportunity before claiming an optimal wait policy.",
     "The fitted 50/100/150 ms observation waits, noise conditions and thresholds are SHOTSIGHT_HYPOTHESIS experimental parameters, not universal human timing prescriptions.",
     "Global temperature scaling calibrates confidence but does not make the prototype family model a rich heteroscedastic representation.",
-    "No Brett Winstanley hold/pickup/break-point claim promoted without a recovered primary source."
+    "No Brett Winstanley hold/pickup/break-point claim promoted without a recovered primary source.",
+    "L2 source-informed plans score lower than the blank-slate control on the current internal structure proxy; therefore that proxy is bookkeeping only and must not become a surrogate success objective.",
+    "Under poor perception the current L2 rule delays break planning to roughly 0.9635-0.9686, exposing the need to trade information gain against remaining shooting opportunity rather than simply delaying commitment.",
+    "The first L2 plan maps presentation variables onto only the 0.12 s local belief horizon; this is insufficient as a model of a human pre-call hold/pickup/break plan and must be replaced by a shooter-visible presentation-level coordinate before motor/trigger learning."
   ],
-  "next_action": "Begin L2 by implementing explicit learner-side visual pickup, gun hold, target/barrel connection and intended break-region planning variables. Seed evidence-labelled CPSA/Husthwaite/Currie priors and blank-slate controls; evaluate acquisition/runway/control from perception-limited belief only. Do not expose oracle intercept, exact lead or hidden future trajectory."
+  "next_action": "Implement SHOOTER_VISIBLE_PRESENTATION_CONTEXT_V1 and move hold/pickup/connection/break planning from the local 0.12 s belief horizon to a presentation-level shooter-visible coordinate. Then test source priors versus blank-slate controls on held-out crossers while explicitly pricing value of additional visual information against remaining runway/opportunity. Do not advance to motor/trigger learning until this repair is green and do not expose oracle intercept, exact lead, range or hidden future trajectory."
 }

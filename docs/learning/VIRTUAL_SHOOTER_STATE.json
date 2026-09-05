@@ -5,23 +5,25 @@
   "status": "ACTIVE",
   "current_stage": "L3",
   "current_stage_name": "Single-method crosser learning",
-  "current_substage": "L3_MAINTAINED_LEAD_REWARD_SUPPORT_DIAGNOSIS_V1",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_MAINTAINED_LEAD_HIT_MISS_NO_REWARD_1.md",
+  "current_substage": "L3_DYNAMIC_PERCEPTUAL_COUPLING_ACTION_V1",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_MAINTAINED_LEAD_REWARD_SUPPORT_DIAGNOSIS_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33954620241,
-    "head_sha": "468a3aad31b09c8d5dd1e4e5785cf9ee14a5357b",
+    "run_id": 33955131080,
+    "head_sha": "3a89b948a0b336bd4305054a6f964654d3145c54",
     "conclusion": "success"
   },
   "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, ACTS, REMEMBERS AND LEARNS.",
-  "anti_cheat_audit_status": "GREEN_THROUGH_L3_HIT_MISS_LEARNING_PROBE; LEARNER MEMORY RECEIVES BINARY HIT_MISS ONLY; ORACLE_FUTURE_INTERCEPT_LEAD_RANGE_PELLET_TOF_PRE_SHOT_MISS_AND_POST_SHOT_REFEREE_DISTANCE_REMAIN OUTSIDE LEARNER",
+  "shooting_axiom": "GOOD SHOOTING IS CONTINUOUS PERCEPTUAL COUPLING BETWEEN TARGET AND GUN: READ THE LINE -> MATCH THE SPEED -> APPLY THE METHOD -> TRIGGER -> FOLLOW THROUGH.",
+  "anti_cheat_audit_status": "GREEN_THROUGH_L3_REWARD_SUPPORT_DIAGNOSIS; LEARNER MEMORY RECEIVES BINARY HIT_MISS ONLY; RESEARCHER MISS DISTANCE/ACHIEVED SEPARATION/TRIGGER PROGRESS REMAIN POST_ACTION_REFEREE_ONLY; ORACLE_FUTURE_INTERCEPT_LEAD_RANGE_PELLET_TOF_PRE_SHOT_MISS_AND_DIRECT_CORRECTION_REMAIN OUTSIDE LEARNER",
   "oracle_world_status": "L0_HIDDEN_EVALUATION_FACADE_AND_PRIVILEGED_CEILING_GREEN",
   "shooter_observation_status": "L1_COMPLETE_CALIBRATED_MULTIFAMILY_BELIEF_WITH_SELECTIVE_WAIT",
   "l1_perception_status": "COMPLETE_GREEN_PERCEPTION_ARCHITECTURE_GATE_NOT_REAL_CLAY_VALIDATION",
   "l2_planning_status": "COMPLETE_GREEN_PRESENTATION_LEVEL_PLANNING_ARCHITECTURE_NOT_SHOOTING_SUCCESS",
   "l3_motor_status": "FINITE_GUN_PLANT_GREEN_NOT_HUMAN_CALIBRATED_NOT_SHOOTING_SUCCESS",
   "l3_no_learning_baseline_status": "GREEN_FULL_PERCEPTION_PLAN_FINITE_GUN_TRIGGER_POST_ACTION_REFEREE_PATH; ZERO_PROXY_HITS_ON_INITIAL_STATIC_SWEEP",
-  "l3_hit_miss_learning_status": "NEGATIVE_NO_BINARY_REWARD_DISCOVERED; DIAGNOSE_ACTION_REWARD_SUPPORT_BEFORE_SCALING",
+  "l3_hit_miss_learning_status": "NEGATIVE_NO_BINARY_REWARD_DISCOVERED; REWARD_SUPPORT_DIAGNOSIS_CONFIRMS_CURRENT_STATIC_1D_ACTION_HAS_NO_OBSERVED_REWARD_SUPPORT",
+  "l3_reward_support_status": "NEGATIVE_STATIC_1D_ACTION_SUPPORT; MOTOR_AND_TRIGGER_SUPPORT_PRESENT; REDESIGN_TO_DYNAMIC_SHOOTER_VISIBLE_PERCEPTUAL_COUPLING",
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
   "first_experiment_target_family": "CROSSERS",
@@ -33,7 +35,8 @@
     "docs/learning/checkpoints/L2_PRESENTATION_LEVEL_PLANNING_COMPLETE.md",
     "docs/learning/checkpoints/L3_FINITE_GUN_PLANT_GREEN_1.md",
     "docs/learning/checkpoints/L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE_GREEN_1.md",
-    "docs/learning/checkpoints/L3_MAINTAINED_LEAD_HIT_MISS_NO_REWARD_1.md"
+    "docs/learning/checkpoints/L3_MAINTAINED_LEAD_HIT_MISS_NO_REWARD_1.md",
+    "docs/learning/checkpoints/L3_MAINTAINED_LEAD_REWARD_SUPPORT_DIAGNOSIS_1.md"
   ],
   "l0_reference": {
     "oracle_proxy_hits": "12/12",
@@ -119,7 +122,24 @@
     "heldout_frozen_fallback_hits": 0,
     "heldout_no_memory_triggers": 10,
     "heldout_no_memory_hits": 0,
-    "interpretation": "The first binary-feedback learner had no positive reward to learn from. The nominal frozen 0-rad action is a deterministic all-zero tie-break, not a learned useful policy. Diagnose reward/action support before scaling or richer feedback."
+    "interpretation": "The first binary-feedback learner had no positive reward to learn from. The nominal frozen 0-rad action is a deterministic all-zero tie-break, not a learned useful policy."
+  },
+  "l3_reward_support_reference": {
+    "diagnostic_training_crossers": 242,
+    "diagnostic_triggers": 61,
+    "diagnostic_trigger_rate": 0.25206611570247933,
+    "diagnostic_proxy_hits": 0,
+    "diagnostic_hit_rate_wilson95_upper": 0.01562575669344655,
+    "best_observed_action_rad": 0,
+    "best_observed_min_miss_m": 0.3232475910830171,
+    "proxy_radius_m": 0.055,
+    "reward_support_observed": false,
+    "requested_max_separation_rad": 0.25,
+    "max_mean_achieved_separation_rad": 0.2556371371045545,
+    "motor_support_ratio": 1.022548548418218,
+    "max_trigger_rate": 0.5,
+    "mean_trigger_progress_across_firing_actions": 0.8675795318260822,
+    "interpretation": "The current scalar horizontal visual-separation action has no observed reward support on the expanded diagnostic population. Finite motor travel and trigger feasibility are present, so the next scientific move is a shooter-visible dynamic perceptual-coupling action rather than brute-force scaling or oracle-derived correction."
   },
   "active_hypotheses": [
     "First-clear-sight epoch, expected presentation duration, demonstrated angular span, break-window coordinates and runway penalty remain provisional SHOTSIGHT_HYPOTHESIS values pending Sense/video calibration.",
@@ -127,7 +147,7 @@
     "L3 begins with maintained lead as the cleanest controlled experiment; this is experimental sequencing, not a claim that maintained lead is universally best.",
     "Human gun angular velocity, acceleration, jerk and reaction limits remain provisional; current plant limits are active calibration parameters rather than human facts.",
     "Maintained-lead motor-delay feed-forward derived from perceived angular rate is a SHOTSIGHT_HYPOTHESIS controller feature, not a measured human strategy.",
-    "The maintained-lead action may require more than one scalar horizontal target-gun separation; researcher-only post-action diagnostics must test that without supplying an oracle correction to the learner."
+    "The maintained-lead action requires a richer dynamic target-gun coupling representation than one scalar horizontal separation. Candidate learner-safe state/action components are apparent 2D target-line tangent, target-gun angular-speed relationship, forward relationship along the perceived line, line-normal picture, coupling stability and follow-through."
   ],
   "negative_findings": [
     "Inherited canonical flat-crosser exposes exact intercept/physical lead and remains hidden oracle/reference truth only.",
@@ -144,7 +164,8 @@
     "The first finite gun controller can reach its provisional kinematic caps; learned shooting behaviour will therefore be sensitive to those engineering limits until real motion calibration is available.",
     "The first L3 end-to-end baseline produced zero triggers because the fixed whole-presentation prior covered too little of the target and the trigger incorrectly gated on current prospective servo-command error; diagnostic seed bank 131000 was retired from held-out status after inspection.",
     "After observation-only stand-prior calibration and visual-picture trigger repair, the initial 0-0.075 rad maintained-lead static separation sweep produced zero proxy hits on 24 untouched crossers despite valid triggers.",
-    "The first maintained-lead hit/miss-only learner explored 11 visual-separation actions from 0 to 0.25 rad over 132 training crossers, fired 31 valid shots, and received zero positive binary rewards. The untouched 48-crosser transfer bank also produced zero hits for both frozen fallback and no-memory control. Do not use referee miss distance as a hidden learning gradient or scale brute-force before diagnosing support."
+    "The first maintained-lead hit/miss-only learner explored 11 visual-separation actions from 0 to 0.25 rad over 132 training crossers, fired 31 valid shots, and received zero positive binary rewards. The untouched 48-crosser transfer bank also produced zero hits for both frozen fallback and no-memory control.",
+    "Expanded reward-support diagnosis over 242 training/calibration crossers produced 61 triggers and zero proxy hits. The best post-action miss was 0.323 m versus a 0.055 m proxy radius while the plant achieved the requested separation envelope, rejecting motor-range shortage as the primary explanation and rejecting brute-force scaling of the static 1D action."
   ],
-  "next_action": "Run L3 maintained-lead reward-support diagnosis using researcher/referee-side post-action data on training/calibration populations only. Quantify trigger feasibility by action, achieved versus requested visual separation, trigger progress, motor constraint effects and post-action miss-distance trend strictly as researcher diagnostics. Determine whether the current one-dimensional horizontal visual-picture action can physically reach any reward under the existing perception/plan/motor/trigger system. Do not use these diagnostics to pass an exact oracle correction into learner memory or policy. If support is absent, redesign the learner-safe shooter-visible action representation before any 100k scaling or richer feedback."
+  "next_action": "Build L3_DYNAMIC_PERCEPTUAL_COUPLING_ACTION_V1 from shooter-visible delayed/noisy angular evidence only. Preserve the static-separation learner as a negative baseline. Represent/read the live apparent target line in azimuth/elevation, match target-gun angular speed, develop method-specific forward relationship along the perceived line, allow a learner-safe line-normal picture, trigger on stable coupling plus break-region opportunity, and continue gun motion after trigger for follow-through. First use fresh training/calibration seeds and researcher-only post-action diagnostics to establish binary reward support. Do not use oracle intercept, exact range, pellet TOF, metric lead, miss vector or direct correction to initialise or update the learner; do not touch sealed final-test banks."
 }

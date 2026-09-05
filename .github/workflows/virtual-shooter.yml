@@ -76,3 +76,12 @@ jobs:
       - name: Continuous relationship marker — no binary reward support
         if: steps.continuous_relationship_reward.outputs.reward_support == 'false'
         run: echo "Predeclared low-discrepancy shooter-visible relationship exploration found zero engineering-proxy hits."
+      - name: Run L3 phase-dependent relationship trajectory diagnostic
+        id: phase_relationship_reward
+        run: node tests/virtual-shooter-phase-relationship-trajectory-v1.mjs
+      - name: Phase relationship marker — binary reward support discovered
+        if: steps.phase_relationship_reward.outputs.reward_support == 'true'
+        run: echo "Predeclared shooter-visible phase-dependent relationship trajectories found binary reward support."
+      - name: Phase relationship marker — no binary reward support
+        if: steps.phase_relationship_reward.outputs.reward_support == 'false'
+        run: echo "Predeclared shooter-visible phase-dependent relationship trajectories found zero engineering-proxy hits."

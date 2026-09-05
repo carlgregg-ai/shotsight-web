@@ -38,7 +38,7 @@ export function fitL3ShooterVisibleStandPrior({nCalibration=36,seedBase=151000,a
   assertNoPrivilegedShooterData(fit,{path:'l3StandPriorCalibration'});return fit;
 }
 
-function buildLearnerFrames(history,model,standPrior){
+export function buildL3MaintainedLeadLearnerFrames(history,model,standPrior){
   const frames=[];
   for(let i=0;i<history.length;i++){
     const prefix=history.slice(0,i+1),last=prefix.at(-1);if(!last.visible)continue;
@@ -60,7 +60,7 @@ function buildLearnerFrames(history,model,standPrior){
 export function runL3MaintainedLeadEpisode({record,model,standPrior,separation_rad=0,seed=1,targetProxyRadius_m=L0_DISC_PROXY_RADIUS_M,acquisitionQuality=0.9,angleNoiseSd_rad=0.0015,rateNoiseSd_radps=0.02}={}){
   if(!record||record.family!=='CROSSER')throw new Error('held-out CROSSER record required');if(!standPrior)throw new Error('calibration-frozen stand prior required');
   const history=createL1ObservationHistory(record,{...L3_PRESENTATION_OBSERVATION_ENVELOPE_V1,angleNoiseSd_rad,rateNoiseSd_radps,acquisitionQuality,seed});
-  const frames=buildLearnerFrames(history,model,standPrior);if(frames.length<2)throw new Error('insufficient learner frames');
+  const frames=buildL3MaintainedLeadLearnerFrames(history,model,standPrior);if(frames.length<2)throw new Error('insufficient learner frames');
   const run=runMaintainedLeadNoLearning({frames,separation_rad,seed:seed+700000});
   auditShooterBoundary({observations:history,beliefs:[standPrior,...frames,run]});
   let score;

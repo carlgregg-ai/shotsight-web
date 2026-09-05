@@ -3,20 +3,22 @@
   "branch": "virtual-shooter-v1",
   "master_programme": "docs/learning/SHOTSIGHT_VIRTUAL_SHOOTER_MASTER_PROGRAMME.md",
   "status": "ACTIVE",
-  "current_stage": "L0",
-  "current_stage_name": "Containment and baselines",
-  "current_substage": "L0_BUILD_ORACLE_AND_NAIVE_BASELINES",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L0_INFORMATION_BOUNDARY_GREEN_1.md",
+  "current_stage": "L1",
+  "current_stage_name": "Perception-only target reading",
+  "current_substage": "L1_STABLE_CROSSER_BELIEF_AND_CALIBRATION",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L0_BASELINES_COMPLETE_GREEN_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33931377004,
-    "head_sha": "730453fe3b9a20a2a6d8020833d836dc113811cd",
+    "run_id": 33934626898,
+    "head_sha": "46af642274e93e5c21e3bf790c33e4450d73cf76",
     "conclusion": "success"
   },
-  "oracle_world_status": "VALIDATED_PHYSICS_IDENTIFIED_AS_HIDDEN_ORACLE_ONLY; EVALUATION_FACADE_NEXT",
+  "oracle_world_status": "L0_HIDDEN_EVALUATION_FACADE_AND_PRIVILEGED_CEILING_GREEN",
   "shooter_observation_status": "L0_V1_IMPLEMENTED_DELAYED_NOISY_ANGULAR_OBSERVATIONS",
-  "anti_cheat_audit_status": "L0_V1_GREEN_STRUCTURAL_ALLOWLIST_AND_NESTED_LEAK_PROBES",
-  "naive_baseline_status": "PERCEPTION_BELIEF_PRIMITIVE_IMPLEMENTED; SHOOTING_BASELINE_NEXT",
+  "anti_cheat_audit_status": "L0_GREEN_STRUCTURAL_ALLOWLIST_NESTED_LEAK_PROBES_AND_LEARNER_IMPORT_GUARD",
+  "naive_baseline_status": "L0_GREEN_12_CROSSER_BANK_0_OF_12_PROXY_HITS_MEAN_MISS_1.4875M",
+  "oracle_baseline_status": "L0_GREEN_12_OF_12_PROXY_HITS_ENGINEERING_CEILING",
+  "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
   "first_experiment_target_family": "CROSSERS",
   "initial_presentation_budget": 100000,
@@ -25,7 +27,9 @@
   "negative_findings": [
     "Inherited canonical flat-crosser exposes exact intercept/physical lead and must remain hidden oracle/reference truth only.",
     "Current target engine does not certify realistic clay aerodynamics; virtual-shooter results must retain provisional world-model status.",
+    "Current centreline evaluator is a 110 mm disc sensitivity proxy only; it does not model target orientation, shot cloud or breakability.",
+    "Naive point-at-extrapolated-target baseline is intentionally weak and achieved 0/12 proxy hits; it is a lower baseline, not a human-performance claim.",
     "No Brett Winstanley hold/pickup/break-point claim promoted without a recovered primary source."
   ],
-  "next_action": "Implement strict oracle evaluation facade plus privileged oracle ceiling and naive perception-limited no-learning shooting baseline on identical hidden crossers. Add import/leak guards and establish baseline metrics before L1."
+  "next_action": "Implement L1 perception-only stable-crosser belief model and evaluation bank with short observation windows, calibrated uncertainty, direction/speed/path prediction metrics, and information-reduction probes. Keep gun/action absent and maintain strict oracle/shooter separation."
 }

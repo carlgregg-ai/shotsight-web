@@ -24,3 +24,5 @@ jobs:
           node-version: '22'
       - name: Run L0 oracle/shooter information-boundary tests
         run: node tests/virtual-shooter-boundary-v1.mjs
+      - name: Run L0 oracle ceiling and naive shooter baseline tests
+        run: node tests/virtual-shooter-baselines-v1.mjs

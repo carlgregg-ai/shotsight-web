@@ -1,14 +1,27 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createCanonicalFlatCrosserScenario} from '../physics/canonical-flat-crosser-v1.mjs';
+import {apparentAnglesFromCameraVector,mulMat3Vec3} from '../physics/projection-gun-v1.mjs';
 import {createShooterObservation,assertNoPrivilegedShooterData} from '../learning/virtual-shooter-boundary-v1.mjs';
-import {createNaiveNoLearningAction} from '../learning/naive-shooter-v1.mjs';
+import {createNaiveNoLearningAction,apparentAnglesToWorldUnit,L0_PUBLIC_CAMERA_R_CW} from '../learning/naive-shooter-v1.mjs';
 import {buildHiddenOracleFrames,createOracleCeilingAction,evaluateOracleShot,runNaiveBaselineEpisode,runL0BaselineBenchmark,L0_SCORE_STATUS} from '../learning/oracle-evaluation-v1.mjs';
 
 // Learner-facing naive shooter must remain structurally independent of physics/oracle modules.
 const naiveSource=fs.readFileSync(new URL('../learning/naive-shooter-v1.mjs',import.meta.url),'utf8');
 assert.equal(/\.\.\/physics\//.test(naiveSource),false,'naive shooter imports privileged physics');
 assert.equal(/oracle-evaluation/.test(naiveSource),false,'naive shooter imports oracle evaluator');
+
+// Coordinate-contract gate: world -> camera -> apparent angles -> learner-safe inverse
+// must round-trip. This specifically protects the positive-up elevation convention
+// against the historical +Y/-Y sign error.
+const worldUnit0=[0.2017733089221273,0.968511882826211,0.14527778242393165];
+const cameraUnit0=mulMat3Vec3(L0_PUBLIC_CAMERA_R_CW,worldUnit0);
+const apparent0=apparentAnglesFromCameraVector(cameraUnit0);
+assert(apparent0.el_rad>0,'positive world-up target must have positive apparent elevation');
+const roundTrip=apparentAnglesToWorldUnit({...apparent0});
+const dot=worldUnit0[0]*roundTrip[0]+worldUnit0[1]*roundTrip[1]+worldUnit0[2]*roundTrip[2];
+assert(dot>1-1e-12,`apparent-angle round trip failed: dot=${dot}`);
+assert(roundTrip[2]>0,'positive apparent elevation must reconstruct positive world-up bore');
 
 const scenario=createCanonicalFlatCrosserScenario();
 const frames=buildHiddenOracleFrames(scenario,{duration_s:0.8,frameRate_hz:120});
@@ -29,4 +42,4 @@ assert.equal(benchmark.status,'L0_BASELINE_BENCHMARK_V1');assert.equal(benchmark
 assert(benchmark.naive.meanMissDistance_m>benchmark.oracle.meanMissDistance_m+0.01,'naive baseline unexpectedly matches oracle ceiling');
 assert(benchmark.naive.proxyHitRate<benchmark.oracle.proxyHitRate,'naive baseline should remain below privileged oracle ceiling');
 
-console.log(JSON.stringify({suite:'ShotSight virtual shooter L0 baselines v1',status:'PASS',benchmark},null,2));
+console.log(JSON.stringify({suite:'ShotSight virtual shooter L0 baselines v1',status:'PASS',coordinateRoundTripDot:dot,benchmark},null,2));

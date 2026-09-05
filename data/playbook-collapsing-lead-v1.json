@@ -1,0 +1,80 @@
+{
+  "version": "1.0",
+  "date": "2026-09-05",
+  "status": "ACTIVE_DIAGNOSTIC_OVERLAY",
+  "phenotype": "COLLAPSING_LEAD_BARREL_CHECKING_V1",
+  "applies_to": ["flat_long_crosser", "pull_away", "pre_trigger_execution"],
+  "coaching": [
+    {
+      "text": "ShotKam describes diminishing/collapsing lead immediately before trigger as associated with eyes moving to the barrel, gun movement slowing/stopping and a common miss behind.",
+      "label": "DIRECT",
+      "sources": ["SHOTKAM_COLLAPSING_LEAD"],
+      "attribution": "ShotKam coaching material"
+    },
+    {
+      "text": "ShotKam Station 4 guidance warns that consciously measuring lead with the eyes slows gun movement and produces diminishing lead; it advises concentrating on the clay rather than the lead.",
+      "label": "DIRECT",
+      "sources": ["SHOTKAM_STATION4_MEASURING"],
+      "attribution": "ShotKam coaching material"
+    },
+    {
+      "text": "ShotKam youth-coaching material describes collapsing lead when a shooter becomes barrel aware and discusses proprioceptive awareness as part of learning the movement.",
+      "label": "DIRECT",
+      "sources": ["SHOTKAM_YOUTH_PROPRIOCEPTION"],
+      "attribution": "ShotKam coaching material"
+    }
+  ],
+  "source_registry": {
+    "SHOTKAM_COLLAPSING_LEAD": {
+      "title": "Analyzing ShotKam videos: how to improve",
+      "publisher": "ShotKam Help Center",
+      "published": "2024-07-16",
+      "url": "https://support.shotkam.com/hc/en-us/articles/360046398031-Analyzing-ShotKam-videos-how-to-improve"
+    },
+    "SHOTKAM_STATION4_MEASURING": {
+      "title": "Ultimate Guide to Skeet Shooting: Breaking Station 4",
+      "publisher": "ShotKam UK",
+      "url": "https://uk.shotkam.com/blogs/blog-collections/ultimate-guide-to-skeet-shooting-breaking-station-4"
+    },
+    "SHOTKAM_YOUTH_PROPRIOCEPTION": {
+      "title": "Elevating Youth Shooters: Techniques for Developing Future Champions",
+      "publisher": "ShotKam",
+      "url": "https://eu.shotkam.com/de/blogs/blog-collections/youth-coaching-with-shotkam"
+    }
+  },
+  "diagnose": {
+    "symptom": "lead opens then contracts immediately before trigger, often with gun-speed loss",
+    "candidate_mechanisms": [
+      "barrel checking / conscious lead measuring",
+      "loss of target visual attention",
+      "pre-trigger gun deceleration",
+      "indecision / low trust in committed pull-away"
+    ],
+    "question": "Does the forward relationship develop normally and then collapse as gun angular speed falls? If gaze evidence exists, does attention leave the clay during the same interval?",
+    "interpretation": "Combined separation collapse plus gun deceleration raises the probability of barrel checking. Without direct gaze evidence, keep the diagnosis probabilistic and retain alternative causes.",
+    "fix": "Keep visual attention on the clay and trust the committed move; compare against a deliberate measuring/barrel-checking condition without prescribing a numerical lead.",
+    "retest": "Same hidden presentation family first, then vary speed/distance while preserving method and target-focus instruction."
+  },
+  "holds": [
+    "Do not encode barrel checking as a guaranteed behind miss.",
+    "Do not claim ShotKam coaching material alone proves the complete neurological or proprioceptive mechanism.",
+    "Do not give Ellis exact lead, miss vector, range or oracle correction through this diagnostic."
+  ],
+  "experiment": {
+    "label": "SHOTSIGHT_HYPOTHESIS",
+    "conditions": [
+      "TARGET_FOCUS_COMMITTED_PULL_AWAY",
+      "NOVICE_BARREL_CHECKING",
+      "BARREL_CHECKING_NO_TARGET_ATTENTION_COST"
+    ],
+    "metrics": [
+      "barrel_check_events",
+      "target_visual_quality",
+      "pre_trigger_separation_change",
+      "gun_angular_velocity_change",
+      "gun_acceleration_jerk",
+      "break_no_break",
+      "oracle_only_posthoc_miss_direction"
+    ]
+  }
+}

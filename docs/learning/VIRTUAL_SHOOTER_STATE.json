@@ -5,14 +5,15 @@
   "status": "ACTIVE",
   "current_stage": "L3",
   "current_stage_name": "Single-method crosser learning",
-  "current_substage": "L3_PULL_AWAY_HUMAN_VISION_HIT_MISS_EVALUATION_V1",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_POLICY_GREEN_1.md",
+  "current_substage": "L3_PULL_AWAY_HUMAN_VISION_REWARD_SUPPORT_REPLICATION_PENDING_CI_V1",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_LEARNING_NO_TRANSFER_1.md",
+  "pending_checkpoint": "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_REWARD_REPLICATION_PENDING_CI_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33976459019,
-    "head_sha": "2cb55609bf84cc039c2909af7ca47c9a65bb6ea6",
+    "run_id": 33985663294,
+    "head_sha": "44d701594e455de61475d98417782a5203106a17",
     "conclusion": "success",
-    "note": "Full L0->L3 regression green including strengthened alias containment, Ellis Experience/Satisfaction, Human Vision V1 and the new pull-away Human Vision policy boundary. Raw ShooterObservation bypass is rejected and unresolved streak/acquisition phases cannot generate precise target-point commands."
+    "note": "Full L0->L3 regression green including Human Vision pull-away reward support and first hit/miss memory-learning gate. Binary reward support exists but is sparse/population-sensitive; the first one-dimensional UCB1 memory produced no positive development-held-out learning signal."
   },
   "governing_rule": "ORACLE KNOWS. SHOOTER PERCEIVES, BELIEVES, PLANS, ACTS, REMEMBERS AND LEARNS.",
   "shooting_axiom": "GOOD SHOOTING IS CONTINUOUS PERCEPTUAL COUPLING BETWEEN TARGET AND GUN: READ THE LINE -> MATCH THE SPEED -> APPLY THE METHOD -> TRIGGER -> FOLLOW THROUGH.",
@@ -23,9 +24,10 @@
   "acquisition_experience_schema": "ELLIS_ACQUISITION_EXPERIENCE_V1",
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
-  "anti_cheat_audit_status": "GREEN_THROUGH_L3_PULL_AWAY_HUMAN_VISION_POLICY_AT_CI_33976459019; PULL_AWAY_POLICY_REJECTS_RAW_SHOOTER_OBSERVATION_BYPASS; FLASH_STREAK_ACQUIRING_REACQUIRING_DO_NOT_EXPOSE_RESOLVED_TARGET_CENTRE_OR_PRECISE_TARGET_POINT_COMMANDS; EXPERIENCE_AND_ACQUISITION_RECORDS_REJECT_PRIVILEGED_FIELDS_AND_ALIASES; TARGET_SEED_SCENARIO_SEED_MISS_DISTANCE_TRUE_RANGE_FUTURE_PATH_INTERCEPT_PELLET_TOF_REQUIRED_LEAD_AND_DIRECT_CORRECTION_REMAIN OUTSIDE LEARNER_POLICY_REWARD_MEMORY_AND_DIAGNOSTICS",
+  "anti_cheat_audit_status": "GREEN_THROUGH_L3_PULL_AWAY_HUMAN_VISION_HIT_MISS_LEARNING_AT_CI_33985663294; LEARNER MEMORY IMPORTS NO ORACLE/PHYSICS/REFEREE; HELDOUT UNUSED FOR POLICY SELECTION; ORACLE SCORES POST_TRIGGER_ONLY; TARGET_SEED_SCENARIO_SEED_MISS_DISTANCE_TRUE_RANGE_FUTURE_PATH_INTERCEPT_PELLET_TOF_REQUIRED_LEAD_AND_DIRECT_CORRECTION REMAIN OUTSIDE LEARNER POLICY AND MEMORY",
   "first_experiment_target_family": "CROSSERS",
   "initial_presentation_budget": 100000,
+  "scale_to_100k_authorised": false,
   "primary_methods": ["PULL_AWAY", "SWING_THROUGH", "MAINTAINED_LEAD"],
   "stage_status": {
     "L0": "GREEN_ORACLE_SHOOTER_CONTAINMENT_AND_BASELINES",
@@ -39,64 +41,69 @@
     "L3_CONTINUOUS_RELATIONSHIP": "NEGATIVE_ZERO_HITS_1024_ATTEMPTS_ON_SEED_361000",
     "L3_PHASE_RELATIONSHIP_SUPPORT": "GREEN_BINARY_REWARD_SUPPORT_EXISTS_BUT_PHASE_DEPENDENCE_NOT_SUPERIOR_TO_CONSTANT_CONTROL",
     "L3_EXPERIENCE_SATISFACTION_DESIGN": "FROZEN",
-    "L3_EXPERIENCE_RECORD_FOUNDATION": "GREEN_AT_CI_33970337007",
-    "L3_EXPERIENCE_ALIAS_HARDENING": "GREEN_AT_CI_33973239021",
-    "L3_HUMAN_VISUAL_ACQUISITION": "GREEN_AT_CI_33973239021",
-    "L3_PULL_AWAY_HUMAN_VISION_INTEGRATION": "GREEN_AT_CI_33976459019",
-    "L3_PULL_AWAY_HIT_MISS_REWARD_SUPPORT": "NEXT",
-    "L3_HIT_MISS_LEARNING": "QUEUED_AFTER_HUMAN_VISION_PULL_AWAY_REWARD_SUPPORT"
+    "L3_EXPERIENCE_RECORD_FOUNDATION": "GREEN",
+    "L3_HUMAN_VISUAL_ACQUISITION": "GREEN",
+    "L3_PULL_AWAY_HUMAN_VISION_INTEGRATION": "GREEN",
+    "L3_PULL_AWAY_HIT_MISS_REWARD_SUPPORT": "GREEN_SPARSE_POPULATION_SENSITIVE_4_HITS_1098_ATTEMPTS",
+    "L3_PULL_AWAY_HIT_MISS_LEARNING": "NEGATIVE_NO_DEVELOPMENT_HELDOUT_LEARNING_SIGNAL",
+    "L3_PULL_AWAY_REWARD_REPLICATION": "IMPLEMENTED_PENDING_CI"
   },
+  "reference_metrics": {
+    "L0": {"oracle_proxy_hits": "12/12", "naive_proxy_hits": "0/12"},
+    "L1": {"multifamily_300ms_accuracy": 0.837037037037037, "multifamily_240ms_accuracy": 0.7703703703703704, "multifamily_220ms_accuracy": 0.45555555555555555},
+    "L2": {"runway_aware_early_accuracy": 0.5125, "always_wait_100ms_early_accuracy": 0.43125},
+    "L3_finite_gun": {"integration_hz": 120, "visual_motor_delay_s": 0.12, "max_angular_velocity_radps": 2.4, "max_angular_acceleration_radps2": 12, "max_angular_jerk_radps3": 120, "evidence_class": "PROVISIONAL_METHOD_KINEMATICS"},
+    "L3_phase_relationship_binary_reward_support": {"seed_base": 371000, "phase_attempts": 1024, "phase_hits": 4, "constant_attempts": 1024, "constant_hits": 5, "phase_superiority_observed": false},
+    "L3_pull_away_human_vision_reward_support": {
+      "verified_ci_run_id": 33985663294,
+      "verified_head_sha": "44d701594e455de61475d98417782a5203106a17",
+      "attempts": 1098,
+      "triggers": 772,
+      "hits": 4,
+      "train": {"attempts": 366, "triggers": 272, "hits": 0},
+      "calibration": {"attempts": 366, "triggers": 311, "hits": 4},
+      "heldout_development": {"attempts": 366, "triggers": 189, "hits": 0},
+      "reproducible_across_populations": false
+    },
+    "L3_pull_away_human_vision_hit_miss_learning": {
+      "verified_ci_run_id": 33985663294,
+      "verified_head_sha": "44d701594e455de61475d98417782a5203106a17",
+      "training": {"attempts": 244, "triggers": 117, "hits": 1},
+      "calibration_candidate_count": 5,
+      "calibration_candidate_hits": 0,
+      "heldout_learned": {"attempts": 3, "triggers": 3, "hits": 0, "hit_rate": 0},
+      "heldout_no_memory_uniform": {"attempts": 183, "hits": 1, "hit_rate": 0.00546448087431694},
+      "memory_advantage_hit_rate": -0.00546448087431694,
+      "learning_signal_observed": false
+    }
+  },
+  "active_hypotheses": [
+    "Good shooting is continuous perceptual coupling: read the live line, match gun speed, apply method, trigger, and follow through.",
+    "Human-analogous acquisition creates an information-versus-runway trade-off: waiting may improve line/speed belief but consumes shooting opportunity.",
+    "Pull-away remains the primary L3 method because acquire/connect/match/separate/trigger/follow-through gives an interpretable adaptation loop.",
+    "Sparse binary reward support under Human Vision may be too population-sensitive for a context-free one-dimensional memory; establish replication before enriching memory or scaling compute.",
+    "Ellis apprenticeship records are learner-safe context that may later support episodic/contextual memory if reward support proves reproducible.",
+    "Satisfaction and affect-like variables remain experimental and must survive explicit ablation before retention."
+  ],
+  "negative_findings": [
+    "Static one-dimensional maintained-lead separation had no binary reward support after expanded diagnosis; motor travel was not the primary limitation.",
+    "Shooter-visible trigger timing expansion produced 100 physical follow-through shots across 1512 attempts and zero proxy hits.",
+    "Fresh post-geometry diagnostic produced 0/660 hits; quasi-continuous constant relationship exploration produced 0/1024 hits.",
+    "Phase-dependent relationship representation did not outperform constant control: 4/1024 versus 5/1024 proxy hits on the same bank.",
+    "Human Vision pull-away reward support was sparse and population-sensitive: 4/1098 overall, all four hits in calibration, with zero in train and development-heldout populations.",
+    "The first context-free one-dimensional pull-away UCB1 hit/miss memory failed held-out transfer: learned 0/3 versus no-memory uniform 1/183; memory advantage -0.00546448087431694.",
+    "Do not widen the hit proxy, inject referee miss gradients, expose oracle lead, seed learner memory from rewarded action identities, or treat the 55 mm engineering proxy as real-world break probability.",
+    "Human Vision V1 numerical defaults and pull-away policy thresholds remain SHOTSIGHT_HYPOTHESIS / PROVISIONAL_METHOD_KINEMATICS pending human calibration."
+  ],
   "completed_checkpoints": [
-    "docs/learning/checkpoints/L2_PLANNING_ADAPTATION_GREEN_1.md",
-    "docs/learning/checkpoints/L2_PRESENTATION_CONTEXT_RUNWAY_GREEN_1.md",
     "docs/learning/checkpoints/L2_PRESENTATION_LEVEL_PLANNING_COMPLETE.md",
     "docs/learning/checkpoints/L3_FINITE_GUN_PLANT_GREEN_1.md",
-    "docs/learning/checkpoints/L3_MAINTAINED_LEAD_NO_LEARNING_BASELINE_GREEN_1.md",
-    "docs/learning/checkpoints/L3_MAINTAINED_LEAD_HIT_MISS_NO_REWARD_1.md",
-    "docs/learning/checkpoints/L3_MAINTAINED_LEAD_REWARD_SUPPORT_DIAGNOSIS_1.md",
-    "docs/learning/checkpoints/L3_DYNAMIC_PERCEPTUAL_COUPLING_NO_REWARD_1.md",
-    "docs/learning/checkpoints/L3_SHOOTER_VISIBLE_TRIGGER_TIMING_NO_REWARD_1.md",
-    "docs/learning/checkpoints/L3_DYNAMIC_COUPLING_GEOMETRY_GREEN_FRESH_NO_REWARD_1.md",
     "docs/learning/checkpoints/L3_SHOOTER_VISIBLE_BINARY_REWARD_SUPPORT_GREEN_1.md",
     "docs/learning/checkpoints/L3_EXPERIENCE_SATISFACTION_DESIGN_FROZEN_1.md",
     "docs/learning/checkpoints/L3_EXPERIENCE_RECORD_FOUNDATION_GREEN_1.md",
     "docs/learning/checkpoints/L3_HUMAN_VISUAL_ACQUISITION_GREEN_1.md",
-    "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_POLICY_GREEN_1.md"
+    "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_POLICY_GREEN_1.md",
+    "docs/learning/checkpoints/L3_PULL_AWAY_HUMAN_VISION_LEARNING_NO_TRANSFER_1.md"
   ],
-  "reference_metrics": {
-    "L0": {"oracle_proxy_hits": "12/12", "naive_proxy_hits": "0/12"},
-    "L1": {"multifamily_300ms_accuracy": 0.837037037037037, "multifamily_240ms_accuracy": 0.7703703703703704, "multifamily_220ms_accuracy": 0.45555555555555555, "selective_wait_accuracy": 0.5375, "selective_wait_rate": 0.3277777777777778, "selective_mean_wait_s": 0.04916666666666645},
-    "L2": {"runway_aware_early_accuracy": 0.5125, "always_wait_100ms_early_accuracy": 0.43125, "early_mean_wait_s": 0.1446874999999998, "late_mean_wait_s": 0.09437500000000001},
-    "L3_finite_gun": {"integration_hz": 120, "visual_motor_delay_s": 0.12, "max_angular_velocity_radps": 2.4, "max_angular_acceleration_radps2": 12, "max_angular_jerk_radps3": 120, "evidence_class": "PROVISIONAL_METHOD_KINEMATICS"},
-    "L3_trigger_timing_reward_support": {"seed_base": 341000, "crossers": 12, "attempts": 1512, "triggers": 100, "hits": 0, "follow_through_triggers": 100, "reward_support_observed": false},
-    "L3_fresh_post_geometry_reward_support": {"seed_base": 351000, "crossers": 12, "attempts": 660, "triggers": 76, "hits": 0, "follow_through_triggers": 76, "reward_support_observed": false},
-    "L3_continuous_relationship_reward_support": {"seed_base": 361000, "crossers": 8, "constant_low_discrepancy_actions": 128, "attempts": 1024, "triggers": 26, "hits": 0, "follow_through_triggers": 26, "coarse_baseline_attempts": 440, "coarse_baseline_hits": 0, "reward_support_observed": false},
-    "L3_phase_relationship_binary_reward_support": {"seed_base": 371000, "crossers": 8, "same_hidden_bank_across_representations": true, "phase_actions": 128, "phase_attempts": 1024, "phase_triggers": 102, "phase_hits": 4, "constant_actions": 128, "constant_attempts": 1024, "constant_triggers": 90, "constant_hits": 5, "reward_support_observed": true, "phase_superiority_observed": false, "ci_run_id": 33965136396, "verified_head_sha": "317c2b4162e102e3ee6c9f01522bd22c1e6cb6c8"},
-    "L3_experience_record_foundation": {"verified_ci_run_id": 33970337007, "verified_head_sha": "5f19a3bedf8d7139fc09041084088a2348756e05", "experience_schema": "ELLIS_EXPERIENCE_RECORD_V1", "satisfaction_schema": "ELLIS_SATISFACTION_V1", "initial_satisfaction_process_weight": 0.6, "initial_satisfaction_outcome_weight": 0.4, "satisfaction_effect_on_learning": "UNTESTED_REQUIRES_ABLATION"},
-    "L3_human_visual_acquisition": {"verified_ci_run_id": 33973239021, "verified_head_sha": "fc9572ca6d435757fe36390a1cbe9795097ac371", "schema": "ELLIS_VISUAL_EVIDENCE_V1", "phases": ["EXPECTED_RELEASE", "FLASH_STREAK", "ACQUIRING", "TRACKING", "REACQUIRING"], "early_precise_centre_exposed": false, "occlusion_preserves_resolved_target": false, "numerical_status": "SHOTSIGHT_HYPOTHESIS_REQUIRES_HUMAN_CALIBRATION"},
-    "L3_pull_away_human_vision_policy": {"verified_ci_run_id": 33976459019, "verified_head_sha": "2cb55609bf84cc039c2909af7ca47c9a65bb6ea6", "raw_shooter_observation_accepted": false, "unresolved_precise_target_command": false, "tracking_required_for_connect_match_separate": true, "acquisition_experience_persisted": true, "numerical_status": "SHOTSIGHT_HYPOTHESIS_PROVISIONAL_METHOD_KINEMATICS"}
-  },
-  "active_hypotheses": [
-    "Good shooting is continuous perceptual coupling: read the live line, match gun speed, apply method, trigger, and follow through.",
-    "A demonstrated clay is a presentation prior rather than a deterministic trajectory; each live clay must be re-read as it varies with launch/aerodynamic/wind disturbance.",
-    "Binary reward support is sparse but demonstrably present in the pre-Human-Vision shooter-visible architecture; it must now be re-established under the stricter Human Vision pull-away policy before claiming learning support.",
-    "Ellis's complete apprenticeship — acquisition, perception, belief, intention, movement, outcome, self-diagnosis, intervention and later result — is scientifically valuable and should become a future causal training corpus for Chiron.",
-    "Shot Quality and Break Quality should remain distinct learner-visible assessments; Satisfaction is experimental and survives only if ablation improves held-out shooting outcomes or robust process without reward hacking.",
-    "Pull-away is the primary next-method learning hypothesis because acquire/connect/match/separate/trigger/follow-through creates an interpretable adaptation loop; maintained lead and swing-through remain comparators, not discarded methods.",
-    "A newly released fast clay should initially yield human-analogous transient/streak/region evidence and only later a resolved-but-uncertain track; expertise may improve expectation and interpretation but must not remove the sensory acquisition constraint.",
-    "Human-analogous acquisition should create a measurable information-versus-runway trade-off: waiting can improve line/speed belief but consumes shooting time and available movement.",
-    "Human kinematic limits, follow-through duration, coupling tolerances, visual acquisition timings, pursuit parameters and pull-away transition thresholds remain SHOTSIGHT_HYPOTHESIS / PROVISIONAL_METHOD_KINEMATICS pending Sense/video/eye-tracking calibration."
-  ],
-  "negative_findings": [
-    "Static one-dimensional maintained-lead separation had no binary reward support after expanded diagnosis; motor travel was not the primary limitation.",
-    "A prior 40 ms belief-horizon/delay semantic bug and a 16.7 ms frame/state mismatch were corrected; corrected geometry/timing did not manufacture reward support.",
-    "Shooter-visible trigger timing expansion produced 100 physical follow-through shots across 1512 attempts and zero proxy hits.",
-    "Fresh post-geometry diagnostic produced 0/660 hits; quasi-continuous constant relationship exploration on seed base 361000 produced 0/1024 hits.",
-    "The first phase-dependent relationship diagnostic did not outperform its constant control: 4/1024 versus 5/1024 proxy hits on the same bank; phase-changing maintained lead is therefore not elevated to a universal rule.",
-    "Reward support is population-sensitive and sparse; do not post-hoc tune to rewarded action identities.",
-    "Do not widen the hit proxy, inject referee miss gradients, expose oracle lead, or treat the 55 mm engineering proxy as real-world break probability.",
-    "Satisfaction is not yet evidence-backed as a useful learner objective.",
-    "Human Vision V1 numerical defaults and pull-away policy thresholds are not established clay-shooting physiology and must not be presented as universal human constants."
-  ],
-  "next_action": "Build the first human-vision-constrained pull-away episode/evaluation runner on explicit non-sealed train/calibration/held-out crosser populations. Incrementally build ELLIS_VISUAL_EVIDENCE_V1, operate the finite gun plant only through PULL_AWAY_HUMAN_VISION_POLICY_STATE_V1, oracle-score only after a learner-generated trigger, and return HIT_MISS_ONLY_FEEDBACK_V1 in the first condition. Persist ELLIS_EXPERIENCE_RECORD_V1 including ELLIS_ACQUISITION_EXPERIENCE_V1. Use interpretable separation exploration/memory without initialising from prior rewarded action identities or oracle geometry. First establish reproducible binary reward support under Human Vision V1; then compare memory ON/OFF, Satisfaction ON/OFF, human vision vs legacy clean-point, and selective wait ON/OFF on distinct train/calibration/held-out populations. Do not scale to 100k until held-out learning is demonstrated."
+  "next_action": "Run the new four-block Human Vision pull-away binary reward-support replication gate on seed bases 401000-404000 using the unchanged 61-point learner-safe visual-separation grid. Preserve either outcome. If support occurs on multiple fresh blocks, proceed to learner-safe episodic/contextual memory experiments with the current one-dimensional UCB1 learner as a negative baseline. If support remains isolated/absent, diagnose reward landscape, trigger opportunity, presentation context and learner-safe representation before adding memory complexity or compute. Do not scale to 100k until reproducible held-out learning is demonstrated."
 }

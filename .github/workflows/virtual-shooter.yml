@@ -95,3 +95,5 @@ jobs:
         run: node tests/virtual-shooter-pull-away-human-vision-evaluation-v1.mjs
       - name: Run L3 pull-away Human Vision hit/miss memory learning gate
         run: node tests/virtual-shooter-pull-away-human-vision-learning-v1.mjs
+      - name: Run L3 pull-away Human Vision reward-support replication gate
+        run: node tests/virtual-shooter-pull-away-human-vision-reward-replication-v1.mjs

@@ -5,27 +5,27 @@
   "status": "ACTIVE",
   "current_stage": "L1",
   "current_stage_name": "Perception-only target reading",
-  "current_substage": "L1_UNCERTAINTY_CALIBRATION_AND_HELDOUT",
-  "latest_verified_checkpoint": "docs/learning/checkpoints/L1_STABLE_CROSSER_BELIEF_IN_PROGRESS_1.md",
+  "current_substage": "L1_TARGET_FAMILY_AMBIGUITY_AND_TRANSFER",
+  "latest_verified_checkpoint": "docs/learning/checkpoints/L1_UNCERTAINTY_CALIBRATION_GREEN_1.md",
   "latest_verified_ci": {
     "workflow": "ShotSight virtual shooter",
-    "run_id": 33934708438,
-    "head_sha": "af5efee100270e7d9c292b7193e5ae359a701208",
+    "run_id": 33937721467,
+    "head_sha": "94a7ffd88680a65cbcbece3a9700e2c3e9a6bf0c",
     "conclusion": "success"
   },
   "oracle_world_status": "L0_HIDDEN_EVALUATION_FACADE_AND_PRIVILEGED_CEILING_GREEN",
-  "shooter_observation_status": "L1_DELAYED_NOISY_ANGULAR_HISTORY_TO_PROBABILISTIC_CROSSER_BELIEF_IMPLEMENTED",
-  "anti_cheat_audit_status": "GREEN_STRUCTURAL_ALLOWLIST_NESTED_LEAK_PROBES_AND_LEARNER_IMPORT_GUARDS",
+  "shooter_observation_status": "L1_DELAYED_NOISY_ANGULAR_HISTORY_TO_PROBABILISTIC_CROSSER_BELIEF_WITH_HELDOUT_UNCERTAINTY_CALIBRATION",
+  "anti_cheat_audit_status": "GREEN_STRUCTURAL_ALLOWLIST_NESTED_LEAK_PROBES_LEARNER_IMPORT_GUARDS_AND_CALIBRATION_PARTITION_SEPARATION",
   "naive_baseline_status": "L0_GREEN_12_CROSSER_BANK_0_OF_12_PROXY_HITS_MEAN_MISS_1.4875M",
   "oracle_baseline_status": "L0_GREEN_12_OF_12_PROXY_HITS_ENGINEERING_CEILING",
-  "l1_perception_status": "POINT_PREDICTION_GREEN_ON_SMALL_STABLE_BANK; UNCERTAINTY_UNDERDISPERSED_NOT_YET_GATE_COMPLETE",
-  "l1_clear_metrics": {
-    "direction_accuracy": 1.0,
-    "az_rmse_rad": 0.003217891335816093,
-    "el_rmse_rad": 0.0016418719357660927,
-    "az_coverage_2sd": 0.6666666666666666,
-    "el_coverage_2sd": 1.0,
-    "mean_confidence": 0.8918989089421662
+  "l1_perception_status": "STABLE_CROSSER_POINT_PREDICTION_AND_HELDOUT_UNCERTAINTY_CALIBRATION_GREEN; TARGET_FAMILY_TRANSFER_NOT_YET_COMPLETE",
+  "l1_heldout_calibration": {
+    "calibration_n": 120,
+    "heldout_n_per_condition": 240,
+    "clear": {"az_rmse_rad": 0.004077933844298068, "az_coverage95_calibrated": 0.9291666666666667, "el_coverage95_calibrated": 0.9083333333333333, "mean_confidence": 0.8919300712286219},
+    "short": {"az_rmse_rad": 0.005189980125759081, "az_coverage95_calibrated": 0.9375, "el_coverage95_calibrated": 0.9458333333333333, "mean_confidence": 0.3824644780836081},
+    "noisy": {"az_rmse_rad": 0.009767859670944486, "az_coverage95_calibrated": 0.9666666666666667, "el_coverage95_calibrated": 0.9625, "mean_confidence": 0.5388290295297639},
+    "partial": {"az_rmse_rad": 0.009017327358137414, "az_coverage95_calibrated": 0.9666666666666667, "el_coverage95_calibrated": 0.9291666666666667, "mean_confidence": 0.13366693096845716}
   },
   "score_status": "ENGINEERING_CENTRELINE_DISC_PROXY_NOT_REAL_BREAK_PROBABILITY",
   "realistic_clay_status": "HOLD_NOT_CERTIFIED_IN_INHERITED_TARGET_MODEL",
@@ -38,9 +38,10 @@
     "Current target engine does not certify realistic clay aerodynamics; virtual-shooter results must retain provisional world-model status.",
     "Current centreline evaluator is a 110 mm disc sensitivity proxy only; it does not model target orientation, shot cloud or breakability.",
     "Naive point-at-extrapolated-target baseline is intentionally weak and achieved 0/12 proxy hits; it is a lower baseline, not a human-performance claim.",
-    "L1 stable-crosser apparent-path uncertainty is under-dispersed: clear azimuth 2-sigma coverage 0.667 and noisy coverage 0.750 on the first 12-target bank.",
-    "Perfect left/right direction accuracy on the small stable-crosser bank is an easy-task result, not general target-reading proof.",
+    "Base L1 stable-crosser uncertainty was materially under-dispersed; held-out calibration requires large azimuth sigma scale factors of roughly 2.0–3.5 depending on observation condition.",
+    "Condition-specific global uncertainty scaling is an acceptable calibration gate but not the desired final belief architecture; a more principled heteroscedastic model should be tested later.",
+    "Perfect left/right direction accuracy on simple stable crossers is an easy-task result, not general target-reading proof.",
     "No Brett Winstanley hold/pickup/break-point claim promoted without a recovered primary source."
   ],
-  "next_action": "Build a larger partitioned L1 perception bank, calibrate uncertainty on calibration-only data, evaluate untouched held-out coverage/proper scoring, and add stronger short-window/partial-acquisition probes before allowing any gun or L2 planning."
+  "next_action": "Build a hidden multi-family L1 bank (stable crossers, quarterers, simple loopers), keep gun absent, estimate family probabilities and apparent future-path distributions from human-like observations only, and test unseen transfer/calibration under 200-300 ms and partial acquisition before allowing L2 planning."
 }

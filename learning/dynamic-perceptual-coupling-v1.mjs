@@ -30,6 +30,41 @@ function validateFrame(frame){
   assertNoPrivilegedShooterData(frame,{path:'dynamicCoupling.frame'});
 }
 
+function validateRelationship(forwardRelationship_rad,lineNormalRelationship_rad){
+  finite(forwardRelationship_rad,'forwardRelationship_rad');
+  finite(lineNormalRelationship_rad,'lineNormalRelationship_rad');
+  if(forwardRelationship_rad<0||forwardRelationship_rad>0.12)throw new Error('forwardRelationship_rad outside exploratory bounds');
+  if(Math.abs(lineNormalRelationship_rad)>0.04)throw new Error('lineNormalRelationship_rad outside exploratory bounds');
+}
+
+export function resolveDynamicRelationship(frame,{forwardRelationship_rad=0,lineNormalRelationship_rad=0,relationshipTrajectory=null}={}){
+  validateFrame(frame);
+  if(!relationshipTrajectory){
+    validateRelationship(forwardRelationship_rad,lineNormalRelationship_rad);
+    return freezePlain({forwardRelationship_rad,lineNormalRelationship_rad,phase:0,mode:'CONSTANT'});
+  }
+  if(relationshipTrajectory.schema!=='SHOOTER_VISIBLE_RELATIONSHIP_TRAJECTORY_V1')throw new Error('SHOOTER_VISIBLE_RELATIONSHIP_TRAJECTORY_V1 required');
+  const startForward=relationshipTrajectory.connectionForward_rad;
+  const endForward=relationshipTrajectory.breakForward_rad;
+  const startNormal=relationshipTrajectory.connectionNormal_rad;
+  const endNormal=relationshipTrajectory.breakNormal_rad;
+  validateRelationship(startForward,startNormal);validateRelationship(endForward,endNormal);
+  assertNoPrivilegedShooterData(relationshipTrajectory,{path:'dynamicCoupling.relationshipTrajectory'});
+  const p=frame.plan.presentationProgress.current;
+  const connection=frame.plan.executionAdaptation?.effectiveConnection??frame.plan.presentationProgress.plannedConnection;
+  const intendedBreak=frame.plan.presentationProgress.intendedBreak;
+  const span=Math.max(1e-6,intendedBreak-connection);
+  const phase=clamp((p-connection)/span,0,1);
+  // Linear phase interpolation is deliberately simple and interpretable. The trajectory is
+  // indexed only by shooter-visible presentation progress and the existing pre-shot plan.
+  // It is not parameterised by range, pellet flight, future oracle path or miss geometry.
+  const forward= startForward+(endForward-startForward)*phase;
+  const normal= startNormal+(endNormal-startNormal)*phase;
+  const out=freezePlain({forwardRelationship_rad:forward,lineNormalRelationship_rad:normal,phase,mode:'PHASE_DEPENDENT_LINEAR'});
+  assertNoPrivilegedShooterData(out,{path:'dynamicCoupling.resolvedRelationship'});
+  return out;
+}
+
 export function dynamicTargetLineBasis(frame){
   validateFrame(frame);
   const azRate=frame.belief.apparentMotion?.azRateMean_radps??0;
@@ -46,8 +81,7 @@ export function dynamicTargetLineBasis(frame){
 export function buildDynamicCouplingCommand(frame,{forwardRelationship_rad=0,lineNormalRelationship_rad=0,motorDelay_s=PROVISIONAL_GUN_PLANT_LIMITS_V1.visualMotorDelay_s}={}){
   validateFrame(frame);
   [forwardRelationship_rad,lineNormalRelationship_rad,motorDelay_s].forEach((v,i)=>finite(v,['forwardRelationship_rad','lineNormalRelationship_rad','motorDelay_s'][i]));
-  if(forwardRelationship_rad<0||forwardRelationship_rad>0.12)throw new Error('forwardRelationship_rad outside exploratory bounds');
-  if(Math.abs(lineNormalRelationship_rad)>0.04)throw new Error('lineNormalRelationship_rad outside exploratory bounds');
+  validateRelationship(forwardRelationship_rad,lineNormalRelationship_rad);
   if(motorDelay_s<0||motorDelay_s>0.5)throw new Error('motorDelay_s outside provisional bounds');
   const line=dynamicTargetLineBasis(frame);
   // `belief.prediction` is the shooter's estimate of target position NOW. Move that perceived
@@ -65,6 +99,7 @@ export function buildDynamicCouplingCommand(frame,{forwardRelationship_rad=0,lin
 
 export function assessDynamicCoupling(frame,gunState,{forwardRelationship_rad=0,lineNormalRelationship_rad=0,hypotheses=L3_DYNAMIC_COUPLING_HYPOTHESES_V1}={}){
   validateFrame(frame);if(!gunState||gunState.schema!=='FINITE_GUN_PLANT_STATE_V1')throw new Error('FINITE_GUN_PLANT_STATE_V1 required');
+  validateRelationship(forwardRelationship_rad,lineNormalRelationship_rad);
   const line=dynamicTargetLineBasis(frame);
   const stateTimeAlignmentError_s=gunState.t_s-frame.t_s;
   const dAz=gunState.az_rad-frame.belief.prediction.azMean_rad;
@@ -84,23 +119,27 @@ export function assessDynamicCoupling(frame,gunState,{forwardRelationship_rad=0,
   const speedMatched=speedMatchError_radps<=hypotheses.speedMatchTolerance_radps;
   const breakWindowOpen=!frame.plan.executionAdaptation.breakWindowMissed;
   const trigger=inCommitWindow&&confidenceReady&&lineReadable&&relationshipStable&&speedMatched&&breakWindowOpen;
-  const out=freezePlain({schema:'DYNAMIC_COUPLING_STATE_V1',t_s:frame.t_s,stateTimeAlignmentError_s,trigger,confidence,currentProgress:p.current,intendedBreak:p.intendedBreak,lineSpeed_radps:line.speed,achievedForward_rad,achievedNormal_rad,relationshipError_rad,gunAlongRate_radps,gunNormalRate_radps,speedMatchError_radps,inCommitWindow,confidenceReady,lineReadable,relationshipStable,speedMatched,breakWindowOpen,evidenceClass:'SHOTSIGHT_HYPOTHESIS_TRIGGER_FROM_SHOOTER_VISIBLE_COUPLING'});
+  const out=freezePlain({schema:'DYNAMIC_COUPLING_STATE_V1',t_s:frame.t_s,stateTimeAlignmentError_s,trigger,confidence,currentProgress:p.current,intendedBreak:p.intendedBreak,desiredForward_rad:forwardRelationship_rad,desiredNormal_rad:lineNormalRelationship_rad,lineSpeed_radps:line.speed,achievedForward_rad,achievedNormal_rad,relationshipError_rad,gunAlongRate_radps,gunNormalRate_radps,speedMatchError_radps,inCommitWindow,confidenceReady,lineReadable,relationshipStable,speedMatched,breakWindowOpen,evidenceClass:'SHOTSIGHT_HYPOTHESIS_TRIGGER_FROM_SHOOTER_VISIBLE_COUPLING'});
   assertNoPrivilegedShooterData(out,{path:'dynamicCoupling.state'});return out;
 }
 
-export function runDynamicMaintainedLeadCoupling({frames,forwardRelationship_rad=0,lineNormalRelationship_rad=0,limits=PROVISIONAL_GUN_PLANT_LIMITS_V1,seed=1,hypotheses=L3_DYNAMIC_COUPLING_HYPOTHESES_V1}={}){
+export function runDynamicMaintainedLeadCoupling({frames,forwardRelationship_rad=0,lineNormalRelationship_rad=0,relationshipTrajectory=null,limits=PROVISIONAL_GUN_PLANT_LIMITS_V1,seed=1,hypotheses=L3_DYNAMIC_COUPLING_HYPOTHESES_V1}={}){
   if(!Array.isArray(frames)||frames.length<2)throw new Error('perception frames required');frames.forEach(validateFrame);
-  const first=buildDynamicCouplingCommand(frames[0],{forwardRelationship_rad,lineNormalRelationship_rad,motorDelay_s:limits.visualMotorDelay_s});
+  if(relationshipTrajectory)assertNoPrivilegedShooterData(relationshipTrajectory,{path:'dynamicCoupling.relationshipTrajectory'});
+  const firstRelationship=resolveDynamicRelationship(frames[0],{forwardRelationship_rad,lineNormalRelationship_rad,relationshipTrajectory});
+  const first=buildDynamicCouplingCommand(frames[0],{...firstRelationship,motorDelay_s:limits.visualMotorDelay_s});
   const initialState=createGunPlantState({t_s:frames[0].t_s,az_rad:frames[0].belief.prediction.azMean_rad,el_rad:frames[0].belief.prediction.elMean_rad});
   const commands=[];
   const stateIndexByFrame=[];
+  const resolvedRelationships=[];
   // Learner frames are normally 60 Hz while the finite plant is integrated at 120 Hz.
   // Repeat each frame's shooter-visible command for exactly the number of plant steps until
   // the next perception frame, and assess frame i against the gun state at frame i's own time.
-  // The previous implementation assessed against (i+1)*2, i.e. one 60-Hz frame in the future.
   for(let i=0;i<frames.length;i++){
     stateIndexByFrame.push(commands.length);
-    const c=buildDynamicCouplingCommand(frames[i],{forwardRelationship_rad,lineNormalRelationship_rad,motorDelay_s:limits.visualMotorDelay_s}).command;
+    const relationship=resolveDynamicRelationship(frames[i],{forwardRelationship_rad,lineNormalRelationship_rad,relationshipTrajectory});
+    resolvedRelationships.push(relationship);
+    const c=buildDynamicCouplingCommand(frames[i],{...relationship,motorDelay_s:limits.visualMotorDelay_s}).command;
     const nextTime=i+1<frames.length?frames[i+1].t_s:frames[i].t_s+limits.dt_s;
     const duration=Math.max(limits.dt_s,nextTime-frames[i].t_s);
     const steps=Math.max(1,Math.round(duration/limits.dt_s));
@@ -110,7 +149,8 @@ export function runDynamicMaintainedLeadCoupling({frames,forwardRelationship_rad
   let trigger=null,triggerState=null,triggerFrameIndex=null;const couplingTrace=[];
   for(let i=0;i<frames.length;i++){
     const state=gunTrace.states[Math.min(gunTrace.states.length-1,stateIndexByFrame[i])];
-    const coupling=assessDynamicCoupling(frames[i],state,{forwardRelationship_rad,lineNormalRelationship_rad,hypotheses});couplingTrace.push(coupling);
+    const relationship=resolvedRelationships[i];
+    const coupling=assessDynamicCoupling(frames[i],state,{...relationship,hypotheses});couplingTrace.push(coupling);
     if(!trigger&&coupling.trigger){trigger=coupling;triggerState=state;triggerFrameIndex=i;}
   }
   let followThrough=null;
@@ -119,6 +159,6 @@ export function runDynamicMaintainedLeadCoupling({frames,forwardRelationship_rad
     const post=couplingTrace.slice(triggerFrameIndex).filter(x=>x.t_s<=endTime+1e-12);
     followThrough=freezePlain({schema:'POST_TRIGGER_FOLLOW_THROUGH_V1',requestedDuration_s:hypotheses.followThrough_s,samples:post.length,lastTime_s:post.length?post.at(-1).t_s:trigger.t_s,meanSpeedMatchError_radps:post.length?post.reduce((s,x)=>s+x.speedMatchError_radps,0)/post.length:null,meanRelationshipError_rad:post.length?post.reduce((s,x)=>s+x.relationshipError_rad,0)/post.length:null,continuedGunMotion:post.some((x,j)=>j>0&&Math.abs(x.gunAlongRate_radps)>0.01)});
   }
-  const result=freezePlain({schema:'DYNAMIC_MAINTAINED_LEAD_COUPLING_RUN_V1',status:trigger?'TRIGGERED':'NO_TRIGGER',method:'MAINTAINED_LEAD',action:{forwardRelationship_rad,lineNormalRelationship_rad},initialState,firstCommand:first.command,stateIndexByFrame,trigger,triggerState,couplingTrace,gunTrace,followThrough,evidenceClass:'SHOTSIGHT_HYPOTHESIS_DYNAMIC_PERCEPTUAL_COUPLING'});
+  const result=freezePlain({schema:'DYNAMIC_MAINTAINED_LEAD_COUPLING_RUN_V1',status:trigger?'TRIGGERED':'NO_TRIGGER',method:'MAINTAINED_LEAD',action:relationshipTrajectory?{relationshipTrajectory}:{forwardRelationship_rad,lineNormalRelationship_rad},initialState,firstCommand:first.command,stateIndexByFrame,resolvedRelationships,trigger,triggerState,couplingTrace,gunTrace,followThrough,evidenceClass:'SHOTSIGHT_HYPOTHESIS_DYNAMIC_PERCEPTUAL_COUPLING'});
   assertNoPrivilegedShooterData(result,{path:'dynamicCoupling.run'});return result;
 }

@@ -30,13 +30,17 @@ function validateFrame(frame){
   assertNoPrivilegedShooterData(frame,{path:'dynamicCoupling.frame'});
 }
 
-function tangentAndNormal(frame){
+export function dynamicTargetLineBasis(frame){
+  validateFrame(frame);
   const azRate=frame.belief.apparentMotion?.azRateMean_radps??0;
   const elRate=frame.belief.apparentMotion?.elRateMean_radps??0;
   const speed=Math.hypot(azRate,elRate);
-  if(speed<1e-9)return {azRate,elRate,speed,tAz:0,tEl:0,nAz:0,nEl:1};
+  if(speed<1e-9)return freezePlain({azRate,elRate,speed,tAz:0,tEl:0,nAz:0,nEl:1});
   const tAz=azRate/speed,tEl=elRate/speed;
-  return {azRate,elRate,speed,tAz,tEl,nAz:-tEl,nEl:tAz};
+  // Tangent always points in the perceived direction of target travel. Therefore a positive
+  // forward relationship remains "in front of the clay" for both L->R and R->L targets.
+  // Normal is the deterministic +90 degree rotation of that tangent in az/el image space.
+  return freezePlain({azRate,elRate,speed,tAz,tEl,nAz:-tEl,nEl:tAz});
 }
 
 export function buildDynamicCouplingCommand(frame,{forwardRelationship_rad=0,lineNormalRelationship_rad=0,motorDelay_s=PROVISIONAL_GUN_PLANT_LIMITS_V1.visualMotorDelay_s}={}){
@@ -45,7 +49,7 @@ export function buildDynamicCouplingCommand(frame,{forwardRelationship_rad=0,lin
   if(forwardRelationship_rad<0||forwardRelationship_rad>0.12)throw new Error('forwardRelationship_rad outside exploratory bounds');
   if(Math.abs(lineNormalRelationship_rad)>0.04)throw new Error('lineNormalRelationship_rad outside exploratory bounds');
   if(motorDelay_s<0||motorDelay_s>0.5)throw new Error('motorDelay_s outside provisional bounds');
-  const line=tangentAndNormal(frame);
+  const line=dynamicTargetLineBasis(frame);
   // `belief.prediction` is the shooter's estimate of target position NOW. Move that perceived
   // target along its currently read 2-D angular line by the known finite motor latency, then
   // express the chosen maintained-lead picture in line-tangent / line-normal coordinates.
@@ -61,7 +65,8 @@ export function buildDynamicCouplingCommand(frame,{forwardRelationship_rad=0,lin
 
 export function assessDynamicCoupling(frame,gunState,{forwardRelationship_rad=0,lineNormalRelationship_rad=0,hypotheses=L3_DYNAMIC_COUPLING_HYPOTHESES_V1}={}){
   validateFrame(frame);if(!gunState||gunState.schema!=='FINITE_GUN_PLANT_STATE_V1')throw new Error('FINITE_GUN_PLANT_STATE_V1 required');
-  const line=tangentAndNormal(frame);
+  const line=dynamicTargetLineBasis(frame);
+  const stateTimeAlignmentError_s=gunState.t_s-frame.t_s;
   const dAz=gunState.az_rad-frame.belief.prediction.azMean_rad;
   const dEl=gunState.el_rad-frame.belief.prediction.elMean_rad;
   const achievedForward_rad=dAz*line.tAz+dEl*line.tEl;
@@ -79,7 +84,7 @@ export function assessDynamicCoupling(frame,gunState,{forwardRelationship_rad=0,
   const speedMatched=speedMatchError_radps<=hypotheses.speedMatchTolerance_radps;
   const breakWindowOpen=!frame.plan.executionAdaptation.breakWindowMissed;
   const trigger=inCommitWindow&&confidenceReady&&lineReadable&&relationshipStable&&speedMatched&&breakWindowOpen;
-  const out=freezePlain({schema:'DYNAMIC_COUPLING_STATE_V1',t_s:frame.t_s,trigger,confidence,currentProgress:p.current,intendedBreak:p.intendedBreak,lineSpeed_radps:line.speed,achievedForward_rad,achievedNormal_rad,relationshipError_rad,gunAlongRate_radps,gunNormalRate_radps,speedMatchError_radps,inCommitWindow,confidenceReady,lineReadable,relationshipStable,speedMatched,breakWindowOpen,evidenceClass:'SHOTSIGHT_HYPOTHESIS_TRIGGER_FROM_SHOOTER_VISIBLE_COUPLING'});
+  const out=freezePlain({schema:'DYNAMIC_COUPLING_STATE_V1',t_s:frame.t_s,stateTimeAlignmentError_s,trigger,confidence,currentProgress:p.current,intendedBreak:p.intendedBreak,lineSpeed_radps:line.speed,achievedForward_rad,achievedNormal_rad,relationshipError_rad,gunAlongRate_radps,gunNormalRate_radps,speedMatchError_radps,inCommitWindow,confidenceReady,lineReadable,relationshipStable,speedMatched,breakWindowOpen,evidenceClass:'SHOTSIGHT_HYPOTHESIS_TRIGGER_FROM_SHOOTER_VISIBLE_COUPLING'});
   assertNoPrivilegedShooterData(out,{path:'dynamicCoupling.state'});return out;
 }
 
@@ -87,11 +92,24 @@ export function runDynamicMaintainedLeadCoupling({frames,forwardRelationship_rad
   if(!Array.isArray(frames)||frames.length<2)throw new Error('perception frames required');frames.forEach(validateFrame);
   const first=buildDynamicCouplingCommand(frames[0],{forwardRelationship_rad,lineNormalRelationship_rad,motorDelay_s:limits.visualMotorDelay_s});
   const initialState=createGunPlantState({t_s:frames[0].t_s,az_rad:frames[0].belief.prediction.azMean_rad,el_rad:frames[0].belief.prediction.elMean_rad});
-  const commands=[];for(const frame of frames){const c=buildDynamicCouplingCommand(frame,{forwardRelationship_rad,lineNormalRelationship_rad,motorDelay_s:limits.visualMotorDelay_s}).command;commands.push(c,c);}
+  const commands=[];
+  const stateIndexByFrame=[];
+  // Learner frames are normally 60 Hz while the finite plant is integrated at 120 Hz.
+  // Repeat each frame's shooter-visible command for exactly the number of plant steps until
+  // the next perception frame, and assess frame i against the gun state at frame i's own time.
+  // The previous implementation assessed against (i+1)*2, i.e. one 60-Hz frame in the future.
+  for(let i=0;i<frames.length;i++){
+    stateIndexByFrame.push(commands.length);
+    const c=buildDynamicCouplingCommand(frames[i],{forwardRelationship_rad,lineNormalRelationship_rad,motorDelay_s:limits.visualMotorDelay_s}).command;
+    const nextTime=i+1<frames.length?frames[i+1].t_s:frames[i].t_s+limits.dt_s;
+    const duration=Math.max(limits.dt_s,nextTime-frames[i].t_s);
+    const steps=Math.max(1,Math.round(duration/limits.dt_s));
+    for(let j=0;j<steps;j++)commands.push(c);
+  }
   const gunTrace=runFiniteGunPlant({initialState,commands,limits,seed});
   let trigger=null,triggerState=null,triggerFrameIndex=null;const couplingTrace=[];
   for(let i=0;i<frames.length;i++){
-    const state=gunTrace.states[Math.min(gunTrace.states.length-1,(i+1)*2)];
+    const state=gunTrace.states[Math.min(gunTrace.states.length-1,stateIndexByFrame[i])];
     const coupling=assessDynamicCoupling(frames[i],state,{forwardRelationship_rad,lineNormalRelationship_rad,hypotheses});couplingTrace.push(coupling);
     if(!trigger&&coupling.trigger){trigger=coupling;triggerState=state;triggerFrameIndex=i;}
   }
@@ -101,6 +119,6 @@ export function runDynamicMaintainedLeadCoupling({frames,forwardRelationship_rad
     const post=couplingTrace.slice(triggerFrameIndex).filter(x=>x.t_s<=endTime+1e-12);
     followThrough=freezePlain({schema:'POST_TRIGGER_FOLLOW_THROUGH_V1',requestedDuration_s:hypotheses.followThrough_s,samples:post.length,lastTime_s:post.length?post.at(-1).t_s:trigger.t_s,meanSpeedMatchError_radps:post.length?post.reduce((s,x)=>s+x.speedMatchError_radps,0)/post.length:null,meanRelationshipError_rad:post.length?post.reduce((s,x)=>s+x.relationshipError_rad,0)/post.length:null,continuedGunMotion:post.some((x,j)=>j>0&&Math.abs(x.gunAlongRate_radps)>0.01)});
   }
-  const result=freezePlain({schema:'DYNAMIC_MAINTAINED_LEAD_COUPLING_RUN_V1',status:trigger?'TRIGGERED':'NO_TRIGGER',method:'MAINTAINED_LEAD',action:{forwardRelationship_rad,lineNormalRelationship_rad},initialState,firstCommand:first.command,trigger,triggerState,couplingTrace,gunTrace,followThrough,evidenceClass:'SHOTSIGHT_HYPOTHESIS_DYNAMIC_PERCEPTUAL_COUPLING'});
+  const result=freezePlain({schema:'DYNAMIC_MAINTAINED_LEAD_COUPLING_RUN_V1',status:trigger?'TRIGGERED':'NO_TRIGGER',method:'MAINTAINED_LEAD',action:{forwardRelationship_rad,lineNormalRelationship_rad},initialState,firstCommand:first.command,stateIndexByFrame,trigger,triggerState,couplingTrace,gunTrace,followThrough,evidenceClass:'SHOTSIGHT_HYPOTHESIS_DYNAMIC_PERCEPTUAL_COUPLING'});
   assertNoPrivilegedShooterData(result,{path:'dynamicCoupling.run'});return result;
 }

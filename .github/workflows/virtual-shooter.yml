@@ -52,3 +52,5 @@ jobs:
         run: node tests/virtual-shooter-maintained-lead-learning-v1.mjs
       - name: Run L3 maintained-lead reward-support diagnosis
         run: node tests/virtual-shooter-maintained-lead-reward-support-v1.mjs
+      - name: Run L3 dynamic perceptual-coupling reward-support diagnostic
+        run: node tests/virtual-shooter-dynamic-perceptual-coupling-v1.mjs

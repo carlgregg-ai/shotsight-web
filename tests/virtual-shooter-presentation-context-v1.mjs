@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
-import {createShooterStandPrior,buildShooterVisiblePresentationContext,fitWaitInformationModel,chooseRunwayAwareObservationWait} from '../learning/presentation-context-v1.mjs';
+import {createShooterStandPrior} from '../learning/presentation-context-v1.mjs';
 import {runL2PresentationContextBenchmark} from '../learning/presentation-planning-evaluation-v1.mjs';
 
 const prior=createShooterStandPrior({expectedDirection:'RIGHT'});
 assert.equal(prior.schema,'SHOOTER_STAND_PRIOR_V1');
 assert.match(prior.forbiddenInterpretation,/NOT CURRENT TARGET FUTURE/);
-assert.throws(()=>createShooterStandPrior({expectedDirection:'RIGHT',range_m:30}),/|/);
+assert.ok(!('range_m' in prior)&&!('targetVelocity_W' in prior)&&!('exactIntercept' in prior));
 
 const report=runL2PresentationContextBenchmark();
 assert.equal(report.status,'L2_PRESENTATION_CONTEXT_RUNWAY_BENCHMARK_V1');

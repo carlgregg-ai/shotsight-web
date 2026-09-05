@@ -42,10 +42,7 @@ function reliabilityMetrics(episodes,temperature,{bins=10}={}){
 }
 
 function buildEpisodeViews(bank,model,seedBase){
-  return bank.map((record,i)=>{
-    const stages={};for(const wait_s of [0,0.05,0.10,0.15])stages[wait_s.toFixed(2)]=makeBelief(record,model,{wait_s,seed:seedBase+i*100});
-    return {record,family:record.family,stages};
-  });
+  return bank.map((record,i)=>{const stages={};for(const wait_s of [0,0.05,0.10,0.15])stages[wait_s.toFixed(2)]=makeBelief(record,model,{wait_s,seed:seedBase+i*100});return {record,family:record.family,stages};});
 }
 
 function choosePolicy(calibrationViews,temperature){
@@ -53,19 +50,20 @@ function choosePolicy(calibrationViews,temperature){
   let best=null;
   for(const firstThreshold of thresholds)for(const secondThreshold of thresholds){
     if(secondThreshold>firstThreshold+0.12)continue;
-    let correct=0,totalWait=0;
+    let correct=0,totalWait=0,waitCount=0;
     for(const e of calibrationViews){
       const p0=calibrateProb(e.stages['0.00'].belief.familyProb,temperature);let chosen=e.stages['0.00'],wait=0;
-      if(confidence(p0)<firstThreshold){chosen=e.stages['0.10'];wait=0.10;const p1=calibrateProb(chosen.belief.familyProb,temperature);if(confidence(p1)<secondThreshold){chosen=e.stages['0.15'];wait=0.15;}}
+      if(confidence(p0)<firstThreshold){chosen=e.stages['0.10'];wait=0.10;waitCount++;const p1=calibrateProb(chosen.belief.familyProb,temperature);if(confidence(p1)<secondThreshold){chosen=e.stages['0.15'];wait=0.15;}}
       const p=calibrateProb(chosen.belief.familyProb,temperature);if(argmax(p)===e.family)correct++;totalWait+=wait;
     }
-    const accuracy=correct/calibrationViews.length,meanWait_s=totalWait/calibrationViews.length;
+    const accuracy=correct/calibrationViews.length,meanWait_s=totalWait/calibrationViews.length,waitRate=waitCount/calibrationViews.length;
     if(meanWait_s>0.105)continue;
-    const candidate={firstThreshold,secondThreshold,accuracy,meanWait_s};
+    if(waitRate<0.15||waitRate>0.85)continue;
+    const candidate={firstThreshold,secondThreshold,accuracy,meanWait_s,waitRate};
     if(!best||candidate.accuracy>best.accuracy+1e-12||(Math.abs(candidate.accuracy-best.accuracy)<1e-12&&candidate.meanWait_s<best.meanWait_s))best=candidate;
   }
-  if(!best)throw new Error('no selective-wait policy satisfied calibration wait budget');
-  return freezePlain({schema:'SELECTIVE_WAIT_POLICY_V1',...best,maxWait_s:0.15,firstWait_s:0.10,secondWait_s:0.05,trainingRule:'MAXIMISE_CALIBRATION_ACCURACY_SUBJECT_TO_MEAN_WAIT_LE_105MS; TIE_BREAK_MIN_WAIT',runtimeInputs:['CALIBRATED_FAMILY_PROBABILITIES']});
+  if(!best)throw new Error('no genuinely selective wait policy satisfied calibration wait/coverage constraints');
+  return freezePlain({schema:'SELECTIVE_WAIT_POLICY_V1',...best,maxWait_s:0.15,firstWait_s:0.10,secondWait_s:0.05,trainingRule:'MAXIMISE_CALIBRATION_ACCURACY SUBJECT TO MEAN_WAIT<=105MS AND 15%<=WAIT_RATE<=85%; TIE_BREAK MIN_WAIT',runtimeInputs:['CALIBRATED_FAMILY_PROBABILITIES']});
 }
 
 function evaluateViews(views,temperature,policy){

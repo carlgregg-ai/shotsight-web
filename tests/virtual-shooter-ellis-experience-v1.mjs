@@ -22,7 +22,11 @@ const intervention=createInterventionRecordV1({parentEpisodeIndices:[10,11,12],h
 assert.equal(intervention.decision,'PENDING');
 
 for(const forbidden of [
-  {range_m:31},{missVector_W:[1,0,0]},{pelletTOF_s:.08},{requiredLead:.12},{oracleAction:'MOVE_RIGHT'},{targetInitial_W:[0,0,0]},{targetVelocity_W:[1,0,0]},{exactIntercept:[1,2,3]}
+  {range_m:31},{missVector_W:[1,0,0]},{pelletTOF_s:.08},{requiredLead:.12},{oracleAction:'MOVE_RIGHT'},
+  {targetInitial_W:[0,0,0]},{targetVelocity_W:[1,0,0]},{exactIntercept:[1,2,3]},
+  {targetSeed:371001},{scenarioSeed:371001},{missDistance_m:.19},{missDistance:.19},{trueRange_m:33},
+  {requiredLead_rad:.08},{requiredLead_m:1.2},{futureTrajectory:[[0,0,0]]},{exactFuturePath:[[0,0,0]]},
+  {oracleCorrection:'MORE_LEAD'},{correctionDirection:'RIGHT'},{directCorrection:'MOVE_RIGHT'},{exactTargetState:{x:1}}
 ]){
   assert.throws(()=>createEllisExperienceRecordV1({episodeIndex:1,before:{belief:{...forbidden}},during:{},outcome:createHitMissOnlyFeedback({hit:false}),shotQuality:sq,breakQuality:missBQ,satisfaction:missSS}),/PRIVILEGED_STATE_LEAK/);
 }
@@ -31,4 +35,4 @@ const poorSQ=createShotQualityV1({lineRead:.3,connectionStability:.3,speedRelati
 const lucky=createSatisfactionV1({shotQuality:poorSQ,breakQuality:hitBQ});
 assert.ok(lucky.score<hitSS.score,'lucky poor-process hit must not outrank coherent good-process hit');
 
-console.log(JSON.stringify({status:'PASS',schema:'ELLIS_EXPERIENCE_TEST_V1',shotQuality:sq.score,highQualityMissSatisfaction:missSS.score,highQualityHitSatisfaction:hitSS.score,luckyPoorProcessHitSatisfaction:lucky.score,antiCheat:'PASS',immutability:'PASS',binaryTruthPreserved:true},null,2));
+console.log(JSON.stringify({status:'PASS',schema:'ELLIS_EXPERIENCE_TEST_V1',shotQuality:sq.score,highQualityMissSatisfaction:missSS.score,highQualityHitSatisfaction:hitSS.score,luckyPoorProcessHitSatisfaction:lucky.score,antiCheat:'PASS',immutability:'PASS',binaryTruthPreserved:true,privilegedAliasProbes:21},null,2));

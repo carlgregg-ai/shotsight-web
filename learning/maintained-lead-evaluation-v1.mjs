@@ -42,7 +42,12 @@ function buildLearnerFrames(history,model,standPrior){
   const frames=[];
   for(let i=0;i<history.length;i++){
     const prefix=history.slice(0,i+1),last=prefix.at(-1);if(!last.visible)continue;
-    const belief=buildMultiFamilyBelief(prefix,{model,predictionHorizon_s:0.12,maxHistory_s:0.35});if(!belief.prediction)continue;
+    // The latest ShooterObservation is stamped at the delayed visible/capture time. The
+    // belief therefore advances exactly by that observation's known sensory latency to
+    // represent the shooter's estimate of the target NOW. Gun-plant motor anticipation is
+    // applied separately in the learner controller. Using a fixed 120 ms horizon here when
+    // the observation was only 80 ms old double-counted 40 ms of future target travel.
+    const belief=buildMultiFamilyBelief(prefix,{model,predictionHorizon_s:last.latency_s,maxHistory_s:0.35});if(!belief.prediction)continue;
     const context=buildShooterVisiblePresentationContext(prefix,belief,standPrior);
     const plan=buildPresentationLevelShotPlan(belief,context,{method:'MAINTAINED_LEAD',priorMode:'SOURCE_PRIOR'});
     const now_s=last.observationTime_s+last.latency_s;

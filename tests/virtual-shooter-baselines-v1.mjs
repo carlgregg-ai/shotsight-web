@@ -14,7 +14,7 @@ assert.equal(/oracle-evaluation/.test(naiveSource),false,'naive shooter imports 
 // Coordinate-contract gate: world -> camera -> apparent angles -> learner-safe inverse
 // must round-trip. This specifically protects the positive-up elevation convention
 // against the historical +Y/-Y sign error.
-const worldUnit0=[0.2017733089221273,0.968511882826211,0.14527778242393165];
+const worldUnit0=[0.2,Math.sqrt(1-0.2**2-0.15**2),0.15];
 const cameraUnit0=mulMat3Vec3(L0_PUBLIC_CAMERA_R_CW,worldUnit0);
 const apparent0=apparentAnglesFromCameraVector(cameraUnit0);
 assert(apparent0.el_rad>0,'positive world-up target must have positive apparent elevation');

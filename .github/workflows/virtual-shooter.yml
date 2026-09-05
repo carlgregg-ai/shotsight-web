@@ -87,3 +87,5 @@ jobs:
         run: echo "Predeclared shooter-visible phase-dependent relationship trajectories found zero engineering-proxy hits."
       - name: Run L3 Ellis apprenticeship record / Satisfaction anti-cheat gate
         run: node tests/virtual-shooter-ellis-experience-v1.mjs
+      - name: Run L3 Ellis human-analogous visual acquisition gate
+        run: node tests/virtual-shooter-human-vision-v1.mjs

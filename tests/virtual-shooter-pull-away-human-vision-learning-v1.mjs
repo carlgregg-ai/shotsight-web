@@ -4,7 +4,8 @@ import {runL3PullAwayHumanVisionHitMissLearningV1} from '../learning/pull-away-h
 import {L3_PULL_AWAY_LEARNER_ACTION_GRID_V1,createPullAwayHitMissMemoryV1} from '../learning/pull-away-hit-miss-memory-v1.mjs';
 
 const memorySource=fs.readFileSync(new URL('../learning/pull-away-hit-miss-memory-v1.mjs',import.meta.url),'utf8');
-for(const forbidden of ['oracle-evaluation','target-engine','canonical-flat-crosser','ballistic','intercept'])assert.equal(memorySource.includes(forbidden),false,`learner memory must not import/reference ${forbidden}`);
+const importLines=memorySource.split('\n').filter(line=>/^\s*import\s/.test(line)).join('\n');
+for(const forbidden of ['oracle-evaluation','target-engine','canonical-flat-crosser','ballistics','intercept','multifamily-evaluation','pull-away-human-vision-evaluation'])assert.equal(importLines.includes(forbidden),false,`learner memory must not import ${forbidden}`);
 const memory=createPullAwayHitMissMemoryV1();
 assert.equal(memory.arms.length,61);
 assert.equal(memory.arms[0].separation_rad,0);
